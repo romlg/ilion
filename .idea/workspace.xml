@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="79cb43ea-080f-4724-9a61-a0a5f16623ae" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Report/UsersSheetController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/asystem/users/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/psystem/facts/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/psystem/orders/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.phpstorm.meta.php" beforeDir="false" afterPath="$PROJECT_DIR$/.phpstorm.meta.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_ide_helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/_ide_helper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/ObjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/ObjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Report/FactSheetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ASystem/Report/FactSheetController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PSystem/FactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PSystem/FactController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PSystem/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PSystem/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Library/Utility.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Library/Utility.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Materials2object.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Materials2object.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Object.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Objct.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/asystem/objects/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/asystem/objects/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/asystem/objects/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/asystem/objects/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/asystem/objects/upload.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/asystem/objects/upload.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/asystem/orders/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/asystem/orders/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/asystem/orders/precreate.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/asystem/orders/precreate.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/psystem/facts/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/psystem/facts/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/psystem/facts/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/psystem/facts/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/psystem/orders/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/psystem/orders/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/psystem/orders/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/psystem/orders/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/psystem/orders/preview.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/psystem/orders/preview.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="79cb43ea-080f-4724-9a61-a0a5f16623ae" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +28,9 @@
     <expand />
     <select />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ilion" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -74,8 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/OrderController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="197" column="14" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
+            <state relative-caret-position="182">
+              <caret line="205" column="49" lean-forward="true" selection-start-line="205" selection-start-column="49" selection-end-line="205" selection-end-column="49" />
               <folding>
                 <element signature="e#56#80#0#PHP" expanded="true" />
               </folding>
@@ -246,10 +217,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="145" />
-    <option name="y" value="193" />
+    <option name="x" value="212" />
+    <option name="y" value="87" />
     <option name="width" value="1631" />
-    <option name="height" value="577" />
+    <option name="height" value="616" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -273,6 +244,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/psystem/orders" />
@@ -349,20 +321,21 @@
       <workItem from="1575625661004" duration="1393000" />
       <workItem from="1575635963976" duration="710000" />
       <workItem from="1575636754363" duration="2291000" />
-      <workItem from="1575656178878" duration="818000" />
+      <workItem from="1575656178878" duration="1369000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128790000" />
+    <option name="totallyTimeSpent" value="129040000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="219" y="139" width="1445" height="614" extended-state="0" />
+    <frame x="212" y="87" width="1631" height="616" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950495" visible="true" weight="0.14510365" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49285713" visible="true" weight="0.12744479" />
       <window_info id="Structure" order="1" sideWeight="0.5049505" side_tool="true" weight="0.08934708" />
       <window_info id="npm" order="2" side_tool="true" weight="0.32983795" />
-      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info id="Favorites" order="3" sideWeight="0.50714284" side_tool="true" visible="true" weight="0.12744479" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.28025478" />
@@ -374,7 +347,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.4053498" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.39565217" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3939394" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -757,8 +730,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ASystem/Catalog/OrderController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="197" column="14" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
+        <state relative-caret-position="182">
+          <caret line="205" column="49" lean-forward="true" selection-start-line="205" selection-start-column="49" selection-end-line="205" selection-end-column="49" />
           <folding>
             <element signature="e#56#80#0#PHP" expanded="true" />
           </folding>
