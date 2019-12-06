@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    /** @var \App\Models\Object $item  */
+    /** @var \App\Models\Objct $item  */
 @endphp
 <div class="container">
     <div class="row justify-content-center">

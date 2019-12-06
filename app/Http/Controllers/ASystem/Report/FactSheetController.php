@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ASystem\Report;
 
-use App\Models\Object;
+use App\Models\Objct;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +16,7 @@ class FactSheetController extends ReportController
 
         $object_id = 1; // выбирать из списка
 
-        $object = Object::findOrFail($object_id);
+        $object = Objct::findOrFail($object_id);
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')

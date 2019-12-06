@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Materials2object extends Model
 {
-    protected $table = 'Materials2objects';
+    protected $table = 'materials2objects';
     protected $primaryKey = 'id';
     protected $fillable =[
         'material_id',
@@ -18,4 +18,15 @@ class Materials2object extends Model
     ];
 
     public $timestamps = false;
+
+    public function material()
+    {
+        return $this->belongsTo('App\Models\Material', 'material_id');
+    }
+
+    public function object()
+    {
+        return $this->belongsTo('App\Models\Objct', 'object_id ');
+    }
+
 }

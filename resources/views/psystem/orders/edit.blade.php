@@ -7,14 +7,15 @@
     @var object $materials
     */
 @endphp
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
 
                 <div class="card-body">
-                    @if($item->exists)
-                    <form method="POST" action="{{ route('order.update', $item->order_id) }}">
+                    @if($order->order_id)
+                    <form method="POST" action="{{ route('order.update', $order->order_id) }}">
                         @method('PATCH')
                     @else
                     <form method="POST" action="{{ route('order.store') }}">
@@ -63,7 +64,7 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col col-md-5">
+                                <div class="col col-md-6">
                                     Наименование
                                 </div>
                                 <div class="col col-md-2">
@@ -80,31 +81,34 @@
                                 </div>--}}
                             </div>
                         </div>
-                        <div class="form-group" id="materials">
-                            <div class="row">
-                                <div class="col col-md-5">
-                                    <select name="material[]" class="form-control material-select" data-live-search="true">
-                                        @foreach($materials As $material)
-                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}" data-cnt="{{ $material->cnt }}">{{ $material->title }}</option>
-                                        @endforeach
-                                    </select>
+
+
+
+                        @foreach($orderMaterials As $oneMaterial)
+                            <div class="form-group" id="materials">
+                                <div class="row">
+                                    <div class="col col-md-6">
+                                        <select name="material[]" class="form-control">
+                                            @foreach($materials As $material)
+                                                <option value="{{ $material->material_id }}" data-content="({{ $material->units }})" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control mat-sacount" value="" disabled="disabled">
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
+                                    </div>
                                 </div>
-                                <div class="col col-md-2">
-                                    <input type="text" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество">
-                                </div>
-                                <div class="col col-md-2">
-                                    <input type="text" class="form-control mat-sacount" value="" disabled="disabled">
-                                </div>
-                                <div class="col col-md-2">
-                                    <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
-                                </div>
-                                {{--<div class="col col-md-1 alert alert-danger" style="padding: 0 15px;">
-                                    <button type="button" class="close" style="float: none;padding: inherit;line-height: inherit;" aria-label="Удалить">
-                                        <span>x</span>
-                                    </button>
-                                </div>--}}
                             </div>
-                        </div>
+                        @endforeach
+
+                        <div id="new_element"></div>
+
 
                         <div id="new_element"></div>
 
@@ -114,12 +118,12 @@
 
                         <div class="form-group">
                             <label for="text">Замечания к заявке</label>
-                            <textarea id="text" name="notes" class="form-control"></textarea>
+                            <textarea id="text" name="notes" class="form-control">{{ $order->notes }}</textarea>
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">Создать</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
 
                                 <a class="btn btn-primary" href="{{ route('order.index') }}">Закрыть</a>
 

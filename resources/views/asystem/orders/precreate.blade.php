@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    /** @var \App\Models\Object $objects  */
+    /** @var \App\Models\Objct $objects  */
 
 @endphp
 <div class="container">
