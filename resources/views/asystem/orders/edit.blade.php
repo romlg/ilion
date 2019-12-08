@@ -77,19 +77,50 @@
                             <label for="material">Материалы</label>
                         </div>
 
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col col-md-5">
+                                    Наименование
+                                </div>
+                                <div class="col col-md-2">
+                                    Количество для заявки
+                                </div>
+                                <div class="col col-md-2">
+                                    Количество по СА
+                                </div>
+                                <div class="col col-md-2">
+                                    Уже доставленно
+                                </div>
+                                <div class="col col-md-1">
+                                    Удалить
+                                </div>
+                            </div>
+                        </div>
+
                         @if($order->order_id)
                         @foreach($orderMaterials As $oneMaterial)
                         <div class="form-group">
                             <div class="row">
-                                <div class="col">
+                                <div class="col col-md-5">
                                     <select name="material[]" class="form-control">
                                         @foreach($materials As $material)
-                                            <option value="{{ $material->material_id }}" data-content="({{ $material->units }})" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
+                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}" data-cnt="{{ $material->cnt }}" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col col-md-2">
-                                    <input type="text" class="form-control" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+                                    <input type="text" class="form-control mat-count" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control mat-sacount" value="" disabled="disabled">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
+                                </div>
+                                <div class="col col-md-1 alert alert-danger" style="padding: 0 15px;">
+                                    <button type="button" class="close" style="float: none;padding: inherit;line-height: inherit;" aria-label="Удалить">
+                                        <span>x</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -101,12 +132,23 @@
                                 <div class="col">
                                     <select name="material[]" class="form-control">
                                         @foreach($materials As $material)
-                                        <option value="{{ $material->material_id }}" data-content="({{ $material->units }})">{{ $material->title }}</option>
+                                        <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}" data-cnt="{{ $material->cnt }}" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col col-md-2">
-                                    <input type="text" class="form-control" name="count[]" value="" data-placeholder="Количество" placeholder="Количество">
+                                    <input type="text" class="form-control mat-count" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control mat-sacount" value="" disabled="disabled">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
+                                </div>
+                                <div class="col col-md-1 alert alert-danger" style="padding: 0 15px;">
+                                    <button type="button" class="close" style="float: none;padding: inherit;line-height: inherit;" aria-label="Удалить">
+                                        <span>x</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -139,15 +181,29 @@
 
 <script type="text/javascript">
     function initSelect() {
-        $('select').on('change', function() {
-            var unit = $(this).find(':selected').attr('data-content');
-            var placeholder_val = $(this).parent().parent().find('input').attr('data-placeholder');
-            $(this).parent().parent().find('input').attr('placeholder', placeholder_val+' '+unit);
+        $('.material-select').selectpicker();
+
+        $('.material-select').on('change', function() {
+            var unit = $(this).find(':selected').attr('data-unit');
+            var placeholder_val = $(this).parent().parent().find('input.mat-count').attr('data-placeholder');
+            $(this).parent().parent().find('input.mat-count').attr('placeholder', placeholder_val+' '+unit);
+
+            var sacount = $(this).find(':selected').attr('data-count');
+            $(this).parent().parent().find('input.mat-sacount').val(sacount);
+            //
+            var cnt = $(this).find(':selected').attr('data-cnt');
+            $(this).parent().parent().find('input.mat-totalcount').val($(this).find(':selected').attr('data-cnt'));
+            //
+        });
+
+        $('.close').on('click', function () {
+            $(this).parent().parent().remove();
         });
     }
 
     function addElement() {
-        $("#materials").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element");
+        $('.material-select').selectpicker('destroy');
+        $("#materials").clone().find("input:text").val("").end().find(".row").appendTo("#new_element");
         initSelect();
     }
 

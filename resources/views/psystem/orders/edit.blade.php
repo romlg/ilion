@@ -75,9 +75,9 @@
                                 <div class="col col-md-2">
                                     Уже доставленно
                                 </div>
-                                {{--<div class="col col-md-1">
+                                <div class="col col-md-1">
                                     Удалить
-                                </div>--}}
+                                </div>
                             </div>
                         </div>
                         <div class="form-group" id="materials">
@@ -98,11 +98,6 @@
                                 <div class="col col-md-2">
                                     <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
                                 </div>
-                                {{--<div class="col col-md-1 alert alert-danger" style="padding: 0 15px;">
-                                    <button type="button" class="close" style="float: none;padding: inherit;line-height: inherit;" aria-label="Удалить">
-                                        <span>x</span>
-                                    </button>
-                                </div>--}}
                             </div>
                         </div>
 
@@ -135,8 +130,6 @@
 <script type="text/javascript">
 
     function initSelect() {
-        //$('select').on('change', function() {
-
         $('.material-select').selectpicker();
 
         $('.material-select').on('change', function() {
@@ -151,17 +144,19 @@
             $(this).parent().parent().find('input.mat-totalcount').val($(this).find(':selected').attr('data-cnt'));
             //
         });
-      //  $('.material-select').selectpicker();
+
+        $('.close').on('click', function () {
+            $(this).parent().parent().remove();
+        });
     }
 
     function addElement() {
         $('.material-select').selectpicker('destroy');
-        $("#materials").clone().find("input:text").val("").end().appendTo("#new_element");
+        $("#materials").clone().find("input:text").val("").end().find(".row").append('<div class="col col-md-1 alert alert-danger" style="padding: 0 15px;"><button type="button" class="close" style="float: none;padding: inherit;line-height: inherit;" aria-label="Удалить"><span>x</span></button></div>').appendTo("#new_element");
         initSelect();
     }
 
     $(function() {
-        //$('.material-select').selectpicker();
         initSelect();
     });
 </script>

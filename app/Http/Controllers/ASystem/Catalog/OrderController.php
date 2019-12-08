@@ -47,7 +47,6 @@ class OrderController extends CatalogController
         return view('asystem.orders.precreate', compact('objects'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -152,6 +151,9 @@ class OrderController extends CatalogController
      */
     public function edit($id)
     {
+
+
+
         $order = \DB::table('orders')
             ->leftJoin('objects', 'orders.object_id', '=', 'objects.object_id')
             ->leftJoin('customers', 'customers.customer_id', '=', 'orders.customer_id')
@@ -166,12 +168,16 @@ class OrderController extends CatalogController
             ->where('order_items.order_id', $id)
             ->select('order_items.count', 'order_items.material_id')
             ->get();
-//dd($orderMaterials);
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+            ->leftJoin(\DB::raw('(SELECT order_items.material_id, sum(order_items.count) cnt
+                    FROM `orders` 
+                    left join order_items on orders.order_id = order_items.order_id
+                    WHERE orders.object_id=1 and orders.status=4 GROUP by order_items.material_id) mat'),
+                'mat.material_id', '=', 'materials2objects.material_id')
             ->where('materials2objects.object_id', $order->object_id)
-            ->select('materials.title', 'materials.material_id', 'materials2objects.units')
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count', 'mat.cnt')
             ->get();
 
         $filterStatus = Utility::orderStatus;
