@@ -82,23 +82,22 @@
                             @enderror
                         </div>
 
-                        <div id="new_element"></div>
-
-                        <div class="form-group" id="materials">
-                            <div class="row">
-                                <div class="col col-md-6">
-                                    <select name="material[]" class="form-control material-select" data-live-search="true">
-                                        @foreach($materialsAll As $material)
-                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}">{{ $material->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col col-md-2">
-                                    <input type="number" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество" required>
-                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $material->units }}">
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div id="new_element"></div>--}}
+{{--                        <div class="form-group" id="materials">--}}
+{{--                            <div class="row">--}}
+{{--                                <div class="col col-md-6">--}}
+{{--                                    <select name="material[]" class="form-control material-select" data-live-search="true">--}}
+{{--                                        @foreach($materialsAll As $material)--}}
+{{--                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}">{{ $material->title }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                                <div class="col col-md-2">--}}
+{{--                                    <input type="number" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество" required>--}}
+{{--                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $material->units }}">--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">

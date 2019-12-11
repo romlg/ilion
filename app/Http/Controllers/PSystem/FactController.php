@@ -115,17 +115,23 @@ class FactController extends BaseController
      */
     public function edit($id)
     {
-        //$fact = Fact::where('fact_id', $id)->first();
-
         $fact = \DB::table('facts')
-            ->join('fact_items', 'fact_items.fact_id', '=', 'facts.fact_id')
-            ->join('materials', 'materials.material_id', '=', 'fact_items.material_id')
             ->where('facts.fact_id', $id)
-            //->select('facts.notes', 'fact_items.count', 'materials.title')
-            ->select( 'facts.fact_id' , 'facts.status' , 'fact_items.id' , 'materials.title', 'facts.notes', 'fact_items.count')
+            ->select( 'facts.fact_id', 'facts.status', 'facts.notes')
             ->first();
 
-        return view('psystem.facts.edit', compact('fact'));
+
+        $materials = \DB::table('facts')
+            ->leftJoin('fact_items', 'fact_items.fact_id', '=', 'facts.fact_id')
+            ->leftJoin('materials', 'materials.material_id', '=', 'fact_items.material_id')
+            ->where('facts.fact_id', $id)
+            //->select('facts.notes', 'fact_items.count', 'materials.title')
+            ->select( 'fact_items.id', 'fact_items.count', 'materials.material_id', 'materials.title')
+            ->get();
+
+        $status = $fact->status == 1 ? 'Принятый' : 'Новый';
+
+        return view('psystem.facts.edit', compact('fact', 'status', 'materials'));
     }
 
     /**
@@ -138,31 +144,47 @@ class FactController extends BaseController
     public function update(Request $request, $id)
     {
 
-        $data = $request->all();
+        $data = $request->input();
 
-        //dd($data);
+        \DB::beginTransaction();
 
         $fact = Fact::find($id);
-        $factItem = FactItems::find($data['fact_item_id']);
-
-        $fact->customer_id = \Auth::id();
         $fact->notes = $data['notes'];
-        $fact->status = $data['status'];
 
-        $factItem->count = $data['count'];
+        \DB::table('fact_items')->where('fact_id', '=', $fact['fact_id'])->delete();
 
 
-        if ($fact->save() && $factItem->save()) {
+        $status = true;
+        foreach ($data['material_id'] as $key => $val) {
+
+//            echo $id.PHP_EOL;
+//            echo $val.PHP_EOL;
+//            echo $data['count'][$key].PHP_EOL;
+
+
+            if ($data['count'][$key]) {
+                $factItems = new FactItems([
+                    'fact_id' => $id,
+                    'material_id' => $val,
+                    'count' => $data['count'][$key],
+                ]);
+                $factItems->save();
+            }
+
+            $status = $factItems ? true : false;
+        }
+
+        if ($fact->save() && $status) {
+            \DB::commit();
             return redirect()
                 ->route('fact.edit', $id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
+            \DB::rollBack();
             return back()
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
         }
-//        $fact
-
     }
 
     /**
