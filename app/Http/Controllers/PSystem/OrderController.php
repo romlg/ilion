@@ -6,13 +6,12 @@ use App\Models\Material;
 use App\Library\Utility;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\User;
 use Illuminate\Http\Request;
 
 
 class OrderController extends BaseController
 {
-    var $object_id = 1; //потом удалить
-
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +31,7 @@ class OrderController extends BaseController
     public function create()
     {
         $item = new Order();
+        $user = User::find(\Auth::id());
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
@@ -40,7 +40,7 @@ class OrderController extends BaseController
                     left join order_items on orders.order_id = order_items.order_id
                     WHERE orders.object_id=1 and orders.status=4 GROUP by order_items.material_id) mat'),
               'mat.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $this->object_id)
+            ->where('materials2objects.object_id', $user->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count', 'mat.cnt')
             ->get();
 
@@ -56,11 +56,12 @@ class OrderController extends BaseController
     public function store(Request $request)
     {
         $data = $request->input();
+        $user = User::find(\Auth::id());
 
         \DB::beginTransaction();
         $order = new Order([
-            'customer_id' => \Auth::id(),
-            'object_id' => $this->object_id,
+            'customer_id' => $user->id,
+            'object_id' => $user->object_id,
             'notes' => $data['notes'],
             'status' => 1
         ]);

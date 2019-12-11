@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    @php
-        /** @var \App\Models\Objct $item  */
-    @endphp
     <div class="container">
+
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
 
+
+                <div class="card">
                     <div class="card-body">
                         @if($errors->any())
                             <div class="row justify-content-center">
@@ -36,48 +35,47 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('users.update', $user->id) }}">
-                            @method('PATCH')
+                        <form method="POST" action="{{ route('users.store') }}">
                             @csrf
                             <div class="form-group">
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Имя</label>
-                                        <input type="text" class="form-control" name="name" value="{{ $user->name }}"
+                                        <input type="text" class="form-control" name="name" value=""
                                                placeholder="Имя">
                                     </div>
                                     <div class="col">
                                         <label>Отчество</label>
                                         <input type="text" class="form-control" name="middle_name"
-                                               value="{{ $user->middle_name }}" placeholder="Отчество">
+                                               value="" placeholder="Отчество">
                                     </div>
                                     <div class="col">
                                         <label>Фамилия</label>
                                         <input type="text" class="form-control" name="last_name"
-                                               value="{{ $user->last_name }}" placeholder="Фамилия">
+                                               value="" placeholder="Фамилия">
                                     </div>
                                     <div class="col">
                                         <label>Email</label>
-                                        <input type="email" class="form-control" name="email" value="{{ $user->email }}"
-                                               placeholder="Email" disabled>
+                                        <input type="email" class="form-control" name="email" value=""
+                                               placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Привилегия</label>
                                         <select name="role" class="form-control">
-                                            <option value="1" @if ($user->admin == 1) selected @endif>админ</option>
-                                            <option value="0" @if ($user->admin == 0) selected @endif>пользователь
+                                            <option value="1">админ</option>
+                                            <option value="0" selected>пользователь
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Статус</label>
                                         <select name="active" class="form-control">
-                                            <option value="1" @if ($user->is_active == 1) selected @endif>
+                                            <option value="1" selected >
                                                 Активированный
                                             </option>
-                                            <option value="0" @if ($user->is_active == 0) selected @endif>
+                                            <option value="0" >
                                                 Деактивированный
                                             </option>
                                         </select>
@@ -86,17 +84,17 @@
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Номер телефона</label>
-                                        <input type="phone" class="form-control" name="phone" value="{{ $user->phone }}"
+                                        <input type="phone" class="form-control" name="phone" value=""
                                                placeholder="Номер телефона">
                                     </div>
                                     <div class="col">
                                         <label>Bod</label>
-                                        <input type="number" class="form-control" name="bod" value="{{ $user->bod }}"
+                                        <input type="number" class="form-control" name="bod" value=""
                                                placeholder="Bod">
                                     </div>
                                     <div class="col">
                                         <label>Должность</label>
-                                        <input type="text" class="form-control" name="post" value="{{ $user->post }}"
+                                        <input type="text" class="form-control" name="post" value=""
                                                placeholder="Должность">
                                     </div>
                                     <div class="col">
@@ -110,23 +108,32 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <label>Пароль</label>
+                                        <input type="password" class="form-control" name="password" value="">
+                                    </div>
+                                    <div class="col">
+                                        <label>Повторить пароль</label>
+                                        <input type="password" class="form-control" name="password_check" value="">
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    <button type="submit" class="btn btn-primary">Создать</button>
 
                                     <a class="btn btn-primary" href="{{ route('users.index') }}">Закрыть</a>
 
                                 </div>
                             </div>
                         </form>
+
+
                     </div>
-
                 </div>
-
             </div>
         </div>
+
     </div>
-
-
 @endsection

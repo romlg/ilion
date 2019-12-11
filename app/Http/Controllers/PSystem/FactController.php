@@ -6,13 +6,12 @@ use App\Models\Fact;
 use App\Models\FactItems;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FactController extends BaseController
 {
-    var $object_id = 1; //потом удалить
-
     /**
      * Display a listing of the resource.
      *
@@ -32,10 +31,11 @@ class FactController extends BaseController
     public function create()
     {
         $item = new Fact();
+        $user = User::find(\Auth::id());
         //\DB::enableQueryLog();
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $this->object_id)
+            ->where('materials2objects.object_id', $user->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
         // dd($materials);
@@ -54,10 +54,12 @@ class FactController extends BaseController
 
         $data = $request->input();
 
+        $user = User::find(\Auth::id());
+
         \DB::beginTransaction();
         $fact = new Fact([
-            'customer_id' => \Auth::id(),
-            'object_id' => $this->object_id,
+            'customer_id' => $user->id,
+            'object_id' => $user->object_id,
             'notes' => $data['notes']
         ]);
         $fact->save();
@@ -123,13 +125,7 @@ class FactController extends BaseController
             ->select( 'facts.fact_id' , 'facts.status' , 'fact_items.id' , 'materials.title', 'facts.notes', 'fact_items.count')
             ->first();
 
-        //dd($fact);
-
         return view('psystem.facts.edit', compact('fact'));
-
-        //dd($fact);
-        //echo $id;
-        //die();
     }
 
     /**
