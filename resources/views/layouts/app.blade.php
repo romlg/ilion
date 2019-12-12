@@ -98,7 +98,7 @@
                                     <a class="nav-link" href="{{ route('factsheet.index') }}">Отчёт объекта</a>
                                 </li>
                             @endif
-                            @if(!Auth::user()->isAdmin())
+                            @if(!Auth::user()->isAdmin() && Auth::user()->isActive())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('fact.index') }}">ЛФУ</a>
                                 </li>

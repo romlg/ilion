@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Middleware\CheckActive;
 use App\Http\Middleware\CheckAdmin;
 
 Route::get('/', function () {
@@ -26,7 +28,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
 });
 
-Route::group(['prefix' => 'cabinet',  'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::class]], function () {
     Route::resource('order', 'PSystem\OrderController')->names('order');
     Route::resource('fact', 'PSystem\FactController')->names('fact');
 });

@@ -157,11 +157,6 @@ class FactController extends BaseController
         $status = true;
         foreach ($data['material_id'] as $key => $val) {
 
-//            echo $id.PHP_EOL;
-//            echo $val.PHP_EOL;
-//            echo $data['count'][$key].PHP_EOL;
-
-
             if ($data['count'][$key]) {
                 $factItems = new FactItems([
                     'fact_id' => $id,
