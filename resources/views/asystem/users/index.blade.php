@@ -27,7 +27,7 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->admin == 1 ? 'админ' : 'пользователь'}}</td>
+                                    <td>{{ $user->is_admin == 1 ? 'Администратор' : 'Пользователь'}}</td>
                                     <td><a href="{{ route('users.edit', $user->id) }}">Редактировать</a></td>
                                 </tr>
                             @endforeach

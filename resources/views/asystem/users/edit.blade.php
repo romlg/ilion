@@ -59,16 +59,16 @@
                                     <div class="col">
                                         <label>Email</label>
                                         <input type="email" class="form-control" name="email" value="{{ $user->email }}"
-                                               placeholder="Email" disabled>
+                                               placeholder="Email" readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Привилегия</label>
                                         <select name="role" class="form-control">
-                                            <option value="1" @if ($user->admin == 1) selected @endif>админ</option>
-                                            <option value="0" @if ($user->admin == 0) selected @endif>пользователь
-                                            </option>
+                                            <option value="1" @if ($user->is_admin == 1) selected @endif>Админ</option>
+                                            <option value="0" @if ($user->is_admin == 0) selected @endif>Пользователь</option>
+
                                         </select>
                                     </div>
                                     <div class="col">
@@ -90,9 +90,9 @@
                                                placeholder="Номер телефона">
                                     </div>
                                     <div class="col">
-                                        <label>Bod</label>
-                                        <input type="number" class="form-control" name="bod" value="{{ $user->bod }}"
-                                               placeholder="Bod">
+                                        <label>Дата рождения</label>
+                                        <input type="text" class="form-control" name="bod" value="{{ $user->bod }}"
+                                               placeholder="Дата рождения">
                                     </div>
                                     <div class="col">
                                         <label>Должность</label>
@@ -102,8 +102,9 @@
                                     <div class="col">
                                         <label>Объект</label>
                                         <select name="objects" class="form-control">
+                                            <option value="">Не выбран</option>
                                             @foreach($objects as $object)
-                                                <option value="{{$object->object_id}}" >
+                                                <option value="{{$object->object_id}}" @if($user->object_id == $object->object_id) selected @endif>
                                                     {{$object->title}}
                                                 </option>
                                             @endforeach

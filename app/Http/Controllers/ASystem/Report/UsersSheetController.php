@@ -26,8 +26,11 @@ class UsersSheetController extends ReportController
 
         $validatedData = $request->validate([
             'name' => 'required|min:2|max:255',
+            'middle_name' => 'required|min:2|max:255',
             'last_name' => 'required|min:2|max:255',
             'email' => 'required|unique:users|max:255',
+            'phone' => 'required|min:2|max:255',
+            'post' => 'required|min:2|max:255',
             'password' => 'required|min:8',
             'password_check' => 'required|min:8',
         ]);
@@ -37,7 +40,6 @@ class UsersSheetController extends ReportController
         if($data["password"] != $data["password_check"]) {
             return back()->withErrors(['msg' => "Ошибка. Пароли не совпали"])->withInput();
         }
-
 
         $item = new User();
 
@@ -80,10 +82,14 @@ class UsersSheetController extends ReportController
     public function update(Request $request, $id)
     {
 
+
         $validatedData = $request->validate([
             'name' => 'required|min:2|max:255',
+            'middle_name' => 'required|min:2|max:255',
             'last_name' => 'required|min:2|max:255',
             //'email' => 'required|unique:users|max:255',
+            'phone' => 'required|min:2|max:255',
+            'post' => 'required|min:2|max:255',
 //            'password' => 'required|min:8',
 //            'password_check' => 'required|min:8',
         ]);
