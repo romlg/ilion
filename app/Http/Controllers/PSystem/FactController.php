@@ -32,6 +32,7 @@ class FactController extends BaseController
     {
         $item = new Fact();
         $user = User::find(\Auth::id());
+
         //\DB::enableQueryLog();
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
@@ -87,7 +88,7 @@ class FactController extends BaseController
         if($status) {
             \DB::commit();
             return redirect()
-                ->route('fact.index', $factId)
+                ->route('fact.edit', $factId)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             \DB::rollBack();

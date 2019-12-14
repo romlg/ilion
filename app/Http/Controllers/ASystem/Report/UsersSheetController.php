@@ -23,7 +23,6 @@ class UsersSheetController extends ReportController
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'name' => 'required|min:2|max:255',
             'middle_name' => 'required|min:2|max:255',
@@ -95,8 +94,6 @@ class UsersSheetController extends ReportController
         ]);
 
         $data = $request->all();
-
-        //dd($data);
 
         $item = User::find($id);
 
