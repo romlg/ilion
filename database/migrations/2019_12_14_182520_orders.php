@@ -19,7 +19,7 @@ class Orders extends Migration
             $table->integer('customer_id');
             $table->integer('object_id')->nullable();
             $table->text('notes')->nullable();
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

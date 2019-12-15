@@ -35,7 +35,14 @@ class ObjectController extends CatalogController
     {
         $item = new Obj();
 
-        return view('asystem.objects.edit', compact('item'));
+        $materials = \DB::table('materials')
+            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units'/*, 'materials2objects.count'*/)
+            ->get();
+
+        $materials = $materials->unique();
+
+        return view('asystem.objects.create', compact('item', 'materials'));
     }
 
     /**
@@ -51,7 +58,26 @@ class ObjectController extends CatalogController
         $item = new Obj($data);
         $item->save();
 
-        if($item) {
+        foreach ($data['material'] As $key => $val) {
+
+            if ($data['count'][$key] ) {
+                $materials2object = new Materials2object([
+                    'material_id' => $val,
+                    'object_id' => $item->object_id,
+                    'purchase_price' => 0,
+                    'sale_price' => 0,
+                    'count' => $data['count'][$key],
+                    'units' => 'шт'
+                ]);
+                $materials2object->save();
+            }
+        }
+
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if($result) {
             return redirect()
                 ->route('object.edit', $item->object_id)
                 ->with(['success' => "Успешно сохранено"]);
@@ -82,12 +108,6 @@ class ObjectController extends CatalogController
     public function edit($id)
     {
         $item = Obj::findOrFail($id);
-
-        //$materials = $item->materials()->get();
-
-//        foreach ($materials as $material) {
-//            var_dump($material);
-//        }
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
@@ -127,20 +147,23 @@ class ObjectController extends CatalogController
 
         $data = $request->all();
 
-        foreach ($data['material'] As $key => $val) {
+        if(isset($data['material']))
+        {
+            foreach ($data['material'] As $key => $val) {
 
-            $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
+                $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
 
-            if ($data['count'][$key] && $chkMaterial === null) {
-                $materials2object = new Materials2object([
-                    'material_id' => $val,
-                    'object_id' => $id,
-                    'purchase_price' => 0,
-                    'sale_price' => 0,
-                    'count' => $data['count'][$key],
-                    'units' => $data['units'][$key]
-                ]);
-                $materials2object->save();
+                if ($data['count'][$key] && $chkMaterial === null) {
+                    $materials2object = new Materials2object([
+                        'material_id' => $val,
+                        'object_id' => $id,
+                        'purchase_price' => 0,
+                        'sale_price' => 0,
+                        'count' => $data['count'][$key],
+                        'units' => $data['units'][$key]
+                    ]);
+                    $materials2object->save();
+                }
             }
         }
 
