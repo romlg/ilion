@@ -62,6 +62,7 @@ class OrderController extends BaseController
         $order = new Order([
             'customer_id' => $user->id,
             'object_id' => $user->object_id,
+            //'object_id' => 1,
             'notes' => $data['notes'],
             'status' => 1
         ]);
@@ -129,27 +130,17 @@ class OrderController extends BaseController
                 //->leftJoin('customers', 'customers.customer_id', '=', 'orders.customer_id')
                 ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
                 ->where('order_id', $id)
-                //->select('orders.*', 'objects.title', 'customers.post', 'customers.last_name', 'customers.first_name', 'customers.middle_name', 'customers.phone')
                 ->select('orders.*', 'objects.title', 'users.post', 'users.last_name', 'users.name', 'users.middle_name', 'users.phone')
                 ->first();
 
-            //dd($order);
 
             $orderMaterials = \DB::table('order_items')
-                ->join('materials', 'materials.material_id', '=', 'order_items.material_id')
-                ->join('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+                ->leftJoin('materials', 'materials.material_id', '=', 'order_items.material_id')
+                ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
                 ->where('order_items.order_id', $id)
-                ->select('materials.title',
-                    'order_items.count',
-                    'order_items.id',
-                    //'materials2objects.units',
-                    'materials.material_id'
-                )
+                ->select('materials.title', 'order_items.count', 'order_items.id',  /*'materials2objects.units',*/ 'materials.material_id' )
                 ->groupBy('id')
-                //->distinct()
                 ->get();
-
-            ///dd($orderMaterials);
 
             $materials = \DB::table('materials')
                 ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
@@ -171,8 +162,6 @@ class OrderController extends BaseController
             ->get();
 
         return view('psystem.orders.preview', compact('order','materials'));
-
-        //return view('psystem.orders.edit', compact('order','materials'));
     }
 
     /**

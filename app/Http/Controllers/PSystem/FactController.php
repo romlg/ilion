@@ -39,7 +39,6 @@ class FactController extends BaseController
             ->where('materials2objects.object_id', $user->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
-        // dd($materials);
         // dd(\DB::getQueryLog());
         return view('psystem.facts.create', compact('item', 'materials'));
     }
@@ -126,7 +125,6 @@ class FactController extends BaseController
             ->leftJoin('fact_items', 'fact_items.fact_id', '=', 'facts.fact_id')
             ->leftJoin('materials', 'materials.material_id', '=', 'fact_items.material_id')
             ->where('facts.fact_id', $id)
-            //->select('facts.notes', 'fact_items.count', 'materials.title')
             ->select( 'fact_items.id', 'fact_items.count', 'materials.material_id', 'materials.title')
             ->get();
 
