@@ -32,5 +32,6 @@ class Facts extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('facts');
     }
 }

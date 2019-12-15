@@ -31,5 +31,6 @@ class Materials extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('materials');
     }
 }

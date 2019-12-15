@@ -32,5 +32,6 @@ class Contracts extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('contracts');
     }
 }
