@@ -11,7 +11,7 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{ route('object.update', 1) }}">
+                    <form method="POST" action="{{ route('object.update', $item->object_id) }}">
 
                         @method('PATCH')
                         @csrf
@@ -84,7 +84,7 @@
 {{--                                <div class="col col-md-6">--}}
 {{--                                    <select name="material[]" class="form-control material-select" data-live-search="true">--}}
 {{--                                        @foreach($materialsAll As $material)--}}
-{{--                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})" data-count="{{ $material->count }}">{{ $material->title }}</option>--}}
+{{--                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})">{{ $material->title }}</option>--}}
 {{--                                        @endforeach--}}
 {{--                                    </select>--}}
 {{--                                </div>--}}
@@ -100,8 +100,8 @@
 
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('object.index') }}">Закрыть</a>
-                                <button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>
-                                <a class="btn btn-primary" href="{{ route('object.upload', 1) }}">Загрузить материалы</a>
+                                 {{--<button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>--}}
+                                <a class="btn btn-primary" href="{{ route('object.upload', $item->object_id) }}">Загрузить материалы</a>
                             </div>
                         </div>
                     </form>

@@ -118,10 +118,11 @@ class ObjectController extends CatalogController
         $materialsAll = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
             //->where('materials2objects.object_id', $item->object_id)
-            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
             ->get();
 
-        //dd($materials);
+        $materialsAll = $materialsAll->unique();
+
         return view('asystem.objects.edit', compact('item', 'materials', 'materialsAll'));
     }
 
@@ -139,6 +140,7 @@ class ObjectController extends CatalogController
         // а его ИД и количество в таблицу materials2objects
 
         $item = Obj::find($id);
+
         if(empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
@@ -147,25 +149,25 @@ class ObjectController extends CatalogController
 
         $data = $request->all();
 
-        if(isset($data['material']))
-        {
-            foreach ($data['material'] As $key => $val) {
-
-                $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
-
-                if ($data['count'][$key] && $chkMaterial === null) {
-                    $materials2object = new Materials2object([
-                        'material_id' => $val,
-                        'object_id' => $id,
-                        'purchase_price' => 0,
-                        'sale_price' => 0,
-                        'count' => $data['count'][$key],
-                        'units' => $data['units'][$key]
-                    ]);
-                    $materials2object->save();
-                }
-            }
-        }
+//        if(isset($data['material']))
+//        {
+//            foreach ($data['material'] As $key => $val) {
+//
+//                $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
+//
+//                if ($data['count'][$key] && $chkMaterial === null) {
+//                    $materials2object = new Materials2object([
+//                        'material_id' => $val,
+//                        'object_id' => $id,
+//                        'purchase_price' => 0,
+//                        'sale_price' => 0,
+//                        'count' => $data['count'][$key],
+//                        'units' => $data['units'][$key]
+//                    ]);
+//                    $materials2object->save();
+//                }
+//            }
+//        }
 
         $result = $item
             ->fill($data)
