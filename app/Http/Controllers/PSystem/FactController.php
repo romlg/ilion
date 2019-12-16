@@ -6,14 +6,12 @@ use App\Models\Fact;
 use App\Models\FactItems;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FactController extends BaseController
 {
-    var $user = 1; //потом удалить
-    var $object_id = 1; //потом удалить
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +19,7 @@ class FactController extends BaseController
      */
     public function index()
     {
-        $paginator = Fact::where('customer_id', $this->user)->paginate(4);
+        $paginator = Fact::where('customer_id', \Auth::id())->paginate(4);
         return view('psystem.facts.index', compact('paginator'));
     }
 
@@ -33,15 +31,16 @@ class FactController extends BaseController
     public function create()
     {
         $item = new Fact();
-//\DB::enableQueryLog();
+        $user = User::find(\Auth::id());
+
+        //\DB::enableQueryLog();
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $this->object_id)
+            ->where('materials2objects.object_id', $user->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
-        // dd($materials);
-//dd(\DB::getQueryLog());
-        return view('psystem.facts.edit', compact('item', 'materials'));
+        // dd(\DB::getQueryLog());
+        return view('psystem.facts.create', compact('item', 'materials'));
     }
 
     /**
@@ -52,12 +51,15 @@ class FactController extends BaseController
      */
     public function store(Request $request)
     {
+
         $data = $request->input();
+
+        $user = User::find(\Auth::id());
 
         \DB::beginTransaction();
         $fact = new Fact([
-            'customer_id' => $this->user,
-            'object_id' => $this->object_id,
+            'customer_id' => $user->id,
+            'object_id' => $user->object_id,
             'notes' => $data['notes']
         ]);
         $fact->save();
@@ -103,7 +105,6 @@ class FactController extends BaseController
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -114,7 +115,22 @@ class FactController extends BaseController
      */
     public function edit($id)
     {
-        //
+        $fact = \DB::table('facts')
+            ->where('facts.fact_id', $id)
+            ->select( 'facts.fact_id', 'facts.status', 'facts.notes')
+            ->first();
+
+
+        $materials = \DB::table('facts')
+            ->leftJoin('fact_items', 'fact_items.fact_id', '=', 'facts.fact_id')
+            ->leftJoin('materials', 'materials.material_id', '=', 'fact_items.material_id')
+            ->where('facts.fact_id', $id)
+            ->select( 'fact_items.id', 'fact_items.count', 'materials.material_id', 'materials.title')
+            ->get();
+
+        $status = $fact->status == 1 ? 'Принятый' : 'Новый';
+
+        return view('psystem.facts.edit', compact('fact', 'status', 'materials'));
     }
 
     /**
@@ -126,7 +142,43 @@ class FactController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $data = $request->input();
+
+        \DB::beginTransaction();
+
+        $fact = Fact::find($id);
+        $fact->notes = $data['notes'];
+
+        \DB::table('fact_items')->where('fact_id', '=', $fact['fact_id'])->delete();
+
+
+        $status = true;
+        foreach ($data['material_id'] as $key => $val) {
+
+            if ($data['count'][$key]) {
+                $factItems = new FactItems([
+                    'fact_id' => $id,
+                    'material_id' => $val,
+                    'count' => $data['count'][$key],
+                ]);
+                $factItems->save();
+            }
+
+            $status = $factItems ? true : false;
+        }
+
+        if ($fact->save() && $status) {
+            \DB::commit();
+            return redirect()
+                ->route('fact.edit', $id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            \DB::rollBack();
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**

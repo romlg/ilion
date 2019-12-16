@@ -11,6 +11,7 @@ class Utility
         2 => 'Одобрена',
         3 => 'В работе',
         4 => 'Доставлена',
+        5 => 'К доработке',
     ];
 
     public static function getOrderStatus($status) {

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\ASystem\Catalog;
 
 use App\Library\Utility;
-use App\Models\Customer;
-use App\Models\Object;
+use App\Models\Objct;
 use App\Models\Order;
 use App\Models\OrderItems;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends CatalogController
 {
@@ -39,7 +39,7 @@ class OrderController extends CatalogController
      */
     public function step1(Request $request)
     {
-        $objects = Object::query()
+        $objects = Objct::query()
             ->select('object_id', 'title')
             ->orderBy('title', 'asc')
             ->get();
@@ -61,7 +61,7 @@ class OrderController extends CatalogController
         }
         $object_id = $_GET['object_id'];
 
-        $object = Object::findOrFail($object_id);
+        $object = Objct::findOrFail($object_id);
         $order = new Order();
 
         $materials = \DB::table('materials')
@@ -82,21 +82,19 @@ class OrderController extends CatalogController
     public function store(Request $request)
     {
         $data = $request->input();
-//dd($data);
 
         \DB::beginTransaction();
 
         $order = new Order([
-            'customer_id' => 1, /// вот тут текущий пользователь
+            'customer_id' => Auth::id(), /// вот тут текущий пользователь
             'object_id' => $data['object_id'],
             'notes' => $data['notes'],
             'status' => 1
         ]);
         $order->save();
-//dd($result);
 
         $orderId = $order->order_id;
-//dd($id);
+
         //save materials
         if ($orderId) {
 
@@ -154,19 +152,18 @@ class OrderController extends CatalogController
     {
         $order = \DB::table('orders')
             ->leftJoin('objects', 'orders.object_id', '=', 'objects.object_id')
-            ->leftJoin('customers', 'customers.customer_id', '=', 'orders.customer_id')
+            //->leftJoin('customers', 'customers.customer_id', '=', 'orders.customer_id')
+            ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
             ->where('order_id', $id)
-            ->select('orders.*', 'objects.title', 'customers.post', 'customers.last_name', 'customers.first_name', 'customers.middle_name', 'customers.phone')
+            //->select('orders.*', 'objects.title', 'customers.post', 'customers.last_name', 'customers.first_name', 'customers.middle_name', 'customers.phone')
+            ->select('orders.*', 'objects.title', 'users.post', 'users.last_name', 'users.name', 'users.middle_name', 'users.phone')
             ->first();
-//dd($order);
 
         //тут проверка что существует заявка и пользователь совпадает
-
         $orderMaterials = \DB::table('order_items')
             ->where('order_items.order_id', $id)
             ->select('order_items.count', 'order_items.material_id')
             ->get();
-//dd($orderMaterials);
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
@@ -176,8 +173,7 @@ class OrderController extends CatalogController
 
         $filterStatus = Utility::orderStatus;
 
-        //dd($materials);
-//dd(\DB::getQueryLog());
+
         return view('asystem.orders.edit', compact('order', 'orderMaterials', 'materials', 'filterStatus'));
     }
 
@@ -191,7 +187,6 @@ class OrderController extends CatalogController
     public function update(Request $request, $id)
     {
         $data = $request->input();
-//dd($data);
 
         \DB::beginTransaction();
 
@@ -202,10 +197,9 @@ class OrderController extends CatalogController
                 'status' => $data['status']
             ])
             ->save();
-//dd($result);
 
         $orderId = $id;
-//dd($id);
+
         //save materials
         if ($orderId && $result) {
 
@@ -242,8 +236,6 @@ class OrderController extends CatalogController
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
         }
-
-
     }
 
     /**

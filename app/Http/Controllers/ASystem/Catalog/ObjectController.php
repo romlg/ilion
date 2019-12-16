@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ASystem\Catalog;
 use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Material;
 use App\Models\Materials2object;
-use App\Models\Object;
+use App\Models\Objct as Obj;
 use Illuminate\Http\Request;
 use App\Library\Utility;
 
@@ -21,7 +21,8 @@ class ObjectController extends CatalogController
      */
     public function index()
     {
-        $paginator = Object::paginate(4);
+
+        $paginator =  Obj::paginate(4);
         return view('asystem.objects.index', compact('paginator'));
     }
 
@@ -32,9 +33,16 @@ class ObjectController extends CatalogController
      */
     public function create()
     {
-        $item = new Object();
+        $item = new Obj();
 
-        return view('asystem.objects.edit', compact('item'));
+        $materials = \DB::table('materials')
+            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units'/*, 'materials2objects.count'*/)
+            ->get();
+
+        $materials = $materials->unique();
+
+        return view('asystem.objects.create', compact('item', 'materials'));
     }
 
     /**
@@ -47,10 +55,29 @@ class ObjectController extends CatalogController
     {
         $data = $request->input();
 
-        $item = new Object($data);
+        $item = new Obj($data);
         $item->save();
 
-        if($item) {
+        foreach ($data['material'] As $key => $val) {
+
+            if ($data['count'][$key] ) {
+                $materials2object = new Materials2object([
+                    'material_id' => $val,
+                    'object_id' => $item->object_id,
+                    'purchase_price' => 0,
+                    'sale_price' => 0,
+                    'count' => $data['count'][$key],
+                    'units' => 'шт'
+                ]);
+                $materials2object->save();
+            }
+        }
+
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if($result) {
             return redirect()
                 ->route('object.edit', $item->object_id)
                 ->with(['success' => "Успешно сохранено"]);
@@ -80,9 +107,23 @@ class ObjectController extends CatalogController
      */
     public function edit($id)
     {
-        $item = Object::findOrFail($id);
+        $item = Obj::findOrFail($id);
 
-        return view('asystem.objects.edit', compact('item'));
+        $materials = \DB::table('materials')
+            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+            ->where('materials2objects.object_id', $item->object_id)
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
+            ->get();
+
+        $materialsAll = \DB::table('materials')
+            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+            //->where('materials2objects.object_id', $item->object_id)
+            ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
+            ->get();
+
+        $materialsAll = $materialsAll->unique();
+
+        return view('asystem.objects.edit', compact('item', 'materials', 'materialsAll'));
     }
 
     /**
@@ -94,7 +135,12 @@ class ObjectController extends CatalogController
      */
     public function update(Request $request, $id)
     {
-        $item = Object::find($id);
+
+        // само название материала сохранить в таблицу материалов,
+        // а его ИД и количество в таблицу materials2objects
+
+        $item = Obj::find($id);
+
         if(empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
@@ -102,6 +148,27 @@ class ObjectController extends CatalogController
         }
 
         $data = $request->all();
+
+//        if(isset($data['material']))
+//        {
+//            foreach ($data['material'] As $key => $val) {
+//
+//                $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
+//
+//                if ($data['count'][$key] && $chkMaterial === null) {
+//                    $materials2object = new Materials2object([
+//                        'material_id' => $val,
+//                        'object_id' => $id,
+//                        'purchase_price' => 0,
+//                        'sale_price' => 0,
+//                        'count' => $data['count'][$key],
+//                        'units' => $data['units'][$key]
+//                    ]);
+//                    $materials2object->save();
+//                }
+//            }
+//        }
+
         $result = $item
             ->fill($data)
             ->save();
@@ -130,7 +197,7 @@ class ObjectController extends CatalogController
 
     public function upload($id)
     {
-        $item = Object::findOrFail($id);
+        $item = Obj::findOrFail($id);
 
         return view('asystem.objects.upload', compact('item'));
     }

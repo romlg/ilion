@@ -13,13 +13,15 @@
                         <table class="table table-hover">
                             <thead>
                                 <th>#</th>
+                                <th>Статус</th>
                                 <th>Дата ЛФУ</th>
                             </thead>
                             <tbody>
                             @if($paginator->total())
                             @foreach($paginator as $item)
                             <tr>
-                                <td>{{ $item->object_id }}</td>
+                                <td>{{ $item->fact_id }}</td>
+                                <td>@if ($item->status===0) новый @else принятый @endif </td>
                                 <td><a href="{{ route('fact.edit', $item->fact_id) }}">ЛФУ от {{ date("d-m-Y", strtotime($item->created_at)) }}</a></td>
                             </tr>
                             @endforeach

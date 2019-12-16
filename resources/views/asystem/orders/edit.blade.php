@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 @php
     /**
@@ -56,14 +55,14 @@
                             @if($order->order_id)
                             <label for="title">Заявка от <b>{{ date("d-m-Y", strtotime($order->created_at)) }}</b></label>
                             <p>Объект {{ $order->title }}</p>
-                            <p>{{ $order->post.' '.$order->last_name.' '.$order->first_name.' '.$order->middle_name.' ('.$order->phone.')' }}</p>
+                            <p>{{ $order->post.' '.$order->last_name.' '.$order->name.' '.$order->middle_name.' ('.$order->phone.')' }}</p>
                             @else
                             <label for="title">Заявка от <b>@php echo date("d-m-Y") @endphp</b></label>
                             @endif
                         </div>
 
                         @if($order->order_id)
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label class="my-1 mr-2" for="selectPref">Статус</label>
                             <select name="status" class="custom-select col-md-3 mr-sm-2" id="selectPref">
                                 @foreach($filterStatus As $key => $val)
@@ -78,28 +77,54 @@
                         </div>
 
                         @if($order->order_id)
-                        @foreach($orderMaterials As $oneMaterial)
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col">
-                                    <select name="material[]" class="form-control">
-                                        @foreach($materials As $material)
-                                            <option value="{{ $material->material_id }}" data-content="({{ $material->units }})" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col col-md-2">
-                                    <input type="text" class="form-control" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-md-6">
+                                        Наименование
+                                    </div>
+                                    <div class="col col-md-2">
+                                        Количество для заявки
+                                    </div>
+                                    <div class="col col-md-2">
+                                        Количество по СА
+                                    </div>
+                                    <div class="col col-md-2">
+                                        Уже доставленно
+                                    </div>
+                                    {{--<div class="col col-md-1">
+                                        Удалить
+                                    </div>--}}
                                 </div>
                             </div>
-                        </div>
+                        @foreach($orderMaterials As $oneMaterial)
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-md-6">
+                                        <select name="material[]" class="form-control" id="selectMaterial">
+                                            @foreach($materials As $material)
+                                                <option value="{{ $material->material_id }}" data-content="({{ $material->units }})" @if($material->material_id == $oneMaterial->material_id) selected @endif>{{ $material->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control" name="count[]" value="{{ $oneMaterial->count }}" data-placeholder="Количество" placeholder="Количество">
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control mat-sacount" value="" disabled="disabled">
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="text" class="form-control mat-totalcount" value="" disabled="disabled">
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                         @endif
 
                         <div class="form-group @if($order->order_id) d-none @endif" id="materials" >
                             <div class="row">
                                 <div class="col">
-                                    <select name="material[]" class="form-control">
+                                    <select name="material[]" class="form-control" id="selectMaterial">
                                         @foreach($materials As $material)
                                         <option value="{{ $material->material_id }}" data-content="({{ $material->units }})">{{ $material->title }}</option>
                                         @endforeach
@@ -107,6 +132,12 @@
                                 </div>
                                 <div class="col col-md-2">
                                     <input type="text" class="form-control" name="count[]" value="" data-placeholder="Количество" placeholder="Количество">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control" value="" disabled="disabled" placeholder="Количество">
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" class="form-control" value="" disabled="disabled" placeholder="Количество">
                                 </div>
                             </div>
                         </div>
@@ -139,7 +170,7 @@
 
 <script type="text/javascript">
     function initSelect() {
-        $('select').on('change', function() {
+        $('select[id="selectMaterial"]').on('change', function() {
             var unit = $(this).find(':selected').attr('data-content');
             var placeholder_val = $(this).parent().parent().find('input').attr('data-placeholder');
             $(this).parent().parent().find('input').attr('placeholder', placeholder_val+' '+unit);
