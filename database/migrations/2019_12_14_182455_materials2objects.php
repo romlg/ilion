@@ -17,11 +17,18 @@ class Materials2objects extends Migration
         Schema::create('materials2objects', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('material_id');
-            $table->integer('object_id');
+            //$table->integer('object_id');
+            $table->increments('stage_id');
             $table->decimal('purchase_price');
-            $table->decimal('sale_price');
+            //$table->decimal('sale_price');
             $table->integer('count');
-            $table->string('units', 255);
+            $table->string('units', 128);
+            $table->decimal('work_price')->nullable();
+            $table->decimal('price')->nullable();
+            $table->tinyInteger('is_active')->default(1);
+
+            $table->unique(['material_id', 'stage_id']);
+
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Objects extends Migration
+class Stages extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,11 @@ class Objects extends Migration
     public function up()
     {
         //
-        Schema::create('objects', function (Blueprint $table) {
-            $table->increments('object_id');
-            $table->string('title', 128);
-            $table->integer('parent')->nullable();
-            $table->tinyInteger('is_active')->default(1);
+        Schema::create('stages', function (Blueprint $table) {
+            $table->increments('stage_id');
+            $table->string('title', 255);
+            $table->integer('ver');
+            $table->integer('object_id');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class Objects extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('objects');
+        Schema::dropIfExists('stages');
     }
 }
