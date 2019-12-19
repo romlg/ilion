@@ -16,9 +16,10 @@ class Materials2objects extends Migration
         //
         Schema::create('materials2objects', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('material_id');
             //$table->integer('object_id');
-            $table->increments('stage_id');
+            $table->integer('stage_id');
             $table->decimal('purchase_price');
             //$table->decimal('sale_price');
             $table->integer('count');
