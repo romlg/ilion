@@ -44,6 +44,7 @@
                             </div>
                         @endif
 
+
                         <div class="form-group">
                             <label for="title">Название</label>
 
@@ -54,22 +55,19 @@
                                    required >
 
                             <br>
-{{--                            <div class="col col-md-12">--}}
-{{--                                <label>Материалы</label>--}}
-{{--                                <table>--}}
-{{--                                    <tr>--}}
-{{--                                        <th>Название</th>--}}
-{{--                                        <th>Количество</th>--}}
-{{--                                    </tr>--}}
 
-{{--                                    @foreach($materials As $material)--}}
-{{--                                        <tr>--}}
-{{--                                            <td>{{ $material->title }}</td>--}}
-{{--                                            <td>{{ $material->count }} {{ $material->units }}</td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-{{--                                </table>--}}
-{{--                            </div>--}}
+                            @if(!$stages->isEmpty())
+                                <div class="col col-md-12">
+                                    <label>Этапы</label>
+                                    <table>
+                                        @foreach($stages As $stage)
+                                            <tr>
+                                                <td>{{ $stage->title }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                            @endif
 
                             @error('title')
                                 <span class="invalid-feedback" role="alert">
@@ -83,8 +81,6 @@
 
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('object.index') }}">Отмена</a>
-                                 {{--<button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>--}}
-{{--                                <a class="btn btn-primary" href="{{ route('object.upload', $item->object_id) }}">Загрузить материалы</a>--}}
                             </div>
                         </div>
                     </form>

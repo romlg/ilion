@@ -6,6 +6,7 @@ use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Material;
 use App\Models\Materials2object;
 use App\Models\Objct as Obj;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 use App\Library\Utility;
 
@@ -35,9 +36,9 @@ class ObjectController extends CatalogController
     {
         $item = new Obj();
 
-        $materials = \DB::table('m2o_view')->get();
+        //$materials = \DB::table('m2o_view')->get();
 
-        return view('asystem.objects.create_new', compact('item', 'materials'));
+        return view('asystem.objects.create_new', compact('item'));
     }
 
     /**
@@ -89,9 +90,13 @@ class ObjectController extends CatalogController
     {
         $item = Obj::findOrFail($id);
 
-        $materials = \DB::table('m2o_view')->get();
+        //$materials = \DB::table('m2o_view')->get();
 
-        return view('asystem.objects.edit_new', compact('item', 'materials'));
+        $stages = Stage::where('object_id', '=', $id)->get();
+
+        //dd($stages);
+
+        return view('asystem.objects.edit_new', compact('item', 'stages'));
     }
 
     /**

@@ -31,6 +31,7 @@ class StageController extends CatalogController
         $item = new Stage();
         $objects = Objct::all();
 
+
         return view('asystem.stages.create', compact('item', 'objects'));
     }
 
