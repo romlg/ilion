@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\ASystem\Catalog;
 
+use App\Models\Objct;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class StageController extends CatalogController
@@ -13,7 +15,9 @@ class StageController extends CatalogController
      */
     public function index()
     {
-        //
+
+        $paginator =  Stage::paginate(4);
+        return view('asystem.stages.index', compact('paginator'));
     }
 
     /**
@@ -24,6 +28,12 @@ class StageController extends CatalogController
     public function create()
     {
         //
+        $item = new Stage();
+        $objects = Objct::all();
+
+        //dd($obj);
+
+        return view('asystem.stages.create', compact('item', 'objects'));
     }
 
     /**
@@ -57,6 +67,13 @@ class StageController extends CatalogController
     public function edit($id)
     {
         //
+        //
+        $item = new Stage();
+        $objects = Objct::all();
+
+        //dd($obj);
+
+        return view('asystem.stages.edit', compact('item', 'objects'));
     }
 
     /**

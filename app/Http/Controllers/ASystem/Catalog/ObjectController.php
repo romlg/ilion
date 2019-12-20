@@ -61,23 +61,23 @@ class ObjectController extends CatalogController
         $item = new Obj($data);
         $item->save();
 
-        foreach ($data['material'] As $key => $val) {
-
-            if ($data['count'][$key] ) {
-
-                $materials2object = new Materials2object([
-                    'material_id' => $val,
-                    //'object_id' => $item->object_id,
-                    'ver' => 1,
-                    'stage_id' => $item->object_id,
-                    'purchase_price' => 0,
-                    //'sale_price' => 0,
-                    'count' => $data['count'][$key],
-                    'units' => 'шт'
-                ]);
-                $materials2object->save();
-            }
-        }
+//        foreach ($data['material'] As $key => $val) {
+//
+//            if ($data['count'][$key] ) {
+//
+//                $materials2object = new Materials2object([
+//                    'material_id' => $val,
+//                    //'object_id' => $item->object_id,
+//                    'ver' => 1,
+//                    'stage_id' => $item->object_id,
+//                    'purchase_price' => 0,
+//                    //'sale_price' => 0,
+//                    'count' => $data['count'][$key],
+//                    'units' => 'шт'
+//                ]);
+//                $materials2object->save();
+//            }
+//        }
 
         $result = $item
             ->fill($data)
@@ -115,21 +115,26 @@ class ObjectController extends CatalogController
     {
         $item = Obj::findOrFail($id);
 
-        $materials = \DB::table('materials')
-            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.stage_id', $item->stage_id)
-            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
-            ->get();
+//        $materials = \DB::table('materials')
+//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+//            ->where('materials2objects.stage_id', $item->stage_id)
+//            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
+//            ->get();
+//
+//        $materialsAll = \DB::table('materials')
+//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+//            //->where('materials2objects.object_id', $item->object_id)
+//            ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
+//            ->get();
+//
+//        $materialsAll = $materialsAll->unique();
+//
+//        return view('asystem.objects.edit', compact('item', 'materials', 'materialsAll'));
 
-        $materialsAll = \DB::table('materials')
-            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            //->where('materials2objects.object_id', $item->object_id)
-            ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
-            ->get();
 
-        $materialsAll = $materialsAll->unique();
+        $materials = \DB::table('m2o_view')->get();
 
-        return view('asystem.objects.edit', compact('item', 'materials', 'materialsAll'));
+        return view('asystem.objects.edit_new', compact('item', 'materials'));
     }
 
     /**

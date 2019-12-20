@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Middleware\CheckActive;
 use App\Http\Middleware\CheckAdmin;
 

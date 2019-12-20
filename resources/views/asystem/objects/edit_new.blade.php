@@ -10,13 +10,14 @@
             <div class="card">
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('object.store') }}">
 
+                    <form method="POST" action="{{ route('object.update', $item->object_id) }}">
+
+                        @method('PATCH')
                         @csrf
                         @php
                         /** @var \Illuminate\Support\ViewErrorBag $errors  */
                         @endphp
-
                         @if($errors->any())
                             <div class="row justify-content-center">
                                 <div class="col-md-12">
@@ -53,38 +54,37 @@
                                    required >
 
                             <br>
+{{--                            <div class="col col-md-12">--}}
+{{--                                <label>Материалы</label>--}}
+{{--                                <table>--}}
+{{--                                    <tr>--}}
+{{--                                        <th>Название</th>--}}
+{{--                                        <th>Количество</th>--}}
+{{--                                    </tr>--}}
+
+{{--                                    @foreach($materials As $material)--}}
+{{--                                        <tr>--}}
+{{--                                            <td>{{ $material->title }}</td>--}}
+{{--                                            <td>{{ $material->count }} {{ $material->units }}</td>--}}
+{{--                                        </tr>--}}
+{{--                                    @endforeach--}}
+{{--                                </table>--}}
+{{--                            </div>--}}
 
                             @error('title')
-                            <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
-
-{{--                        <div id="new_element"></div>--}}
-{{--                        <div class="form-group" id="materials">--}}
-{{--                            <div class="row">--}}
-{{--                                <div class="col col-md-8">--}}
-{{--                                    <select name="material[]" class="form-control material-select" data-live-search="true">--}}
-{{--                                        @foreach($materials As $material)--}}
-{{--                                            <option value="{{ $material->m_id }}" data-unit="({{ $material->m_units }})">{{ $material->m_title }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <div class="col col-md-4">--}}
-{{--                                    <input type="number" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество" required>--}}
-{{--                                    --}}{{--                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $materials->units }}">--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
 
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('object.index') }}">Отмена</a>
-{{--                                <button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>--}}
-{{--                                <a class="btn btn-primary" href="{{ route('object.upload', 1) }}">Загрузить материалы</a>--}}
+                                 {{--<button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>--}}
+{{--                                <a class="btn btn-primary" href="{{ route('object.upload', $item->object_id) }}">Загрузить материалы</a>--}}
                             </div>
                         </div>
                     </form>
