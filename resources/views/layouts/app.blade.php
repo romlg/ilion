@@ -86,6 +86,9 @@
                                     <a class="nav-link" href="{{ route('contract.index') }}">Документы</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('stage.index') }}">Этапы</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('object.index') }}">Объекты</a>
                                 </li>
                                 <li class="nav-item">
