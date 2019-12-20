@@ -16,7 +16,7 @@ class Objects extends Migration
         //
         Schema::create('objects', function (Blueprint $table) {
             $table->increments('object_id');
-            $table->string('title', 128);
+            $table->string('title', 256);
             $table->integer('parent')->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->timestamps();

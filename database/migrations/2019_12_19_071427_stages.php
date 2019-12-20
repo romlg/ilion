@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+
 class Stages extends Migration
 {
     /**
@@ -15,7 +16,6 @@ class Stages extends Migration
         Schema::create('stages', function (Blueprint $table) {
             $table->increments('stage_id');
             $table->string('title', 255);
-            $table->integer('ver');
             $table->integer('object_id');
             $table->timestamps();
         });

@@ -35,14 +35,17 @@ class ObjectController extends CatalogController
     {
         $item = new Obj();
 
-        $materials = \DB::table('materials')
-            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->select('materials.title', 'materials.material_id', 'materials2objects.units'/*, 'materials2objects.count'*/)
-            ->get();
+//        $materials = \DB::table('materials')
+//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
+//            ->select('materials.title', 'materials.material_id', 'materials2objects.units'/*, 'materials2objects.count'*/)
+//            ->get();
+//
+//        $materials = $materials->unique();
+//        return view('asystem.objects.create', compact('item', 'materials'));
 
-        $materials = $materials->unique();
+        $materials = \DB::table('m2o_view')->get();
 
-        return view('asystem.objects.create', compact('item', 'materials'));
+        return view('asystem.objects.create_new', compact('item', 'materials'));
     }
 
     /**
@@ -61,11 +64,14 @@ class ObjectController extends CatalogController
         foreach ($data['material'] As $key => $val) {
 
             if ($data['count'][$key] ) {
+
                 $materials2object = new Materials2object([
                     'material_id' => $val,
-                    'object_id' => $item->object_id,
+                    //'object_id' => $item->object_id,
+                    'ver' => 1,
+                    'stage_id' => $item->object_id,
                     'purchase_price' => 0,
-                    'sale_price' => 0,
+                    //'sale_price' => 0,
                     'count' => $data['count'][$key],
                     'units' => 'шт'
                 ]);
@@ -111,7 +117,7 @@ class ObjectController extends CatalogController
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $item->object_id)
+            ->where('materials2objects.stage_id', $item->stage_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
             ->get();
 

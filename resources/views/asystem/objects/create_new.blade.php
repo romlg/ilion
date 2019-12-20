@@ -61,19 +61,20 @@
                             @enderror
                         </div>
 
+
                         <div id="new_element"></div>
                         <div class="form-group" id="materials">
                             <div class="row">
                                 <div class="col col-md-8">
                                     <select name="material[]" class="form-control material-select" data-live-search="true">
                                         @foreach($materials As $material)
-                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})">{{ $material->title }}</option>
+                                            <option value="{{ $material->m_id }}" data-unit="({{ $material->m_units }})">{{ $material->m_title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col col-md-4">
                                     <input type="number" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество" required>
-{{--                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $materials->units }}">--}}
+                                    {{--                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $materials->units }}">--}}
                                 </div>
                             </div>
                         </div>

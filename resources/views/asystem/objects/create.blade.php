@@ -84,7 +84,7 @@
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('object.index') }}">Закрыть</a>
                                 <button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>
-                                <a class="btn btn-primary" href="{{ route('object.upload', 1) }}">Загрузить материалы</a>
+{{--                                <a class="btn btn-primary" href="{{ route('object.upload', 1) }}">Загрузить материалы</a>--}}
                             </div>
                         </div>
                     </form>

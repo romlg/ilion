@@ -20,6 +20,7 @@ class Materials2objects extends Migration
             $table->integer('material_id');
             //$table->integer('object_id');
             $table->integer('stage_id');
+            $table->integer('ver');
             $table->decimal('purchase_price');
             //$table->decimal('sale_price');
             $table->integer('count');
