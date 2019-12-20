@@ -6,7 +6,6 @@ use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Material;
 use App\Models\Materials2object;
 use App\Models\Objct as Obj;
-use App\Models\Stage;
 use Illuminate\Http\Request;
 use App\Library\Utility;
 
@@ -51,20 +50,22 @@ class ObjectController extends CatalogController
     {
         $data = $request->input();
 
-        $item = new Stage($data);
+        $item = new Obj($data);
         $item->save();
 
+        $result = $item
+            ->fill($data)
+            ->save();
 
-
-//        if($result) {
-//            return redirect()
-//                ->route('object.edit', $item->object_id)
-//                ->with(['success' => "Успешно сохранено"]);
-//        } else {
-//            return back()
-//                ->withErrors(['msg' => "Ошибка сохранения"])
-//                ->withInput();
-//        }
+        if($result) {
+            return redirect()
+                ->route('object.edit', $item->object_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
