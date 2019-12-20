@@ -31,8 +31,6 @@ class StageController extends CatalogController
         $item = new Stage();
         $objects = Objct::all();
 
-        //dd($obj);
-
         return view('asystem.stages.create', compact('item', 'objects'));
     }
 
@@ -44,7 +42,24 @@ class StageController extends CatalogController
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input();
+
+        $item = new Stage([
+            'title' => $data['title'], /// вот тут текущий пользователь
+            'object_id' => $data['object_id'],
+        ]);
+
+        $result = $item->save();
+
+        if($result) {
+            return redirect()
+                ->route('stage.edit', $item->object_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -67,11 +82,8 @@ class StageController extends CatalogController
     public function edit($id)
     {
         //
-        //
-        $item = new Stage();
+        $item = Stage::where('stage_id', '=', $id)->first();
         $objects = Objct::all();
-
-        //dd($obj);
 
         return view('asystem.stages.edit', compact('item', 'objects'));
     }
@@ -85,7 +97,29 @@ class StageController extends CatalogController
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Stage::find($id);
+
+        if(empty($item)) {
+            return back()
+                ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
+                ->withInput();
+        }
+
+        $data = $request->all();
+        $item->title = $data['title'];
+        $item->object_id = $data['object_id'];
+
+        $result = $item->save();
+
+        if ($result) {
+            return redirect()
+                ->route('stage.edit', $item->stage_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**

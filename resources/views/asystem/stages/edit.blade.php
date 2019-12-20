@@ -5,8 +5,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('stage.store') }}">
+                    <form method="POST" action="{{ route('stage.update', $item->stage_id) }}">
 
+                        @method('PATCH')
                         @csrf
                         @php
                             /** @var \Illuminate\Support\ViewErrorBag $errors  */
@@ -54,19 +55,19 @@
                             @enderror
                         </div>
 
-                        <div class="form-group" id="materials">
+                        <div class="form-group">
                             <label for="title">Объект</label>
                             <div class="row">
                                 <div class="col col-md-12">
-                                    <select name="material[]" class="form-control material-select" data-live-search="true">
+
+                                    <select name="object_id" class="form-control material-select" data-live-search="true">
                                         @foreach($objects As $object)
-                                            <option value="{{ $object->object_id }}">{{ $object->title }}</option>
+                                            <option value="{{ $object->object_id }}" @if($object->object_id == $item->object_id) selected @endif >{{ $object->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">

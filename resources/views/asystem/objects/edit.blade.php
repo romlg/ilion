@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 @php
     /** @var \App\Models\Objct $item  */
@@ -8,9 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-
                 <div class="card-body">
-
                     <form method="POST" action="{{ route('object.update', $item->object_id) }}">
 
                         @method('PATCH')
@@ -78,30 +75,12 @@
                             @enderror
                         </div>
 
-{{--                        <div id="new_element"></div>--}}
-{{--                        <div class="form-group" id="materials">--}}
-{{--                            <div class="row">--}}
-{{--                                <div class="col col-md-6">--}}
-{{--                                    <select name="material[]" class="form-control material-select" data-live-search="true">--}}
-{{--                                        @foreach($materialsAll As $material)--}}
-{{--                                            <option value="{{ $material->material_id }}" data-unit="({{ $material->units }})">{{ $material->title }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                                <div class="col col-md-2">--}}
-{{--                                    <input type="number" class="form-control mat-count" name="count[]" value="" data-placeholder="Количество" placeholder="Количество" required>--}}
-{{--                                    <input type="hidden"class="form-control mat-count-unit" name="units[]" value="{{ $material->units }}">--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
 
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('object.index') }}">Закрыть</a>
-                                 {{--<button type="button" class="btn btn-primary" onclick="addElement();">Добавить материал</button>--}}
-{{--                                <a class="btn btn-primary" href="{{ route('object.upload', $item->object_id) }}">Загрузить материалы</a>--}}
                             </div>
                         </div>
                     </form>

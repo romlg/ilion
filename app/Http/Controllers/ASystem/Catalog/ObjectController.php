@@ -6,6 +6,7 @@ use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Material;
 use App\Models\Materials2object;
 use App\Models\Objct as Obj;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 use App\Library\Utility;
 
@@ -35,14 +36,6 @@ class ObjectController extends CatalogController
     {
         $item = new Obj();
 
-//        $materials = \DB::table('materials')
-//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-//            ->select('materials.title', 'materials.material_id', 'materials2objects.units'/*, 'materials2objects.count'*/)
-//            ->get();
-//
-//        $materials = $materials->unique();
-//        return view('asystem.objects.create', compact('item', 'materials'));
-
         $materials = \DB::table('m2o_view')->get();
 
         return view('asystem.objects.create_new', compact('item', 'materials'));
@@ -58,40 +51,20 @@ class ObjectController extends CatalogController
     {
         $data = $request->input();
 
-        $item = new Obj($data);
+        $item = new Stage($data);
         $item->save();
 
-//        foreach ($data['material'] As $key => $val) {
-//
-//            if ($data['count'][$key] ) {
-//
-//                $materials2object = new Materials2object([
-//                    'material_id' => $val,
-//                    //'object_id' => $item->object_id,
-//                    'ver' => 1,
-//                    'stage_id' => $item->object_id,
-//                    'purchase_price' => 0,
-//                    //'sale_price' => 0,
-//                    'count' => $data['count'][$key],
-//                    'units' => 'шт'
-//                ]);
-//                $materials2object->save();
-//            }
+
+
+//        if($result) {
+//            return redirect()
+//                ->route('object.edit', $item->object_id)
+//                ->with(['success' => "Успешно сохранено"]);
+//        } else {
+//            return back()
+//                ->withErrors(['msg' => "Ошибка сохранения"])
+//                ->withInput();
 //        }
-
-        $result = $item
-            ->fill($data)
-            ->save();
-
-        if($result) {
-            return redirect()
-                ->route('object.edit', $item->object_id)
-                ->with(['success' => "Успешно сохранено"]);
-        } else {
-            return back()
-                ->withErrors(['msg' => "Ошибка сохранения"])
-                ->withInput();
-        }
     }
 
     /**
@@ -114,23 +87,6 @@ class ObjectController extends CatalogController
     public function edit($id)
     {
         $item = Obj::findOrFail($id);
-
-//        $materials = \DB::table('materials')
-//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-//            ->where('materials2objects.stage_id', $item->stage_id)
-//            ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
-//            ->get();
-//
-//        $materialsAll = \DB::table('materials')
-//            ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-//            //->where('materials2objects.object_id', $item->object_id)
-//            ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
-//            ->get();
-//
-//        $materialsAll = $materialsAll->unique();
-//
-//        return view('asystem.objects.edit', compact('item', 'materials', 'materialsAll'));
-
 
         $materials = \DB::table('m2o_view')->get();
 
@@ -159,26 +115,6 @@ class ObjectController extends CatalogController
         }
 
         $data = $request->all();
-
-//        if(isset($data['material']))
-//        {
-//            foreach ($data['material'] As $key => $val) {
-//
-//                $chkMaterial = Materials2object::where('material_id', '=', $val)->where('object_id', '=', $id)->first();
-//
-//                if ($data['count'][$key] && $chkMaterial === null) {
-//                    $materials2object = new Materials2object([
-//                        'material_id' => $val,
-//                        'object_id' => $id,
-//                        'purchase_price' => 0,
-//                        'sale_price' => 0,
-//                        'count' => $data['count'][$key],
-//                        'units' => $data['units'][$key]
-//                    ]);
-//                    $materials2object->save();
-//                }
-//            }
-//        }
 
         $result = $item
             ->fill($data)
