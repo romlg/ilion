@@ -69,19 +69,20 @@
                         </div>
 
 
-
-                        <div class="form-group">
-                            <label for="title">Материалы</label>
-                            <div class="row">
-                                <div class="col col-md-12">
-                                    <ul>
-                                        @foreach($materials As $material)
-                                            <li>{{ $material->m_title }}</li>
-                                        @endforeach
-                                    </ul>
+                        @if(!$materials->isEmpty())
+                            <div class="form-group">
+                                <label for="title">Материалы</label>
+                                <div class="row">
+                                    <div class="col col-md-12">
+                                        <ul>
+                                            @foreach($materials As $material)
+                                                <li>{{ $material->m_title }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
