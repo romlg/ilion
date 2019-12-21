@@ -18,8 +18,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('stage', 'ASystem\Catalog\StageController');
 
-    Route::get('/object/{object}/upload', ['as' =>'object.upload', 'uses' => 'ASystem\Catalog\ObjectController@upload']);
-    Route::post('/object/{object}/upload', ['as' =>'object.upload', 'uses' => 'ASystem\Catalog\ObjectController@uploadSave']);
+    Route::get('/stage/{stage}/upload', ['as' =>'stage.upload', 'uses' => 'ASystem\Catalog\StageController@upload']);
+    Route::post('/stage/{stage}/upload', ['as' =>'stage.upload', 'uses' => 'ASystem\Catalog\StageController@uploadSave']);
+
+//    Route::get('/object/{object}/upload', ['as' =>'object.upload', 'uses' => 'ASystem\Catalog\ObjectController@upload']);
+//    Route::post('/object/{object}/upload', ['as' =>'object.upload', 'uses' => 'ASystem\Catalog\ObjectController@uploadSave']);
 
     Route::get('/order/step1', ['as' => 'aorder.step1', 'uses' => 'ASystem\Catalog\OrderController@step1']);
     Route::resource('order', 'ASystem\Catalog\OrderController')->names('aorder');

@@ -133,4 +133,16 @@ class StageController extends CatalogController
     {
         //
     }
+
+    public function upload($id)
+    {
+        $item = Stage::findOrFail($id);
+
+        return view('asystem.stages.upload', compact('item'));
+    }
+
+    public function uploadSave()
+    {
+
+    }
 }

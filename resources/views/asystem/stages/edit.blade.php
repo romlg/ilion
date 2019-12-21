@@ -88,7 +88,7 @@
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('stage.index') }}">Отмена</a>
-                                <a class="btn btn-primary" href="">Загрузить материалы</a>
+                                <a class="btn btn-primary" href="{{ route('stage.upload', $item->stage_id) }}">Загрузить материалы</a>
                             </div>
                         </div>
                     </form>
