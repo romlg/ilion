@@ -153,27 +153,50 @@ class StageController extends CatalogController
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
+        //ищем максимальную версию для этого этапа и инкриминируем
+        $maxVer = Materials2object::where('stage_id', $id)->max('ver') + 1;
+
         foreach($sheetData AS $data) {
 
-
-            $itemMaterial = new Material([
-                'title' => $data[1],
-                'notes' => $data[2],
-            ]);
-            $itemMaterial->save();
-
-            $itemM2O = new Materials2object([
-                'material_id' => $itemMaterial->material_id,
-                'stage_id' => $id,
-                'ver' => 1,
-                'price' => floatval($data[3]),
-                'count' => $data[4],
-                'units' => $data[5],
-                'purchase_price' => floatval($data[6]),
-                'work_price' => floatval($data[7]),
-            ]);
-            $itemM2O->save();
-            //var_dump($data);
+            //------------------------------------------------------------------
+            //ищем материал с title, если нет, то добавляем
+            $itemMaterial = Material::where('title', $data[1])->first();
+            if(empty($itemMaterial))
+            {
+                $itemMaterial = new Material([
+                    'title' => $data[1],
+                    'notes' => $data[2],
+                ]);
+                $itemMaterial->save();
+            }
+            //------------------------------------------------------------------
+            //ищем связку с material_id и stage_id, если нет, то добавляем с $maxVer
+            $itemM2O = Materials2object::where('material_id', $itemMaterial->material_id)->where('stage_id', $id)->first();
+            if(empty($itemM2O))
+            {
+                $itemM2O = new Materials2object([
+                    'material_id' => $itemMaterial->material_id,
+                    'stage_id' => $id,
+                    'ver' => $maxVer,
+                    'price' => floatval($data[3]),
+                    'count' => $data[4],
+                    'units' => $data[5],
+                    'purchase_price' => floatval($data[6]),
+                    'work_price' => floatval($data[7]),
+                ]);
+                $itemM2O->save();
+            }
+            //если есть, то обновляем с новыми данными
+            if(!empty($itemM2O))
+            {
+                $itemM2O->price = floatval($data[3]);
+                $itemM2O->count = $data[4];
+                $itemM2O->units = $data[5];
+                $itemM2O->purchase_price = floatval($data[6]);
+                $itemM2O->work_price = floatval($data[7]);
+                $itemM2O->save();
+            }
+            //------------------------------------------------------------------
         }
 
         return redirect()
