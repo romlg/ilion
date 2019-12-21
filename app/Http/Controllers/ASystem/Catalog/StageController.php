@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ASystem\Catalog;
 
+use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Objct;
 use App\Models\Stage;
 use Illuminate\Http\Request;
@@ -141,8 +142,16 @@ class StageController extends CatalogController
         return view('asystem.stages.upload', compact('item'));
     }
 
-    public function uploadSave()
+    public function uploadSave(UploadImportModelRequest $request, $id)
     {
+        $originalFile = $request->file('import_file');
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $spreadsheet = $reader->load($originalFile->getRealPath());
+
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        dd($sheetData);
 
     }
 }

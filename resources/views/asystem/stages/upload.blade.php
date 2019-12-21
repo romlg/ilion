@@ -61,10 +61,10 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary">Загрузить</button>
 
-                                <a class="btn btn-primary" href="{{ route('stage.edit', $item->stage_id) }}">Закрыть</a>{{----}}
+                                <a class="btn btn-primary" href="{{ route('stage.edit', $item->stage_id) }}">Отменить</a>{{----}}
                             </div>
                         </div>
                     </form>
