@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ASystem\Catalog;
 
 use App\Http\Requests\UploadImportModelRequest;
+use App\Models\Material;
+use App\Models\Materials2object;
 use App\Models\Objct;
 use App\Models\Stage;
 use Illuminate\Http\Request;
@@ -151,7 +153,32 @@ class StageController extends CatalogController
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
-        dd($sheetData);
+        foreach($sheetData AS $data) {
+
+
+            $itemMaterial = new Material([
+                'title' => $data[1],
+                'notes' => $data[2],
+            ]);
+            $itemMaterial->save();
+
+            $itemM2O = new Materials2object([
+                'material_id' => $itemMaterial->material_id,
+                'stage_id' => $id,
+                'ver' => 1,
+                'price' => floatval($data[3]),
+                'count' => $data[4],
+                'units' => $data[5],
+                'purchase_price' => floatval($data[6]),
+                'work_price' => floatval($data[7]),
+            ]);
+            $itemM2O->save();
+            //var_dump($data);
+        }
+
+        return redirect()
+            ->route('stage.edit', $id)
+            ->with(['success' => "Файл успешно загружен"]);
 
     }
 }
