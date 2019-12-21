@@ -85,8 +85,9 @@ class StageController extends CatalogController
         //
         $item = Stage::where('stage_id', '=', $id)->first();
         $objects = Objct::all();
+        $materials = \DB::table('m2o_view')->where('s_id', $id)->get();
 
-        return view('asystem.stages.edit', compact('item', 'objects'));
+        return view('asystem.stages.edit', compact('item', 'objects', 'materials'));
     }
 
     /**

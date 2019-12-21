@@ -94,8 +94,6 @@ class ObjectController extends CatalogController
 
         $stages = Stage::where('object_id', '=', $id)->get();
 
-        //dd($stages);
-
         return view('asystem.objects.edit_new', compact('item', 'stages'));
     }
 

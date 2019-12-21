@@ -59,12 +59,26 @@
                             <label for="title">Объект</label>
                             <div class="row">
                                 <div class="col col-md-12">
-
                                     <select name="object_id" class="form-control material-select" data-live-search="true">
                                         @foreach($objects As $object)
                                             <option value="{{ $object->object_id }}" @if($object->object_id == $item->object_id) selected @endif >{{ $object->title }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="title">Материалы</label>
+                            <div class="row">
+                                <div class="col col-md-12">
+                                    <ul>
+                                        @foreach($materials As $material)
+                                            <li>{{ $material->m_title }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                         </div>
