@@ -62,7 +62,7 @@
                                     <table>
                                         @foreach($stages As $stage)
                                             <tr>
-                                                <td>{{ $stage->title }}</td>
+                                               <td> <a href="{{ route('stage.edit', $stage->stage_id) }}">{{ $stage->title }}</a></td>
                                             </tr>
                                         @endforeach
                                     </table>

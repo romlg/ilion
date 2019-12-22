@@ -19,7 +19,7 @@ class StageController extends CatalogController
     public function index()
     {
 
-        $paginator =  Stage::paginate(4);
+        $paginator = Stage::paginate(4);
         return view('asystem.stages.index', compact('paginator'));
     }
 
@@ -40,7 +40,7 @@ class StageController extends CatalogController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,7 +54,7 @@ class StageController extends CatalogController
 
         $result = $item->save();
 
-        if($result) {
+        if ($result) {
             return redirect()
                 ->route('stage.edit', $item->object_id)
                 ->with(['success' => "Успешно сохранено"]);
@@ -68,7 +68,7 @@ class StageController extends CatalogController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -79,7 +79,7 @@ class StageController extends CatalogController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -95,15 +95,15 @@ class StageController extends CatalogController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $item = Stage::find($id);
 
-        if(empty($item)) {
+        if (empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
                 ->withInput();
@@ -129,7 +129,7 @@ class StageController extends CatalogController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -155,14 +155,15 @@ class StageController extends CatalogController
 
         //ищем максимальную версию для этого этапа и инкриминируем
         $maxVer = Materials2object::where('stage_id', $id)->max('ver') + 1;
+        //деактивация всех материалов для этого этапа
+        Materials2object::where('stage_id', $id)->update(['is_active' => 0]);
 
-        foreach($sheetData AS $data) {
+        foreach ($sheetData AS $data) {
 
             //------------------------------------------------------------------
-            //ищем материал с title, если нет, то добавляем
+            // ищем материал с title, если нет, то добавляем
             $itemMaterial = Material::where('title', $data[1])->first();
-            if(empty($itemMaterial))
-            {
+            if (empty($itemMaterial)) {
                 $itemMaterial = new Material([
                     'title' => $data[1],
                     'notes' => $data[2],
@@ -170,10 +171,10 @@ class StageController extends CatalogController
                 $itemMaterial->save();
             }
             //------------------------------------------------------------------
-            //ищем связку с material_id и stage_id, если нет, то добавляем с $maxVer
+            // ищем связку с material_id и stage_id
+            // если нет связки, то добавляем с версией - $maxVer. активирует
             $itemM2O = Materials2object::where('material_id', $itemMaterial->material_id)->where('stage_id', $id)->first();
-            if(empty($itemM2O))
-            {
+            if (empty($itemM2O)) {
                 $itemM2O = new Materials2object([
                     'material_id' => $itemMaterial->material_id,
                     'stage_id' => $id,
@@ -183,17 +184,18 @@ class StageController extends CatalogController
                     'units' => $data[5],
                     'purchase_price' => floatval($data[6]),
                     'work_price' => floatval($data[7]),
+                    'is_active' => 1,
                 ]);
                 $itemM2O->save();
             }
-            //если есть, то обновляем с новыми данными
-            if(!empty($itemM2O))
-            {
+            // если есть связка, то обновляем с новыми данными. версию не меняем. активируем
+            if (!empty($itemM2O)) {
                 $itemM2O->price = floatval($data[3]);
                 $itemM2O->count = $data[4];
                 $itemM2O->units = $data[5];
                 $itemM2O->purchase_price = floatval($data[6]);
                 $itemM2O->work_price = floatval($data[7]);
+                $itemM2O->is_active = 1;
                 $itemM2O->save();
             }
             //------------------------------------------------------------------
