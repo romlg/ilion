@@ -56,7 +56,7 @@ class StageController extends CatalogController
 
         if ($result) {
             return redirect()
-                ->route('stage.edit', $item->object_id)
+                ->route('stage.edit', $item->stage_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
