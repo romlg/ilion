@@ -149,6 +149,7 @@ class StageController extends CatalogController
         $originalFile = $request->file('import_file');
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $reader->setDelimiter("\t");
         $spreadsheet = $reader->load($originalFile->getRealPath());
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
