@@ -66,9 +66,11 @@ class OrderController extends CatalogController
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $object_id)
+            //->where('materials2objects.stage_id', $object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
+
+        $materials = $materials->unique();
 
         return view('asystem.orders.edit', compact('object', 'materials', 'order'));
     }
@@ -167,12 +169,13 @@ class OrderController extends CatalogController
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $order->object_id)
+            //->where('materials2objects.object_id', $order->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
 
         $filterStatus = Utility::orderStatus;
 
+        //die();
 
         return view('asystem.orders.edit', compact('order', 'orderMaterials', 'materials', 'filterStatus'));
     }
