@@ -173,9 +173,9 @@ class OrderController extends CatalogController
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
 
-        $filterStatus = Utility::orderStatus;
+        $materials = $materials->unique();
 
-        //die();
+        $filterStatus = Utility::orderStatus;
 
         return view('asystem.orders.edit', compact('order', 'orderMaterials', 'materials', 'filterStatus'));
     }
