@@ -14,9 +14,11 @@ class Materials2object extends Model
         'ver',
         'stage_id',
         'purchase_price',
-        'sale_price',
+        'work_price',
+        'price',
         'count',
-        'units'
+        'units',
+        'is_active'
     ];
 
     public $timestamps = false;
