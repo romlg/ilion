@@ -2,13 +2,16 @@
 
 namespace App\Helpers\ExcelParser;
 
+use PhpOffice\PhpSpreadsheet\Reader\Xls;
+
 class ExcelParser {
-    /**
-     * @param int $user_id User-id
-     *
-     * @return string
-     */
-    public static function get_test() {
-        return 'testNew';
+
+    public static function get_array($originalFile) {
+
+        $reader = new Xls();
+        $spreadsheet = $reader->load($originalFile->getRealPath());
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        return $sheetData;
     }
 }
