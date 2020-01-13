@@ -144,7 +144,7 @@ class StageController extends CatalogController
         return view('asystem.stages.upload', compact('item'));
     }
 
-    public function uploadSave(UploadImportModelRequest $request, $id)
+/*    public function uploadSave(UploadImportModelRequest $request, $id)
     {
         $originalFile = $request->file('import_file');
 
@@ -204,6 +204,20 @@ class StageController extends CatalogController
         return redirect()
             ->route('stage.edit', $id)
             ->with(['success' => "Файл успешно загружен"]);
+    }*/
+
+
+    public function uploadSave(UploadImportModelRequest $request, $id) {
+
+        $originalFile = $request->file('import_file');
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+
+        $spreadsheet = $reader->load($originalFile->getRealPath());
+
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        dd($sheetData);
 
     }
 }

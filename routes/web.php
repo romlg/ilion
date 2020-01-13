@@ -38,3 +38,7 @@ Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::clas
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/test', function () {
+    return ExcelParser::get_test();
+});

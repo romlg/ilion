@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\ParserServiceProvider::class,
+
     ],
 
     /*
@@ -226,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'ExcelParser' => App\Helpers\ExcelParser\ExcelParser::class,
     ],
 
 ];

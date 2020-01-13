@@ -28,7 +28,7 @@ class UploadImportModelRequest extends FormRequest
             'import_file' => [
                 'required',
                 'file',
-                'mimes:csv,txt'
+                'mimes:csv,txt,xlsx,xls'
             ],
         ];
     }
