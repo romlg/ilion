@@ -14,6 +14,13 @@ class Nomenclatures extends Migration
     public function up()
     {
         //
+        Schema::create('nomenclatures', function (Blueprint $table) {
+            $table->increments('n_id');
+            $table->text('title');
+            $table->integer('group_id');
+            $table->tinyInteger('is_active');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -24,5 +31,6 @@ class Nomenclatures extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('nomenclatures');
     }
 }
