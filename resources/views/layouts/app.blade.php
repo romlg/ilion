@@ -89,7 +89,7 @@
                                     <a class="nav-link" href="{{ route('group.index') }}">Группы</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('group.index') }}">Работа</a>
+                                    <a class="nav-link" href="{{ route('work.index') }}">Работа</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('nomenclature.index') }}">Номенклатура</a>

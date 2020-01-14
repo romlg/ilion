@@ -33,19 +33,37 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('nomenclature.update', $item->n_id) }}">
+                        <form method="POST" action="{{ route('work.store') }}">
 
-                            @method('PATCH')
                             @csrf
                             <div class="form-group">
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="{{ $item->title }}" placeholder="Название">
+                                               value="{{ old('name') }}" placeholder="Название">
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row form-group">
+                                <div class="col">
+                                    <label>Единица</label>
+                                    <input type="text" class="form-control" name="units"
+                                           value="{{ old('units') }}" placeholder="Единица">
+                                </div>
+                                <div class="col">
+                                    <label>Время</label>
+                                    <input type="text" class="form-control" name="wtime"
+                                           value="{{ old('wtime') }}" placeholder="Время">
+                                </div>
+                                <div class="col">
+                                    <label>Цена</label>
+                                    <input type="text" class="form-control" name="wprice"
+                                           value="{{ old('wprice') }}" placeholder="Цена">
+                                </div>
+                            </div>
+
 
                             <div class="row form-group">
                                 <div class="col">
@@ -53,7 +71,7 @@
                                     <select name="group_id" class="form-control">
                                         <option value="" >Не выбран</option>
                                         @foreach($groups as $group)
-                                            <option value="{{ $group->group_id }}" @if($group->group_id == $item->group_id) selected @endif>
+                                            <option value="{{ $group->group_id }}" >
                                                 {{ $group->title }}
                                             </option>
                                         @endforeach
@@ -62,21 +80,22 @@
                                 <div class="col">
                                     <label>Статус</label>
                                     <select name="is_active" class="form-control">
-                                        <option value="1" @if($item->is_active == 1) selected @endif>Активированный</option>
-                                        <option value="0" @if($item->is_active == 0) selected @endif>Деактивированный</option>
+                                        <option value="1" selected >Активированный</option>
+                                        <option value="0" >Деактивированный</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    <button type="submit" class="btn btn-primary">Создать</button>
 
-                                    <a class="btn btn-primary" href="{{ route('nomenclature.index') }}">Закрыть</a>
+                                    <a class="btn btn-primary" href="{{ route('work.index') }}">Закрыть</a>
 
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

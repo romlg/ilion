@@ -33,8 +33,9 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('group.store') }}">
+                        <form method="POST" action="{{ route('group.update', $item->group_id) }}">
 
+                            @method('PATCH')
                             @csrf
                             <div class="form-group">
                                 <div class="row form-group">
@@ -47,7 +48,7 @@
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
-                                    <button type="submit" class="btn btn-primary">Создать</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
 
                                     <a class="btn btn-primary" href="{{ route('group.index') }}">Закрыть</a>
 

@@ -20,7 +20,7 @@ class Works extends Migration
             $table->integer('units');
             $table->double('wtime');
             $table->double('wprice');
-            $table->integer('group_id');
+            $table->integer('group_id')->nullable();
             $table->tinyInteger('is_active');
             $table->timestamps();
         });

@@ -81,7 +81,6 @@ class NomenclatureController extends BaseController
     {
         //
         $item = Nomenclature::findOrFail($id);
-        //dd($item);
         $groups =  Group::all();
         return view('asystem.nomenclatures.edit', compact('item', 'groups'));
     }
@@ -96,6 +95,22 @@ class NomenclatureController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $item = Nomenclature::find($id);
+
+        $data = $request->all();
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if ($result) {
+            return redirect()
+                ->route('nomenclature.edit', $item->n_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
