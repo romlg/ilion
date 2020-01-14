@@ -28,7 +28,7 @@ class GroupController extends BaseController
     public function create()
     {
         //
-        return view('asystem.groups.create' /*, compact('paginator')*/);
+        return view('asystem.groups.create');
     }
 
     /**

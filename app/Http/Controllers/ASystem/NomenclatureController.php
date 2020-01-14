@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Group;
+use App\Models\Nomenclature;
 use Illuminate\Http\Request;
 
 class NomenclatureController extends BaseController
@@ -15,6 +17,9 @@ class NomenclatureController extends BaseController
     public function index()
     {
         //
+        $paginator =  Nomenclature::paginate(4);
+        //dd($paginator);
+        return view('asystem.nomenclatures.index', compact('paginator'));
     }
 
     /**
@@ -25,6 +30,8 @@ class NomenclatureController extends BaseController
     public function create()
     {
         //
+        $groups =  Group::all();
+        return view('asystem.nomenclatures.create', compact('groups'));
     }
 
     /**
@@ -36,6 +43,21 @@ class NomenclatureController extends BaseController
     public function store(Request $request)
     {
         //
+        //dd($request->input());
+        $data = $request->input();
+
+        $item = new Nomenclature($data);
+        $item->save();
+
+        if($item) {
+            return redirect()
+                ->route('nomenclature.edit', $item->n_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -58,6 +80,10 @@ class NomenclatureController extends BaseController
     public function edit($id)
     {
         //
+        $item = Nomenclature::findOrFail($id);
+        //dd($item);
+        $groups =  Group::all();
+        return view('asystem.nomenclatures.edit', compact('item', 'groups'));
     }
 
     /**

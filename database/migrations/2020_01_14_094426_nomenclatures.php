@@ -17,7 +17,7 @@ class Nomenclatures extends Migration
         Schema::create('nomenclatures', function (Blueprint $table) {
             $table->increments('n_id');
             $table->text('title');
-            $table->integer('group_id');
+            $table->integer('group_id')->nullable();
             $table->tinyInteger('is_active');
             $table->timestamps();
         });
