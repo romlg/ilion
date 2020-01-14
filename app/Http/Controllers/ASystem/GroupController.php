@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class GroupController extends BaseController
@@ -15,6 +16,8 @@ class GroupController extends BaseController
     public function index()
     {
         //
+        $paginator =  Group::paginate(4);
+        return view('asystem.groups.index' , compact('paginator'));
     }
 
     /**
@@ -25,6 +28,7 @@ class GroupController extends BaseController
     public function create()
     {
         //
+        return view('asystem.groups.create' /*, compact('paginator')*/);
     }
 
     /**
@@ -36,6 +40,20 @@ class GroupController extends BaseController
     public function store(Request $request)
     {
         //
+        $data = $request->input();
+
+        $item = new Group($data);
+        $item->save();
+
+        if($item) {
+            return redirect()
+                ->route('group.edit', $item->group_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -58,6 +76,8 @@ class GroupController extends BaseController
     public function edit($id)
     {
         //
+        $item = Group::findOrFail($id);
+        return view('asystem.groups.edit' , compact('item'));
     }
 
     /**
@@ -70,6 +90,22 @@ class GroupController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $item = Group::find($id);
+
+        $data = $request->all();
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if ($result) {
+            return redirect()
+                ->route('group.edit', $item->group_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
