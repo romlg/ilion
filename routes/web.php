@@ -26,6 +26,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('users','ASystem\Report\UsersSheetController');
 
+
+    Route::resource('group', 'ASystem\GroupController')->names('group');
+    Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
+    Route::resource('work', 'ASystem\WorkController')->names('work');
+
 });
 
 Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::class]], function () {

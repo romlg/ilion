@@ -86,6 +86,15 @@
                                     <a class="nav-link" href="{{ route('contract.index') }}">Документы</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('group.index') }}">Группы</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('group.index') }}">Работа</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('nomenclature.index') }}">Номенклатура</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('object.index') }}">Объекты</a>
                                 </li>
                                 <li class="nav-item">
