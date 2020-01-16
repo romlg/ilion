@@ -17,7 +17,7 @@ class Works extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->increments('work_id');
             $table->text('title');
-            $table->integer('units');
+            $table->string('units');
             $table->double('wtime');
             $table->double('wprice');
             $table->integer('group_id')->nullable();

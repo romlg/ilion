@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\ExcelParser\ExcelParser;
-use App\Http\Controllers\ASystem\BaseController;
 use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Group;
 use App\Models\Nomenclature;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class NomenclatureController extends BaseController
 {
@@ -139,7 +137,10 @@ class NomenclatureController extends BaseController
                 Nomenclature::updateOrCreate(['title' => $data[7], 'is_active' => 1]);
             }
         }
-        dd($nomenclature);
+
+        return redirect()
+            ->route('nomenclature.index')
+            ->with(['success' => "Файл успешно загружен"]);
 
     }
 

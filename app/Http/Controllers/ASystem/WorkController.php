@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\ASystem;
 
+use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Controllers\ASystem\BaseController;
+use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Group;
 use App\Models\Work;
 use Illuminate\Http\Request;
@@ -116,11 +118,33 @@ class WorkController extends BaseController
         return view('asystem.works.upload');
     }
 
-    public function uploadSave(Request $request)
+    public function uploadSave(UploadImportModelRequest $request)
     {
+        $originalFile = $request->file('import_file');
+        $ext = $originalFile->getClientOriginalExtension();
 
-        echo 'test';
+        $sheetData = [];
+        if ($ext == 'xlsx') {
+            $sheetData = ExcelParser::get_array_xlsx($request->file('import_file'));
+        }  elseif ($ext == 'xls') {
+            $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
+        }
+
+        //dd($sheetData);
+
+        //$works = [];
+        foreach ($sheetData as  $data) {
+            if(!is_null($data[1]) && !is_null($data[2]) && !is_null($data[3]) && !is_null($data[4])) {
+                Work::updateOrCreate(['title' => $data[1], 'units' => $data[2], 'wtime' => $data[3], 'wprice' => $data[4], 'is_active' => 1]);
+            }
+        }
+
+        return redirect()
+            ->route('work.index')
+            ->with(['success' => "Файл успешно загружен"]);
+
     }
+
     /**
      * Remove the specified resource from storage.
      *
