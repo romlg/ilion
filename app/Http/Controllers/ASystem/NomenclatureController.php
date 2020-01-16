@@ -113,6 +113,17 @@ class NomenclatureController extends BaseController
         }
     }
 
+    public function upload()
+    {
+        //echo 'test';
+        return view('asystem.nomenclatures.upload');
+    }
+
+    public function uploadSave(Request $request)
+    {
+        echo 'test';
+    }
+
     /**
      * Remove the specified resource from storage.
      *

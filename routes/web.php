@@ -28,8 +28,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
 
     Route::resource('group', 'ASystem\GroupController')->names('group');
+
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
+    Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);
+    Route::post('/nomenclature_upload', ['as' =>'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@uploadSave']);
+
     Route::resource('work', 'ASystem\WorkController')->names('work');
+    Route::get('/work_upload', ['as' => 'work.upload', 'uses' => 'ASystem\WorkController@upload']);
+    Route::post('/work_upload', ['as' =>'work.upload', 'uses' => 'ASystem\WorkController@uploadSave']);
 });
 
 Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::class]], function () {
