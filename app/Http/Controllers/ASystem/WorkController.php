@@ -113,12 +113,12 @@ class WorkController extends BaseController
 
     public function upload()
     {
-        //echo 'test';
         return view('asystem.works.upload');
     }
 
     public function uploadSave(Request $request)
     {
+
         echo 'test';
     }
     /**

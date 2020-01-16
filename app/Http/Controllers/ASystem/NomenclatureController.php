@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\ASystem;
 
+use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Controllers\ASystem\BaseController;
+use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Group;
 use App\Models\Nomenclature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NomenclatureController extends BaseController
 {
@@ -18,7 +21,6 @@ class NomenclatureController extends BaseController
     {
         //
         $paginator =  Nomenclature::paginate(4);
-        //dd($paginator);
         return view('asystem.nomenclatures.index', compact('paginator'));
     }
 
@@ -115,13 +117,30 @@ class NomenclatureController extends BaseController
 
     public function upload()
     {
-        //echo 'test';
         return view('asystem.nomenclatures.upload');
     }
 
-    public function uploadSave(Request $request)
+    public function uploadSave(UploadImportModelRequest $request)
     {
-        echo 'test';
+        $originalFile = $request->file('import_file');
+        $ext = $originalFile->getClientOriginalExtension();
+
+        $sheetData = [];
+        if ($ext == 'xlsx') {
+            $sheetData = ExcelParser::get_array_xlsx($request->file('import_file'));
+        }  elseif ($ext == 'xls') {
+            $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
+        }
+
+        $nomenclature = [];
+        foreach ($sheetData as  $data) {
+            if(!is_null($data[7])) {
+                $nomenclature[] = $data[7];
+                Nomenclature::updateOrCreate(['title' => $data[7], 'is_active' => 1]);
+            }
+        }
+        dd($nomenclature);
+
     }
 
     /**
