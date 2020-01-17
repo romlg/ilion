@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Objct;
 use App\Models\Specification;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,8 @@ class SpecificationController extends BaseController
     public function create()
     {
         //
+        $objects = Objct::all();
+        return view('asystem.specifications.create', compact('objects'));
     }
 
     /**
@@ -39,6 +42,20 @@ class SpecificationController extends BaseController
     public function store(Request $request)
     {
         //
+        $data = $request->input();
+
+        $item = new Specification($data);
+        $item->save();
+
+        if($item) {
+            return redirect()
+                ->route('specification.edit', $item->spec_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -61,6 +78,9 @@ class SpecificationController extends BaseController
     public function edit($id)
     {
         //
+        $item = Specification::findOrFail($id);
+        $objects =  Objct::all();
+        return view('asystem.specifications.edit', compact('item', 'objects'));
     }
 
     /**
@@ -73,6 +93,22 @@ class SpecificationController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $item = Specification::find($id);
+
+        $data = $request->all();
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if ($result) {
+            return redirect()
+                ->route('specification.edit', $item->spec_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
