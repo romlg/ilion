@@ -95,6 +95,9 @@
                                     <a class="nav-link" href="{{ route('nomenclature.index') }}">Номенклатура</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('specification.index') }}">Спецификации</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('object.index') }}">Объекты</a>
                                 </li>
                                 <li class="nav-item">
@@ -103,9 +106,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('aorder.index') }}">Заявки</a>
                                 </li>
-                                <li class="nav-item">
+{{--                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('factsheet.index') }}">Отчёт объекта</a>
-                                </li>
+                                </li>--}}
                             @endif
                             @if(!Auth::user()->isAdmin() && Auth::user()->isActive())
                                 <li class="nav-item">

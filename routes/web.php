@@ -26,8 +26,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('users','ASystem\Report\UsersSheetController');
 
-
     Route::resource('group', 'ASystem\GroupController')->names('group');
+
+    Route::resource('specification', 'ASystem\SpecificationController')->names('specification');
 
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
     Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);
