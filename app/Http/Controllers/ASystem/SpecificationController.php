@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\ASystem;
 
+use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Controllers\ASystem\BaseController;
 use App\Http\Requests\UploadImportModelRequest;
+use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\Specification;
 use Illuminate\Http\Request;
@@ -119,8 +121,48 @@ class SpecificationController extends BaseController
 
     public function uploadSave(UploadImportModelRequest $request)
     {
-        echo 'test';
-        //dd($request);
+        $id =  $request->input('id');
+        $originalFile = $request->file('import_file');
+        $ext = $originalFile->getClientOriginalExtension();
+
+        $sheetData = [];
+        if ($ext == 'xlsx') {
+            $sheetData = ExcelParser::get_array_xlsx($request->file('import_file'));
+        }  elseif ($ext == 'xls') {
+            $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
+        }
+
+        $nomenclatures = Nomenclature::all()->toArray();
+
+        $resultSearch = [];
+        $resultNotSearch = [];
+
+        foreach ($sheetData as $data) {
+
+            $title = $data[2];
+
+            $chk = false;
+            foreach ($nomenclatures as $nomenclature) {
+                if ($nomenclature["title"] == $title) {
+                    $resultSearch[] = $nomenclature["title"];
+                    $chk = true;
+                }
+            }
+            if(!$chk && !is_null($title)) {
+                $resultNotSearch[] = $title;
+            }
+        }
+
+        if (empty($resultNotSearch)) {
+            return redirect()
+                ->route('specification.edit', $id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            $resultSeparated = implode(", ", $resultNotSearch);
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения. Не добавлена наменклатура: {$resultSeparated}"])
+                ->withInput();
+        }
     }
 
     /**
