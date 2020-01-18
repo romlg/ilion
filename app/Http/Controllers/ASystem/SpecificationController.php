@@ -82,9 +82,11 @@ class SpecificationController extends BaseController
     public function edit($id)
     {
         //
-        $item = Specification::findOrFail($id);
+        $item = Specification::find($id);
+        $specUnits = SpecUnit::where('spec_id', $id)->get();
+
         $objects =  Objct::all();
-        return view('asystem.specifications.edit', compact('item', 'objects'));
+        return view('asystem.specifications.edit', compact('item', 'objects', 'specUnits'));
     }
 
     /**

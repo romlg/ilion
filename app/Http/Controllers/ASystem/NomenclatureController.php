@@ -130,11 +130,10 @@ class NomenclatureController extends BaseController
             $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
         }
 
-        $nomenclature = [];
         foreach ($sheetData as  $data) {
-            if(!is_null($data[7])) {
-                $nomenclature[] = $data[7];
-                Nomenclature::updateOrCreate(['title' => $data[7], 'is_active' => 1]);
+            $title = $data[7];
+            if(!is_null($title)) {
+                Nomenclature::updateOrCreate(['title' => $title, 'is_active' => 1]);
             }
         }
 

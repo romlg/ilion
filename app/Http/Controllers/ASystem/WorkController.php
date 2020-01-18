@@ -130,12 +130,15 @@ class WorkController extends BaseController
             $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
         }
 
-        //dd($sheetData);
-
-        //$works = [];
         foreach ($sheetData as  $data) {
-            if(!is_null($data[1]) && !is_null($data[2]) && !is_null($data[3]) && !is_null($data[4])) {
-                Work::updateOrCreate(['title' => $data[1], 'units' => $data[2], 'wtime' => $data[3], 'wprice' => $data[4], 'is_active' => 1]);
+
+            $title = $data[1];
+            $units = $data[2];
+            $wtime = $data[3];
+            $wprice =$data[4];
+
+            if(!is_null($title) && !is_null($units) && !is_null($wtime) && !is_null($wprice)) {
+                Work::updateOrCreate(['title' => $title, 'units' => $units, 'wtime' => $wtime, 'wprice' => $wprice, 'is_active' => 1]);
             }
         }
 
