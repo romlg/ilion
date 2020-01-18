@@ -8,6 +8,7 @@ use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\Specification;
+use App\Models\SpecUnit;
 use Illuminate\Http\Request;
 
 class SpecificationController extends BaseController
@@ -134,17 +135,24 @@ class SpecificationController extends BaseController
 
         $nomenclatures = Nomenclature::all()->toArray();
 
-        $resultSearch = [];
+        //$resultSearch = [];
+
+        //ищем максимальную версию и инкриминируем
+        $maxVer = SpecUnit::where('spec_id', $id)->max('ver') + 1;
+        //деактивация всех номенклатур
+        SpecUnit::where('spec_id', $id)->update(['is_active' => 0]);
+
         $resultNotSearch = [];
 
         foreach ($sheetData as $data) {
 
             $title = $data[2];
+            $count = $data[4];
 
             $chk = false;
             foreach ($nomenclatures as $nomenclature) {
                 if ($nomenclature["title"] == $title) {
-                    $resultSearch[] = $nomenclature["title"];
+                    SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature["n_id"], 'count' => $count, 'ver' => $maxVer, 'is_active' => 1]);
                     $chk = true;
                 }
             }
