@@ -28,8 +28,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('group', 'ASystem\GroupController')->names('group');
 
-    Route::resource('specification', 'ASystem\SpecificationController')->names('specification');
-
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
     Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);
     Route::post('/nomenclature_upload', ['as' =>'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@uploadSave']);
@@ -37,6 +35,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
     Route::resource('work', 'ASystem\WorkController')->names('work');
     Route::get('/work_upload', ['as' => 'work.upload', 'uses' => 'ASystem\WorkController@upload']);
     Route::post('/work_upload', ['as' =>'work.upload', 'uses' => 'ASystem\WorkController@uploadSave']);
+
+    Route::resource('specification', 'ASystem\SpecificationController')->names('specification');
+    Route::get('/specification/{specification}/upload', ['as' => 'specification.upload', 'uses' => 'ASystem\SpecificationController@upload']);
+    Route::post('/specification/upload', ['as' =>'specification.uploadSave', 'uses' => 'ASystem\SpecificationController@uploadSave']);
 });
 
 Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::class]], function () {

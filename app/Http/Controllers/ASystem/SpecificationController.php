@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Objct;
 use App\Models\Specification;
 use Illuminate\Http\Request;
@@ -109,6 +110,17 @@ class SpecificationController extends BaseController
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
         }
+    }
+
+    public function upload($id)
+    {
+        return view('asystem.specifications.upload', ['id' => $id]);
+    }
+
+    public function uploadSave(UploadImportModelRequest $request)
+    {
+        echo 'test';
+        //dd($request);
     }
 
     /**

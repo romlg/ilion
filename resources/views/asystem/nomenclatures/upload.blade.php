@@ -10,6 +10,7 @@
             <div class="card">
                 <div class="card-body">
                     <form method="POST" action="{{ route('nomenclature.upload') }}" enctype="multipart/form-data">
+
                         @csrf
                         @php
                             /** @var \Illuminate\Support\ViewErrorBag $errors  */

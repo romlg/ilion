@@ -70,7 +70,7 @@
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                                 <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>
-
+                                <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
                             </div>
                         </div>
                     </form>
