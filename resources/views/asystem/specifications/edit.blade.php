@@ -66,26 +66,29 @@
                             </div>
                         </div>
 
-                        <table class="table table-hover">
-                            <thead>
-                            <th>#</th>
-                            <th>Название</th>
-                            <th>Количество</th>
-                            <th>Версия</th>
-                            <th>Статус</th>
-                            </thead>
-                            <tbody>
-                            @foreach($specUnits as $specUnit)
-                                <tr>
-                                    <td>{{ $specUnit->sunut_id }}</td>
-                                    <td>{{ $specUnit->n_id }}</td>
-                                    <td>{{ $specUnit->count }}</td>
-                                    <td>{{ $specUnit->ver }}</td>
-                                    <td>{{ $specUnit->is_active }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                        @if (!$specUnits->isEmpty())
+                            <table class="table table-hover">
+                                <thead>
+                                <th>#</th>
+                                <th>Название</th>
+                                <th>Количество</th>
+                                <th>Версия</th>
+                                </thead>
+                                <tbody>
+                                @foreach($specUnits as $specUnit)
+                                    <tr>
+                                        <td>{{ $specUnit->nomenclature['n_id'] }}</td>
+                                        <td>{{ $specUnit->nomenclature['title'] }}</td>
+                                        <td>{{ $specUnit->count }}</td>
+                                        <td>{{ $specUnit->ver }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <label>Номенклатура не добавлена</label>
+                        @endif
+
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">

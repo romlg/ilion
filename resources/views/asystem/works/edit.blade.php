@@ -57,7 +57,7 @@
                                     <div class="col">
                                         <label>Время</label>
                                         <input type="text" class="form-control" name="wtime"
-                                               value="{{ $item->wtime }}" placeholder="Время">
+                                               value="{{ $item->wtime * 60 }}" placeholder="Время">
                                     </div>
                                     <div class="col">
                                         <label>Цена</label>

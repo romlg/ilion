@@ -17,4 +17,14 @@ class SpecUnit extends Model
         'ver',
         'is_active'
     ];
+
+    public function nomenclature()
+    {
+        return $this->hasOne('App\Models\Nomenclature', 'n_id', 'n_id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 }
