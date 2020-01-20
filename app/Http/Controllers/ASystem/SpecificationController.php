@@ -137,8 +137,6 @@ class SpecificationController extends BaseController
 
         $nomenclatures = Nomenclature::all()->toArray();
 
-        //$resultSearch = [];
-
         //ищем максимальную версию и инкриминируем
         $maxVer = SpecUnit::where('spec_id', $id)->max('ver') + 1;
         //деактивация всех номенклатур
@@ -169,7 +167,8 @@ class SpecificationController extends BaseController
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             $resultSeparated = implode(", ", $resultNotSearch);
-            return back()
+            return redirect()
+                ->route('specification.edit', $id)
                 ->withErrors(['msg' => "Ошибка сохранения. Не добавлена наменклатура: {$resultSeparated}"])
                 ->withInput();
         }
