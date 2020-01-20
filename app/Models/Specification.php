@@ -14,4 +14,10 @@ class Specification extends Model
         'title',
         'object_id'
     ];
+
+
+    public function object()
+    {
+        return $this->hasOne('App\Models\Objct', 'object_id', 'object_id');
+    }
 }

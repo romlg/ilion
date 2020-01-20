@@ -50,7 +50,7 @@
                                 <tr>
                                     <td>{{ $item->work_id }}</td>
                                     <td><a href="{{ route('work.edit', $item->work_id) }}">{{ $item->title }}</a></td>
-                                    <td>{{ $item->group_id }}</td>
+                                    <td>{{ $item->group['title'] }}</td>
                                     <td>@if($item->is_active) Активирована @else Деактивирована @endif</td>
                                 </tr>
                             @endforeach

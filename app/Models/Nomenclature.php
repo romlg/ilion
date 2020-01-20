@@ -15,4 +15,9 @@ class Nomenclature extends Model
         'group_id',
         'is_active'
     ];
+
+    public function group()
+    {
+        return $this->hasOne('App\Models\Group', 'group_id', 'group_id');
+    }
 }

@@ -15,14 +15,14 @@
                             <thead>
                                 <th>#</th>
                                 <th>Название</th>
-                                <th>Группа</th>
+                                <th>Объект</th>
                             </thead>
                             <tbody>
                                 @foreach($paginator as $item)
                                     <tr>
                                         <td>{{ $item->spec_id }}</td>
                                         <td><a href="{{ route('specification.edit', $item->spec_id) }}">{{ $item->title }}</a></td>
-                                        <td>{{ $item->object_id }}</td>
+                                        <td>{{ $item->object['title'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

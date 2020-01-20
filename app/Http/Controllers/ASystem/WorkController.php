@@ -20,6 +20,7 @@ class WorkController extends BaseController
     {
         //
         $paginator =  Work::paginate(4);
+
         return view('asystem.works.index', compact('paginator'));
     }
 

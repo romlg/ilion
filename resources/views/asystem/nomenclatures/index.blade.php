@@ -51,7 +51,7 @@
                                 <tr>
                                     <td>{{ $item->n_id }}</td>
                                     <td><a href="{{ route('nomenclature.edit', $item->n_id) }}">{{ $item->title }}</a></td>
-                                    <td>{{ $item->group_id }}</td>
+                                    <td>{{ $item->group['title'] }}</td>
                                     <td>@if($item->is_active) Активирована @else Деактивирована @endif</td>
                                 </tr>
                             @endforeach
