@@ -13,12 +13,13 @@ class Groups extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('groups', function (Blueprint $table) {
-            $table->increments('group_id');
-            $table->text('title');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('groups')) {
+            Schema::create('groups', function (Blueprint $table) {
+                $table->increments('group_id');
+                $table->text('title');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -28,7 +29,6 @@ class Groups extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('groups');
     }
 }

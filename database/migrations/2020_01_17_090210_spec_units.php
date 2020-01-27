@@ -13,16 +13,17 @@ class SpecUnits extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('spec_units', function (Blueprint $table) {
-            $table->increments('sunit_id');
-            $table->integer('spec_id');
-            $table->integer('n_id');
-            $table->integer('count');
-            $table->integer('ver');
-            $table->tinyInteger('is_active');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('spec_units')) {
+            Schema::create('spec_units', function (Blueprint $table) {
+                $table->increments('sunit_id');
+                $table->integer('spec_id');
+                $table->integer('n_id');
+                $table->integer('count');
+                $table->integer('ver');
+                $table->tinyInteger('is_active');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -32,7 +33,6 @@ class SpecUnits extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('spec_units');
     }
 }

@@ -13,17 +13,18 @@ class Works extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('works', function (Blueprint $table) {
-            $table->increments('work_id');
-            $table->text('title');
-            $table->string('units');
-            $table->double('wtime');
-            $table->double('wprice');
-            $table->integer('group_id')->nullable();
-            $table->tinyInteger('is_active');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('works')) {
+            Schema::create('works', function (Blueprint $table) {
+                $table->increments('work_id');
+                $table->text('title');
+                $table->string('units');
+                $table->double('wtime');
+                $table->double('wprice');
+                $table->integer('group_id')->nullable();
+                $table->tinyInteger('is_active');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -33,7 +34,6 @@ class Works extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('works');
     }
 }

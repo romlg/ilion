@@ -13,14 +13,15 @@ class Materials extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('materials', function (Blueprint $table) {
-            $table->increments('material_id');
-            $table->string('title', 255);
-            $table->text('notes')->nullable();
-            $table->tinyInteger('category_id')->nullable();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('materials')) {
+            Schema::create('materials', function (Blueprint $table) {
+                $table->increments('material_id');
+                $table->string('title', 255);
+                $table->text('notes')->nullable();
+                $table->tinyInteger('category_id')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,7 +31,6 @@ class Materials extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('materials');
     }
 }

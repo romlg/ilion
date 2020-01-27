@@ -13,13 +13,14 @@ class Specifications extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('specifications', function (Blueprint $table) {
-            $table->increments('spec_id');
-            $table->text('title');
-            $table->integer('object_id')->nullable();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('specifications')) {
+            Schema::create('specifications', function (Blueprint $table) {
+                $table->increments('spec_id');
+                $table->text('title');
+                $table->integer('object_id')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -29,7 +30,6 @@ class Specifications extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('specifications');
     }
 }

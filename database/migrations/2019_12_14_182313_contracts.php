@@ -13,15 +13,17 @@ class Contracts extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('contracts', function (Blueprint $table) {
-            $table->increments('contract_id');
-            $table->integer('contract_date');
-            $table->string('title', 255)->nullable();
-            $table->text('text')->nullable();
-            $table->tinyInteger('is_signed');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('contracts')) {
+            Schema::create('contracts', function (Blueprint $table) {
+                $table->increments('contract_id');
+                $table->integer('contract_date');
+                $table->string('title', 255)->nullable();
+                $table->text('text')->nullable();
+                $table->tinyInteger('is_signed');
+                $table->timestamps();
+            });
+
+        }
     }
 
     /**
@@ -31,7 +33,6 @@ class Contracts extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('contracts');
     }
 }

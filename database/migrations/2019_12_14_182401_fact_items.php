@@ -13,14 +13,15 @@ class FactItems extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('fact_items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('fact_id');
-            $table->integer('material_id');
-            $table->integer('count');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('fact_items')) {
+            Schema::create('fact_items', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('fact_id');
+                $table->integer('material_id');
+                $table->integer('count');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,7 +31,6 @@ class FactItems extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('fact_items');
     }
 }

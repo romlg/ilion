@@ -13,17 +13,18 @@ class Materials2objects extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('materials2objects', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('material_id');
-            $table->integer('object_id');
-            $table->decimal('purchase_price');
-            $table->decimal('sale_price');
-            $table->integer('count');
-            $table->string('units', 255);
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('materials2objects')) {
+            Schema::create('materials2objects', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('material_id');
+                $table->integer('object_id');
+                $table->decimal('purchase_price');
+                $table->decimal('sale_price');
+                $table->integer('count');
+                $table->string('units', 255);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -33,7 +34,6 @@ class Materials2objects extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('materials2objects');
     }
 }
