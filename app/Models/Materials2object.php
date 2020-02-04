@@ -10,9 +10,9 @@ class Materials2object extends Model
     protected $primaryKey = 'id';
     protected $fillable =[
         'material_id',
-        'object_id',
+        'stage_id',
+        'ver',
         'purchase_price',
-        'sale_price',
         'count',
         'units'
     ];

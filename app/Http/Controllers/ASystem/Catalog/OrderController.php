@@ -66,7 +66,7 @@ class OrderController extends CatalogController
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $object_id)
+            ->where('materials2objects.stage_id', $object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
 
@@ -159,7 +159,7 @@ class OrderController extends CatalogController
             ->select('orders.*', 'objects.title', 'users.post', 'users.last_name', 'users.name', 'users.middle_name', 'users.phone')
             ->first();
 
-        //тут проверка что существует заявка и пользователь совпадает
+//        //тут проверка что существует заявка и пользователь совпадает
         $orderMaterials = \DB::table('order_items')
             ->where('order_items.order_id', $id)
             ->select('order_items.count', 'order_items.material_id')
@@ -167,7 +167,7 @@ class OrderController extends CatalogController
 
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $order->object_id)
+            ->where('materials2objects.stage_id', $order->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units')
             ->get();
 
