@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Materials extends Migration
+class Nomenclatures extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class Materials extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('materials')) {
-            Schema::create('materials', function (Blueprint $table) {
-                $table->increments('material_id');
-                $table->string('title', 255);
-                $table->text('notes')->nullable();
-                $table->tinyInteger('category_id')->nullable();
+        if(!Schema::hasTable('nomenclatures')) {
+            Schema::create('nomenclatures', function (Blueprint $table) {
+                $table->increments('n_id');
+                $table->text('title');
+                $table->integer('group_id')->nullable();
+                $table->tinyInteger('is_active');
                 $table->timestamps();
             });
         }
@@ -31,6 +31,6 @@ class Materials extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('nomenclatures');
     }
 }

@@ -63,9 +63,9 @@ class ObjectController extends CatalogController
             if ($data['count'][$key] ) {
                 $materials2object = new Materials2object([
                     'material_id' => $val,
-                    'object_id' => $item->object_id,
+                    'stage_id' => $item->object_id,
+                    'ver' => 1,
                     'purchase_price' => 0,
-                    'sale_price' => 0,
                     'count' => $data['count'][$key],
                     'units' => 'шт'
                 ]);
@@ -109,15 +109,17 @@ class ObjectController extends CatalogController
     {
         $item = Obj::findOrFail($id);
 
+        //dd($item);
+
         $materials = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            ->where('materials2objects.object_id', $item->object_id)
+            ->where('materials2objects.stage_id', $item->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units', 'materials2objects.count')
             ->get();
 
         $materialsAll = \DB::table('materials')
             ->leftJoin('materials2objects', 'materials.material_id', '=', 'materials2objects.material_id')
-            //->where('materials2objects.object_id', $item->object_id)
+            //->where('materials2objects.stage_id', $item->object_id)
             ->select('materials.title', 'materials.material_id', 'materials2objects.units' /*,'materials2objects.count'*/)
             ->get();
 

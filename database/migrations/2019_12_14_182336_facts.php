@@ -14,14 +14,16 @@ class Facts extends Migration
     public function up()
     {
         //
-        Schema::create('facts', function (Blueprint $table) {
-            $table->increments('fact_id');
-            $table->integer('customer_id');
-            $table->integer('object_id')->nullable();
-            $table->text('notes')->nullable();
-            $table->tinyInteger('status')->default(0);
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('facts')) {
+            Schema::create('facts', function (Blueprint $table) {
+                $table->increments('fact_id');
+                $table->integer('customer_id');
+                $table->integer('object_id')->nullable();
+                $table->text('notes')->nullable();
+                $table->tinyInteger('status')->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -31,7 +33,6 @@ class Facts extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('facts');
     }
 }

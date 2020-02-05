@@ -13,14 +13,15 @@ class OrderItems extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('order_items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('order_id');
-            $table->integer('material_id');
-            $table->integer('count');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('order_items')) {
+            Schema::create('order_items', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('order_id');
+                $table->integer('material_id');
+                $table->integer('count');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,7 +31,6 @@ class OrderItems extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('order_items');
     }
 }

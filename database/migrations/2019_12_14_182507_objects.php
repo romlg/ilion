@@ -13,13 +13,14 @@ class Objects extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('objects', function (Blueprint $table) {
-            $table->increments('object_id');
-            $table->string('title', 255);
-            $table->integer('parent')->nullable();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('objects')) {
+            Schema::create('objects', function (Blueprint $table) {
+                $table->increments('object_id');
+                $table->string('title', 255);
+                $table->integer('parent')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -29,7 +30,6 @@ class Objects extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('objects');
     }
 }

@@ -13,15 +13,16 @@ class Orders extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('orders', function (Blueprint $table) {
-            $table->increments('order_id');
-            $table->integer('customer_id');
-            $table->integer('object_id')->nullable();
-            $table->text('notes')->nullable();
-            $table->tinyInteger('status')->default(0);
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('orders')) {
+            Schema::create('orders', function (Blueprint $table) {
+                $table->increments('order_id');
+                $table->integer('customer_id');
+                $table->integer('object_id')->nullable();
+                $table->text('notes')->nullable();
+                $table->tinyInteger('status')->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -32,6 +33,5 @@ class Orders extends Migration
     public function down()
     {
         Schema::dropIfExists('orders');
-        //
     }
 }
