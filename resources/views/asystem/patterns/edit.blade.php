@@ -33,6 +33,29 @@
                             </div>
                         @endif
 
+                            <form method="POST" action="{{ route('pattern.update', $item->pattern_id) }}">
+
+                                @method('PATCH')
+                                @csrf
+                                <div class="form-group">
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <label>Название</label>
+                                            <input type="text" class="form-control" name="title"
+                                                   value=" {{ $item->title }}" placeholder="Название">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-8">
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+
+                                        <a class="btn btn-primary" href="{{ route('pattern.index') }}">Закрыть</a>
+
+                                    </div>
+                                </div>
+                            </form>
+
 
                     </div>
                 </div>

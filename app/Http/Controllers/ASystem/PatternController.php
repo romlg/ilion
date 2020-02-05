@@ -28,6 +28,7 @@ class PatternController extends BaseController
     public function create()
     {
         //
+        return view('asystem.patterns.create');
     }
 
     /**
@@ -39,6 +40,20 @@ class PatternController extends BaseController
     public function store(Request $request)
     {
         //
+        $data = $request->input();
+
+        $item = new Pattern($data);
+        $item->save();
+
+        if($item) {
+            return redirect()
+                ->route('pattern.edit', $item->pattern_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -61,6 +76,8 @@ class PatternController extends BaseController
     public function edit($id)
     {
         //
+        $item = Pattern::findOrFail($id);
+        return view('asystem.patterns.edit' , compact('item'));
     }
 
     /**
@@ -73,6 +90,22 @@ class PatternController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $item = Pattern::find($id);
+
+        $data = $request->all();
+        $result = $item
+            ->fill($data)
+            ->save();
+
+        if ($result) {
+            return redirect()
+                ->route('pattern.edit', $item->pattern_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
