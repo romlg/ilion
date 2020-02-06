@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Material;
+use App\Models\Nomenclature;
 use App\Models\Pattern;
+use App\Models\PatternAdditionalMaterials;
+use App\Models\PatternNomenclatures;
+use App\Models\PatternWorks;
+use App\Models\Work;
 use Illuminate\Http\Request;
 
 class PatternController extends BaseController
@@ -28,7 +34,11 @@ class PatternController extends BaseController
     public function create()
     {
         //
-        return view('asystem.patterns.create');
+        $nomenclatures = Nomenclature::all();
+        $works = Work::all();
+        $materials = Material::all();
+
+        return view('asystem.patterns.create', compact('item', 'nomenclatures', 'works', 'materials'));
     }
 
     /**
@@ -42,12 +52,16 @@ class PatternController extends BaseController
         //
         $data = $request->input();
 
-        $item = new Pattern($data);
-        $item->save();
+        $itemPattern = new Pattern($data);
+        $itemPattern->save();
 
-        if($item) {
+        PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $data['nomenclatures'][0]]);
+        PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $data['works'][0], 'count' => 123]);
+        PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $data['material'][0], 'count' => 123]);
+
+        if($itemPattern) {
             return redirect()
-                ->route('pattern.edit', $item->pattern_id)
+                ->route('pattern.edit', $itemPattern->pattern_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -77,7 +91,14 @@ class PatternController extends BaseController
     {
         //
         $item = Pattern::findOrFail($id);
-        return view('asystem.patterns.edit' , compact('item'));
+
+        //dd($item->nomenclatures->toArray());
+
+        $works = Work::all();
+        $materials = Material::all();
+        $nomenclatures = Nomenclature::all();
+
+        return view('asystem.patterns.edit' , compact('item', 'nomenclatures', 'works', 'materials'));
     }
 
     /**

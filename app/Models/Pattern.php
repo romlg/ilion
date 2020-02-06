@@ -11,4 +11,20 @@ class Pattern extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function materials()
+    {
+        return $this->hasMany('App\Models\PatternAdditionalMaterials', 'pattern_id', 'pattern_id');
+    }
+
+    public function nomenclatures()
+    {
+        return $this->hasMany('App\Models\PatternNomenclatures', 'pattern_id', 'pattern_id');
+    }
+
+    public function works()
+    {
+        return $this->hasMany('App\Models\PatternWorks', 'pattern_id', 'pattern_id');
+    }
+
 }
