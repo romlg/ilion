@@ -52,12 +52,14 @@ class PatternController extends BaseController
         //
         $data = $request->input();
 
+        //dd($data);
+
         $itemPattern = new Pattern($data);
         $itemPattern->save();
 
         PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $data['nomenclatures'][0]]);
-        PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $data['works'][0], 'count' => 123]);
-        PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $data['material'][0], 'count' => 123]);
+        PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $data['works'][0], 'count' => $data['workCount']]);
+        PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $data['material'][0], 'count' => $data['materialCount']]);
 
         if($itemPattern) {
             return redirect()
@@ -91,8 +93,6 @@ class PatternController extends BaseController
     {
         //
         $item = Pattern::findOrFail($id);
-
-        //dd($item->nomenclatures->toArray());
 
         $works = Work::all();
         $materials = Material::all();

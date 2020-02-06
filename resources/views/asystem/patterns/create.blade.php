@@ -61,29 +61,37 @@
                             </div>
 
                             <div class="form-group">
+                                <hr>
+                                <label>Работы</label>
                                 <div class="row form-group">
-                                    <div class="col">
-                                        <hr>
-                                        <label>Работы</label>
-                                        <select name="works[]" class="form-control" id="selectMaterial">
+                                    <div class="col col-md-6">
+                                        <select name="works[]" class="form-control" id="selectWork">
                                             @foreach($works As $work)
                                                 <option value="{{ $work->work_id }}">{{ $work->title }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col col-md-6">
+                                        <input type="text" class="form-control" name="workCount"
+                                               value="" placeholder="Кол-во">
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
+                                <hr>
+                                <label>Доп-материалы</label>
                                 <div class="row form-group">
-                                    <div class="col">
-                                        <hr>
-                                        <label>Доп-материалы</label>
+                                    <div class="col col-md-6">
                                         <select name="material[]" class="form-control" id="selectMaterial">
                                             @foreach($materials As $material)
                                                 <option value="{{ $material->material_id }}" data-content="({{ $material->units }})">{{ $material->title }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="col col-md-6">
+                                        <input type="text" class="form-control" name="materialCount"
+                                               value="" placeholder="Кол-во">
                                     </div>
                                 </div>
                             </div>
