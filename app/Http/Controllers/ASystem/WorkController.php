@@ -102,7 +102,8 @@ class WorkController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request->input());
+
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:255',
             'units' => 'required|min:2|max:255',
