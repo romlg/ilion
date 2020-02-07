@@ -50,10 +50,10 @@
 
 
                                 <div class="form-group">
+                                    <hr>
+                                    <label>Наменклатура</label>
                                     <div class="row form-group">
                                         <div class="col">
-                                            <hr>
-                                            <label>Наменклатура</label>
                                             <select name="nomenclatures[]" class="form-control" id="selectNomenclatures">
                                                 @foreach($nomenclatures As $nomenclature)
                                                     <option value="{{ $nomenclature->n_id }}"
@@ -67,7 +67,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group">
                                     <hr>
                                     <label>Работы</label>
@@ -77,7 +76,7 @@
                                                 @foreach($works As $work)
                                                     <option value="{{ $work->work_id }}"
                                                         @foreach ($item->works as $patternWork)
-                                                            @if($patternWork->work_id == $work->work_id) selected @endif
+                                                            @if($patternWork->work_id == $work->work_id) {{ $workId = $work->work_id }} selected @endif
                                                         @endforeach>{{ $work->title }}
                                                     </option>
                                                 @endforeach
@@ -85,7 +84,7 @@
                                         </div>
                                         <div class="col col-md-6">
                                             <input type="text" class="form-control" name="workCount"
-                                                   value="{{ $item->materials[0]->count }}" placeholder="Кол-во">
+                                                   value="{{ $item->works->where('work_id', $workId)->first()->count }}" placeholder="Кол-во">
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +98,7 @@
                                                 @foreach($materials As $material)
                                                     <option value="{{ $material->material_id }}" data-content="({{ $material->units }})"
                                                         @foreach ($item->materials as $patternMaterial)
-                                                            @if($patternMaterial->material_id == $material->material_id) selected @endif
+                                                            @if($patternMaterial->material_id == $material->material_id) {{ $materialId = $material->material_id }} selected @endif
                                                         @endforeach>{{ $material->title }}
                                                     </option>
                                                 @endforeach
@@ -107,7 +106,7 @@
                                         </div>
                                         <div class="col col-md-6">
                                             <input type="text" class="form-control" name="materialCount"
-                                                   value="{{ $item->works[0]->count }}" placeholder="Кол-во">
+                                                   value="{{ $item->materials->where('material_id', $materialId)->first()->count }}" placeholder="Кол-во">
                                         </div>
                                     </div>
                                 </div>

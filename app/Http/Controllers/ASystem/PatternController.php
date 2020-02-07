@@ -52,8 +52,6 @@ class PatternController extends BaseController
         //
         $data = $request->input();
 
-        //dd($data);
-
         $itemPattern = new Pattern($data);
         $itemPattern->save();
 
@@ -117,6 +115,15 @@ class PatternController extends BaseController
         $result = $item
             ->fill($data)
             ->save();
+
+        PatternNomenclatures::where('pattern_id', $id)->delete();
+        PatternNomenclatures::insert(['pattern_id' => $id, 'n_id' => $data['nomenclatures'][0]]);
+
+        PatternWorks::where('pattern_id', $id)->delete();
+        PatternWorks::insert(['pattern_id' => $id, 'work_id' => $data['works'][0], 'count' => $data['workCount']]);
+
+        PatternAdditionalMaterials::where('pattern_id', $id)->delete();
+        PatternAdditionalMaterials::insert(['pattern_id' => $id, 'material_id' => $data['material'][0], 'count' => $data['materialCount']]);
 
         if ($result) {
             return redirect()
