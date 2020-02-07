@@ -47,8 +47,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="form-group">
                                     <hr>
                                     <label>Наменклатура</label>

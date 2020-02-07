@@ -41,7 +41,7 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="{{ old('name') }}" placeholder="Название">
+                                               value="{{ old('title') }}" placeholder="Название">
                                     </div>
                                 </div>
 
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="col col-md-6">
                                         <input type="text" class="form-control" name="workCount"
-                                               value="" placeholder="Кол-во">
+                                               value="{{ old('workCount') }}" placeholder="Кол-во">
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="col col-md-6">
                                         <input type="text" class="form-control" name="materialCount"
-                                               value="" placeholder="Кол-во">
+                                               value="{{ old('materialCount') }}" placeholder="Кол-во">
                                     </div>
                                 </div>
                             </div>

@@ -50,6 +50,13 @@ class PatternController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'workCount' => 'required|min:1|max:255',
+            'materialCount' => 'required|min:1|max:255',
+        ]);
+
+
         $data = $request->input();
 
         $itemPattern = new Pattern($data);
@@ -96,7 +103,7 @@ class PatternController extends BaseController
         $materials = Material::all();
         $nomenclatures = Nomenclature::all();
 
-        return view('asystem.patterns.edit' , compact('item', 'nomenclatures', 'works', 'materials'));
+        return view('asystem.patterns.edit', compact('item', 'nomenclatures', 'works', 'materials'));
     }
 
     /**
@@ -109,6 +116,12 @@ class PatternController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'workCount' => 'required|min:1|max:255',
+            'materialCount' => 'required|min:1|max:255',
+        ]);
+
         $item = Pattern::find($id);
 
         $data = $request->all();
