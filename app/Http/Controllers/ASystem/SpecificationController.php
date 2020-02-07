@@ -46,6 +46,10 @@ class SpecificationController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $data = $request->input();
 
         $item = new Specification($data);
@@ -99,6 +103,10 @@ class SpecificationController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $item = Specification::find($id);
 
         $data = $request->all();

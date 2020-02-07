@@ -40,6 +40,10 @@ class GroupController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $data = $request->input();
 
         $item = new Group($data);
@@ -90,6 +94,10 @@ class GroupController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $item = Group::find($id);
 
         $data = $request->all();
