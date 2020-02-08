@@ -56,15 +56,28 @@ class PatternController extends BaseController
             'materialCount' => 'required|min:1|max:255',
         ]);
 
-
         $data = $request->input();
+
+        if($this->array_has_dupes($data['nomenclatures']) || $this->array_has_dupes($data['works']) || $this->array_has_dupes($data['material'])) {
+            return redirect()
+                ->route('pattern.create')
+                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
+        }
 
         $itemPattern = new Pattern($data);
         $itemPattern->save();
 
-        PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $data['nomenclatures'][0]]);
-        PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $data['works'][0], 'count' => $data['workCount']]);
-        PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $data['material'][0], 'count' => $data['materialCount']]);
+        foreach ($data['nomenclatures'] as $nomenclature) {
+            PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $nomenclature]);
+        }
+
+        foreach ($data['works'] as $key => $work) {
+            PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $work, 'count' => $data['workCount'][$key]]);
+        }
+
+        foreach ($data['material'] as $key => $material) {
+            PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
+        }
 
         if($itemPattern) {
             return redirect()
@@ -158,5 +171,16 @@ class PatternController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    function array_has_dupes($array) {
+
+        //dd($array);
+
+        if(is_string($array)) {
+            return false;
+        }
+
+        return count($array) !== count(array_unique($array));
     }
 }

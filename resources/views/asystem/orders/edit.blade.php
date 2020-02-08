@@ -130,6 +130,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="col col-md-2">
                                     <input type="text" class="form-control" name="count[]" value="" data-placeholder="Количество" placeholder="Количество">
                                 </div>
@@ -169,23 +170,20 @@
 </div>
 
 <script type="text/javascript">
-    function initSelect() {
-        $('select[id="selectMaterial"]').on('change', function() {
-            var unit = $(this).find(':selected').attr('data-content');
-            var placeholder_val = $(this).parent().parent().find('input').attr('data-placeholder');
-            $(this).parent().parent().find('input').attr('placeholder', placeholder_val+' '+unit);
-        });
-    }
-
+    // function initSelect() {
+    //     $('select[id="selectMaterial"]').on('change', function() {
+    //         var unit = $(this).find(':selected').attr('data-content');
+    //         var placeholder_val = $(this).parent().parent().find('input').attr('data-placeholder');
+    //         $(this).parent().parent().find('input').attr('placeholder', placeholder_val+' '+unit);
+    //     });
+    // }
     function addElement() {
         $("#materials").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element");
         initSelect();
     }
-
     $(function() {
         initSelect();
     });
 </script>
-
 
 @endsection
