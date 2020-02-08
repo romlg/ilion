@@ -136,25 +136,39 @@ class PatternController extends BaseController
             'materialCount' => 'required|min:1|max:255',
         ]);
 
-        $item = Pattern::find($id);
-
         $data = $request->all();
-        $result = $item
+
+        //dd($data);
+
+        if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
+            return redirect()
+                ->route('pattern.edit', $id)
+                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
+        }
+
+        $itemPattern = Pattern::find($id);
+        $result = $itemPattern
             ->fill($data)
             ->save();
 
         PatternNomenclatures::where('pattern_id', $id)->delete();
-        PatternNomenclatures::insert(['pattern_id' => $id, 'n_id' => $data['nomenclatures'][0]]);
+        foreach ($data['nomenclatures'] as $nomenclature) {
+            PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $nomenclature]);
+        }
 
         PatternWorks::where('pattern_id', $id)->delete();
-        PatternWorks::insert(['pattern_id' => $id, 'work_id' => $data['works'][0], 'count' => $data['workCount']]);
+        foreach ($data['works'] as $key => $work) {
+            PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $work, 'count' => $data['workCount'][$key]]);
+        }
 
         PatternAdditionalMaterials::where('pattern_id', $id)->delete();
-        PatternAdditionalMaterials::insert(['pattern_id' => $id, 'material_id' => $data['material'][0], 'count' => $data['materialCount']]);
+        foreach ($data['material'] as $key => $material) {
+            PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
+        }
 
         if ($result) {
             return redirect()
-                ->route('pattern.edit', $item->pattern_id)
+                ->route('pattern.edit', $itemPattern->pattern_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
