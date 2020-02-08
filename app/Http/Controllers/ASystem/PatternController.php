@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ASystem;
 
+use App\Helpers\Func\Func;
 use App\Http\Controllers\ASystem\BaseController;
 use App\Models\Material;
 use App\Models\Nomenclature;
@@ -58,7 +59,7 @@ class PatternController extends BaseController
 
         $data = $request->input();
 
-        if($this->array_has_dupes($data['nomenclatures']) || $this->array_has_dupes($data['works']) || $this->array_has_dupes($data['material'])) {
+        if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
             return redirect()
                 ->route('pattern.create')
                 ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
@@ -173,14 +174,4 @@ class PatternController extends BaseController
         //
     }
 
-    function array_has_dupes($array) {
-
-        //dd($array);
-
-        if(is_string($array)) {
-            return false;
-        }
-
-        return count($array) !== count(array_unique($array));
-    }
 }

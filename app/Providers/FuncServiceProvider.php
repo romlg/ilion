@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ParserServiceProvider extends ServiceProvider
+class FuncServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -14,7 +14,7 @@ class ParserServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        require_once app_path() . '/Helpers/Parse/ExcelParser.php';
+        require_once app_path() . '/Helpers/Array/Func.php';
     }
 
     /**

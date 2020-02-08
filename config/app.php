@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\ParserServiceProvider::class,
+        App\Providers\FuncServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'ExcelParser' => App\Helpers\ExcelParser\ExcelParser::class,
+        'Func' => App\Helpers\Func\Func::class,
     ],
 
 ];
