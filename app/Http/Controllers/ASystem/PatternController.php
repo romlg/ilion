@@ -52,7 +52,7 @@ class PatternController extends BaseController
     {
         //
         $validatedData = $request->validate([
-            'title' => 'required|min:2|max:255',
+            'title' => 'required',
             'workCount' => 'required|min:1|max:255',
             'materialCount' => 'required|min:1|max:255',
         ]);
@@ -64,7 +64,6 @@ class PatternController extends BaseController
                 ->route('pattern.create')
                 ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
         }
-
         $itemPattern = new Pattern($data);
         $itemPattern->save();
 
@@ -137,8 +136,6 @@ class PatternController extends BaseController
         ]);
 
         $data = $request->all();
-
-        //dd($data);
 
         if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
             return redirect()

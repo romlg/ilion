@@ -54,7 +54,7 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="{{ old('title') }}" placeholder="Название">
+                                               value="" placeholder="Название" required>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,8 @@
                                     <div class="col">
                                         <select name="nomenclatures[]" class="form-control">
                                             @foreach($nomenclatures As $nomenclature)
-                                                <option value="{{ $nomenclature->n_id }}">{{ $nomenclature->title }}</option>
+                                                <option
+                                                    value="{{ $nomenclature->n_id }}">{{ $nomenclature->title }}</option>
                                             @endforeach
                                         </select>
 
@@ -76,7 +77,9 @@
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary" onclick="addElementNomenclature();">Добавить наменклатуру</button>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="addElementNomenclature();">Добавить наменклатуру
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +106,9 @@
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary" onclick="addElementWork();">Добавить работу</button>
+                                            <button type="button" class="btn btn-primary" onclick="addElementWork();">
+                                                Добавить работу
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +121,8 @@
                                     <div class="col col-md-6">
                                         <select name="material[]" class="form-control">
                                             @foreach($materials As $material)
-                                                <option value="{{ $material->material_id }}" data-content="({{ $material->units }})">{{ $material->title }}</option>
+                                                <option value="{{ $material->material_id }}"
+                                                        data-content="({{ $material->units }})">{{ $material->title }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -129,7 +135,9 @@
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary" onclick="addElementMaterial();">Добавить материал</button>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="addElementMaterial();">Добавить материал
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -154,15 +162,18 @@
             $("#selectNomenclatures").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_nomenclatures");
             initSelect();
         }
+
         function addElementWork() {
             $("#selectWork").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_works");
             initSelect();
         }
+
         function addElementMaterial() {
             $("#selectMaterial").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_material");
             initSelect();
         }
-        $(function() {
+
+        $(function () {
             initSelect();
         });
     </script>
