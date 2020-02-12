@@ -35,8 +35,8 @@ class PatternController extends BaseController
     public function create()
     {
         //
-        $nomenclatures = Nomenclature::all();
-        $works = Work::all();
+        $nomenclatures = Nomenclature::active()->get();
+        $works = Work::active()->get();
         $materials = Material::all();
 
         return view('asystem.patterns.create', compact('item', 'nomenclatures', 'works', 'materials'));
@@ -51,19 +51,31 @@ class PatternController extends BaseController
     public function store(Request $request)
     {
         //
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'workCount' => 'required|min:1|max:255',
-            'materialCount' => 'required|min:1|max:255',
-        ]);
-
         $data = $request->input();
+
+        foreach ($data['nomenclatures'] as $nomenclature) {
+            if( $nomenclature == null) {
+                return redirect()
+                    ->route('pattern.create')
+                    ->with(['error' => "Ошибка сохранения. Не выбрана номенклатура"]);
+            }
+        }
+
+        foreach ($data['works'] as $nomenclature) {
+            if( $nomenclature == null) {
+                return redirect()
+                    ->route('pattern.create')
+                    ->with(['error' => "Ошибка сохранения. Не выбрана работа"]);
+            }
+        }
 
         if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
             return redirect()
                 ->route('pattern.create')
                 ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
         }
+
+
         $itemPattern = new Pattern($data);
         $itemPattern->save();
 
@@ -129,13 +141,24 @@ class PatternController extends BaseController
     public function update(Request $request, $id)
     {
         //
-        $validatedData = $request->validate([
-            'title' => 'required|min:2|max:255',
-            'workCount' => 'required|min:1|max:255',
-            'materialCount' => 'required|min:1|max:255',
-        ]);
 
         $data = $request->all();
+
+        foreach ($data['nomenclatures'] as $nomenclature) {
+            if( $nomenclature == null) {
+                return redirect()
+                    ->route('pattern.edit', $id)
+                    ->with(['error' => "Ошибка сохранения. Не выбрана номенклатура"]);
+            }
+        }
+
+        foreach ($data['works'] as $nomenclature) {
+            if( $nomenclature == null) {
+                return redirect()
+                    ->route('pattern.edit', $id)
+                    ->with(['error' => "Ошибка сохранения. Не выбрана работа"]);
+            }
+        }
 
         if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
             return redirect()

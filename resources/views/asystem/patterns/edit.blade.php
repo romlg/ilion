@@ -68,6 +68,7 @@
                                         <div class="col">
                                             <select name="nomenclatures[]" class="form-control"
                                                     id="selectNomenclatures">
+                                                <option value="">не выбрано</option>
                                                 @foreach($nomenclatures As $nomenclature)
                                                     <option value="{{ $nomenclature->n_id }}"
                                                             @if($patternNomenclature->n_id == $nomenclature->n_id) selected @endif>
@@ -97,6 +98,7 @@
                                     <div class="row form-group" id="selectWork">
                                         <div class="col col-md-6">
                                             <select name="works[]" class="form-control">
+                                                <option value="">не выбрано</option>
                                                 @foreach($works As $work)
                                                     <option value="{{ $work->work_id }}"
                                                             @if($patternWork->work_id == $work->work_id) {{ $workId = $work->work_id }} selected @endif>

@@ -63,16 +63,21 @@
                                 <hr>
                                 <label>Наменклатура</label>
                                 <div class="row form-group" id="selectNomenclatures">
-                                    <div class="col">
+
+                                    <div class="col-md-11">
                                         <select name="nomenclatures[]" class="form-control">
+                                            <option value="">не выбрано</option>
                                             @foreach($nomenclatures As $nomenclature)
-                                                <option
-                                                    value="{{ $nomenclature->n_id }}">{{ $nomenclature->title }}</option>
+                                                <option value="{{ $nomenclature->n_id }}">{{ $nomenclature->title }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
 
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger" id="">X</button>
                                     </div>
                                 </div>
+
                                 <div id="new_element_nomenclatures"></div>
                                 <div class="row form-group">
                                     <div class="col">
@@ -91,6 +96,7 @@
                                 <div class="row form-group" id="selectWork">
                                     <div class="col col-md-6">
                                         <select name="works[]" class="form-control">
+                                            <option value="">не выбрано</option>
                                             @foreach($works As $work)
                                                 <option value="{{ $work->work_id }}">{{ $work->title }}</option>
                                             @endforeach
@@ -171,6 +177,12 @@
         function addElementMaterial() {
             $("#selectMaterial").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_material");
             initSelect();
+        }
+
+        function deleteElementNomenclature($id) {
+        }
+
+        function deleteElementWork($id) {
         }
 
         $(function () {

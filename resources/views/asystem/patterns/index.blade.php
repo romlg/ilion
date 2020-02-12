@@ -12,21 +12,27 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                            <th>#</th>
-                            <th>Название</th>
-                            </thead>
-                            <tbody>
-                            @foreach($paginator as $item)
-                                <tr>
-                                    <td>{{ $item->pattern_id }}</td>
-                                    <td><a href="{{ route('pattern.edit', $item->pattern_id) }}">{{ $item->title }}</a></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                        @if($paginator->total() > 0)
+                            <table class="table table-hover">
+                                <thead>
+                                <th>#</th>
+                                <th>Название</th>
+                                </thead>
+                                <tbody>
+                                @foreach($paginator as $item)
+                                    <tr>
+                                        <td>{{ $item->pattern_id }}</td>
+                                        <td>
+                                            <a href="{{ route('pattern.edit', $item->pattern_id) }}">{{ $item->title }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
 
+                        @else
+                            нет записей в базе данных
+                        @endif
                     </div>
                 </div>
 
