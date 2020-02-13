@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger" id="">X</button>
+                                        <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
                                     </div>
                                 </div>
 
@@ -82,9 +82,7 @@
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="addElementNomenclature();">Добавить наменклатуру
-                                            </button>
+                                            <button type="button" class="btn btn-primary" onclick="addElementNomenclature();">Добавить наменклатуру</button>
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +91,8 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Работы</label>
-                                <div class="row form-group" id="selectWork">
-                                    <div class="col col-md-6">
+                                <div class="row form-group" id="selectWorks">
+                                    <div class="col col-md-9">
                                         <select name="works[]" class="form-control">
                                             <option value="">не выбрано</option>
                                             @foreach($works As $work)
@@ -103,9 +101,13 @@
                                         </select>
 
                                     </div>
-                                    <div class="col col-md-6">
+                                    <div class="col col-md-2">
                                         <input type="text" class="form-control" name="workCount[]"
                                                value="{{ old('workCount') }}" placeholder="Кол-во" required>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger" name="btnWork">X</button>
                                     </div>
                                 </div>
                                 <div id="new_element_works"></div>
@@ -123,8 +125,8 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Доп-материалы</label>
-                                <div class="row form-group" id="selectMaterial">
-                                    <div class="col col-md-6">
+                                <div class="row form-group" id="selectMaterials">
+                                    <div class="col col-md-9">
                                         <select name="material[]" class="form-control">
                                             @foreach($materials As $material)
                                                 <option value="{{ $material->material_id }}"
@@ -132,9 +134,13 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col col-md-6">
+                                    <div class="col col-md-2">
                                         <input type="text" class="form-control" name="materialCount[]"
                                                value="{{ old('materialCount') }}" placeholder="Кол-во" required>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger" name="btnMaterial">X</button>
                                     </div>
                                 </div>
                                 <div id="new_element_material"></div>
@@ -164,26 +170,67 @@
     </div>
 
     <script type="text/javascript">
+
+        var idNomenclature=0;
+        var idWork=0;
+        var idMaterial=0;
+
         function addElementNomenclature() {
-            $("#selectNomenclatures").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_nomenclatures");
+            $("#selectNomenclatures").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idNomenclature=idNomenclature+1;
+                this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
+            }).appendTo("#new_element_nomenclatures");
             initSelect();
         }
 
         function addElementWork() {
-            $("#selectWork").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_works");
+            $("#selectWorks").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idWork=idWork+1;
+                this.id = 'selectWork' + idWork; // to keep it unique
+            }).appendTo("#new_element_works");
             initSelect();
         }
 
         function addElementMaterial() {
-            $("#selectMaterial").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_material");
+            $("#selectMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idMaterial=idMaterial+1;
+                this.id = 'selectMaterial' + idMaterial; // to keep it unique
+            }).appendTo("#new_element_material");
             initSelect();
         }
 
-        function deleteElementNomenclature($id) {
-        }
+        $("button[name='btnNomenclature']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectNomenclatures") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
 
-        function deleteElementWork($id) {
-        }
+            });
+        });
+
+        $("button[name='btnWork']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectWorks") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+
+            });
+        });
+
+        $("button[name='btnMaterial']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectMaterials") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+
+            });
+        });
 
         $(function () {
             initSelect();
