@@ -63,9 +63,10 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Наменклатура</label>
-                                @foreach ($item->nomenclatures as $patternNomenclature)
-                                    <div class="row form-group" id="selectNomenclatures">
-                                        <div class="col">
+                                @foreach ($item->nomenclatures as $key => $patternNomenclature)
+                                    <div class="row form-group" id="selectNomenclatures{{ $key }}">
+
+                                        <div class="col-11">
                                             <select name="nomenclatures[]" class="form-control"
                                                     id="selectNomenclatures">
                                                 <option value="">не выбрано</option>
@@ -76,6 +77,10 @@
                                                     </option>
                                                 @endforeach>
                                             </select>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -94,9 +99,10 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Работы</label>
-                                @foreach ($item->works as $patternWork)
-                                    <div class="row form-group" id="selectWork">
-                                        <div class="col col-md-6">
+                                @foreach ($item->works as $key => $patternWork)
+
+                                    <div class="row form-group" id="selectWorks{{ $key }}">
+                                        <div class="col col-md-9">
                                             <select name="works[]" class="form-control">
                                                 <option value="">не выбрано</option>
                                                 @foreach($works As $work)
@@ -107,10 +113,14 @@
                                                 @endforeach>
                                             </select>
                                         </div>
-                                        <div class="col col-md-6">
+                                        <div class="col col-md-2">
                                             <input type="text" class="form-control" name="workCount[]"
                                                    value="{{ $item->works->where('work_id', $workId)->first()->count }}"
                                                    placeholder="Кол-во" required>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" name="btnWork">X</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -129,9 +139,9 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Доп-материалы</label>
-                                @foreach ($item->materials as $patternMaterial)
-                                    <div class="row form-group" id="selectMaterial">
-                                        <div class="col col-md-6l">
+                                @foreach ($item->materials as $key => $patternMaterial)
+                                    <div class="row form-group" id="selectMaterials{{ $key }}">
+                                        <div class="col col-md-9">
                                             <select name="material[]" class="form-control">
                                                 @foreach($materials As $material)
                                                     <option value="{{ $material->material_id }}"
@@ -142,10 +152,14 @@
                                                 @endforeach>
                                             </select>
                                         </div>
-                                        <div class="col col-md-6">
+                                        <div class="col col-md-2">
                                             <input type="text" class="form-control" name="materialCount[]"
                                                    value="{{ $item->materials->where('material_id', $materialId)->first()->count }}"
                                                    placeholder="Кол-во" required>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" name="btnMaterial">X</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -178,25 +192,71 @@
     </div>
 
     <script type="text/javascript">
+
+        var idNomenclature=0;
+        var idWork=0;
+        var idMaterial=0;
+
         function addElementNomenclature() {
-            $("#selectNomenclatures").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_nomenclatures");
+            $("#selectNomenclatures0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idNomenclature=idNomenclature+1;
+                this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
+            }).appendTo("#new_element_nomenclatures");
             initSelect();
         }
 
         function addElementWork() {
-            $("#selectWork").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_works");
+            $("#selectWorks0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idWork=idWork+1;
+                this.id = 'selectWork' + idWork; // to keep it unique
+            }).appendTo("#new_element_works");
             initSelect();
         }
 
         function addElementMaterial() {
-            $("#selectMaterial").clone().removeClass('d-none').find("input:text").val("").end().appendTo("#new_element_material");
+            $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idMaterial=idMaterial+1;
+                this.id = 'selectMaterial' + idMaterial; // to keep it unique
+            }).appendTo("#new_element_material");
             initSelect();
         }
+
+        $("button[name='btnNomenclature']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectNomenclatures0") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+
+            });
+        });
+
+        $("button[name='btnWork']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectWorks0") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+
+            });
+        });
+
+        $("button[name='btnMaterial']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectMaterials0") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+
+            });
+        });
 
         $(function () {
             initSelect();
         });
     </script>
-
 
 @endsection
