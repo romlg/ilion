@@ -140,8 +140,6 @@ class PatternController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
-
         $data = $request->all();
 
         foreach ($data['nomenclatures'] as $nomenclature) {
@@ -206,6 +204,11 @@ class PatternController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    public function copy(Request $request)
+    {
+        dd($request->all());
     }
 
 }
