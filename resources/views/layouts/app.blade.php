@@ -101,6 +101,9 @@
                                     <a class="nav-link" href="{{ route('pattern.index') }}">Шаблоны</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('filters.index') }}">Фильтры</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('object.index') }}">Объекты</a>
                                 </li>
                                 <li class="nav-item">
