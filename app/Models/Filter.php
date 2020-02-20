@@ -11,4 +11,9 @@ class Filter extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function materials()
+    {
+        return $this->hasMany('App\Models\FilterUnit', 'filter_id', 'filter_id');
+    }
 }

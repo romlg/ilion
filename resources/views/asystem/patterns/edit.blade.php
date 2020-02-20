@@ -114,7 +114,7 @@
                                             </select>
                                         </div>
                                         <div class="col col-md-2">
-                                            <input type="text" class="form-control" name="workCount[]"
+                                            <input type="number" class="form-control" name="workCount[]"
                                                    value="{{ $item->works->where('work_id', $workId)->first()->count }}"
                                                    placeholder="Кол-во" required>
                                         </div>
@@ -153,7 +153,7 @@
                                             </select>
                                         </div>
                                         <div class="col col-md-2">
-                                            <input type="text" class="form-control" name="materialCount[]"
+                                            <input type="number" class="form-control" name="materialCount[]"
                                                    value="{{ $item->materials->where('material_id', $materialId)->first()->count }}"
                                                    placeholder="Кол-во" required>
                                         </div>

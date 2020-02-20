@@ -93,6 +93,7 @@ class FiltersController extends BaseController
     public function edit($id)
     {
         //
+
         $item = Filter::findOrFail($id);
         $materials = Material::all();
 
@@ -125,6 +126,11 @@ class FiltersController extends BaseController
         $result = $itemFilter
             ->fill($data)
             ->save();
+
+        FilterUnit::where('filter_id', $id)->delete();
+        foreach ($data['material'] as $key => $material) {
+            FilterUnit::insert(['filter_id' => $itemFilter->filter_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
+        }
 
         if ($result) {
             return redirect()
