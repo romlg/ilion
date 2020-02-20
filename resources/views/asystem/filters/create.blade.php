@@ -50,7 +50,7 @@
                                     <div class="col-md-8">
                                         <button type="submit" class="btn btn-primary">Создать</button>
 
-                                        <a class="btn btn-primary" href="{{ route('group.index') }}">Закрыть</a>
+                                        <a class="btn btn-primary" href="{{ route('filter.index') }}">Закрыть</a>
 
                                     </div>
                                 </div>

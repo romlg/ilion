@@ -45,7 +45,6 @@ class FiltersController extends BaseController
 
         $data = $request->input();
 
-
         $itemFilter = new Filter($data);
         $itemFilter->save();
 
@@ -81,7 +80,6 @@ class FiltersController extends BaseController
     {
         //
         $item = Filter::findOrFail($id);
-
         return view('asystem.filters.edit', compact('item'));
     }
 
@@ -130,6 +128,26 @@ class FiltersController extends BaseController
 
     public function copy(Request $request)
     {
+        $data = $request->all();
+
+        if(!isset($data['filter'])) {
+            return back()
+                ->withErrors(['msg' => "Фильтр не выбран"])
+                ->withInput();
+        }
+
+        foreach ($data['filter'] as $filterId) {
+
+            $filterCopy = Filter::find($filterId);
+
+            $filter = new Filter();
+            $filter->title = $filterCopy->title . ' copy';
+            $filter->save();
+        }
+
+        return redirect()
+            ->route('filter.index')
+            ->with(['success' => "Успешно скопированы"]);
 
     }
 }

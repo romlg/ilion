@@ -238,7 +238,6 @@ class PatternController extends BaseController
             foreach ( $patternMaterials as $patternMaterial) {
                 PatternAdditionalMaterials::insert(['pattern_id' => $pattern->pattern_id, 'material_id' => $patternMaterial->material_id, 'count' => $patternMaterial->count]);
             }
-
         }
 
         return redirect()
