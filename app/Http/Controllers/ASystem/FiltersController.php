@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Filter;
 use Illuminate\Http\Request;
 
 class FiltersController extends BaseController
@@ -14,8 +15,8 @@ class FiltersController extends BaseController
      */
     public function index()
     {
-        //
-        return view('asystem.filters.index');
+        $paginator =  Filter::paginate(4);
+        return view('asystem.filters.index' , compact('paginator'));
     }
 
     /**
@@ -38,6 +39,25 @@ class FiltersController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
+        $data = $request->input();
+
+
+        $itemFilter = new Filter($data);
+        $itemFilter->save();
+
+        if($itemFilter) {
+            return redirect()
+                ->route('filter.edit', $itemFilter->filter_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -60,7 +80,9 @@ class FiltersController extends BaseController
     public function edit($id)
     {
         //
-        return view('asystem.filters.edit');
+        $item = Filter::findOrFail($id);
+
+        return view('asystem.filters.edit', compact('item'));
     }
 
     /**
@@ -73,6 +95,26 @@ class FiltersController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
+        $data = $request->all();
+
+        $itemFilter = Filter::find($id);
+        $result = $itemFilter
+            ->fill($data)
+            ->save();
+
+        if ($result) {
+            return redirect()
+                ->route('filter.edit', $itemFilter->filter_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
@@ -84,5 +126,10 @@ class FiltersController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    public function copy(Request $request)
+    {
+
     }
 }

@@ -33,6 +33,28 @@
                             </div>
                         @endif
 
+                            <form method="POST" action="{{ route('filter.store') }}">
+
+                                @csrf
+                                <div class="form-group">
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <label>Название</label>
+                                            <input type="text" class="form-control" name="title"
+                                                   value="{{ old('name') }}" placeholder="Название">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-8">
+                                        <button type="submit" class="btn btn-primary">Создать</button>
+
+                                        <a class="btn btn-primary" href="{{ route('group.index') }}">Закрыть</a>
+
+                                    </div>
+                                </div>
+                            </form>
 
                     </div>
                 </div>
