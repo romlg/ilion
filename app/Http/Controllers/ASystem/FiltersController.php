@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\ASystem;
 
+use App\Helpers\Func\Func;
 use App\Http\Controllers\ASystem\BaseController;
 use App\Models\Filter;
+use App\Models\FilterUnit;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
 class FiltersController extends BaseController
@@ -27,7 +30,8 @@ class FiltersController extends BaseController
     public function create()
     {
         //
-        return view('asystem.filters.create');
+        $materials = Material::all();
+        return view('asystem.filters.create', compact('materials'));
     }
 
     /**
@@ -45,8 +49,18 @@ class FiltersController extends BaseController
 
         $data = $request->input();
 
+        if(Func::array_has_dupes($data['material'])) {
+            return redirect()
+                ->route('filter.create')
+                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
+        }
+
         $itemFilter = new Filter($data);
         $itemFilter->save();
+
+        foreach ($data['material'] as $key => $material) {
+            FilterUnit::insert(['filter_id' => $itemFilter->filter_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
+        }
 
         if($itemFilter) {
             return redirect()
@@ -80,7 +94,9 @@ class FiltersController extends BaseController
     {
         //
         $item = Filter::findOrFail($id);
-        return view('asystem.filters.edit', compact('item'));
+        $materials = Material::all();
+
+        return view('asystem.filters.edit', compact('item', 'materials'));
     }
 
     /**
@@ -98,6 +114,12 @@ class FiltersController extends BaseController
         ]);
 
         $data = $request->all();
+
+        if(Func::array_has_dupes($data['material'])) {
+            return redirect()
+                ->route('filter.edit', $id)
+                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
+        }
 
         $itemFilter = Filter::find($id);
         $result = $itemFilter
