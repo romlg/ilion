@@ -165,6 +165,11 @@ class FiltersController extends BaseController
             $filter = new Filter();
             $filter->title = $filterCopy->title . ' copy';
             $filter->save();
+
+            $filterMaterials = FilterUnit::where('filter_id', $filterId)->get();
+            foreach ( $filterMaterials as $filterMaterial) {
+                FilterUnit::insert(['filter_id' => $filter->filter_id, 'material_id' => $filterMaterial->material_id, 'count' => $filterMaterial->count]);
+            }
         }
 
         return redirect()
