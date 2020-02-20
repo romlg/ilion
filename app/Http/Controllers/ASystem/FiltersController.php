@@ -180,7 +180,7 @@ class FiltersController extends BaseController
 
         return redirect()
             ->route('filter.index')
-            ->with(['success' => "Успешно скопированы"]);
+            ->with(['success' => "Фильтры успешно скопированы"]);
 
     }
 }

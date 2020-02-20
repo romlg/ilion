@@ -242,7 +242,7 @@ class PatternController extends BaseController
 
         return redirect()
             ->route('pattern.index')
-            ->with(['success' => "Успешно скопированы"]);
+            ->with(['success' => "Шаблоны успешно скопированы"]);
 
     }
 
