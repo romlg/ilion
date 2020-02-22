@@ -55,7 +55,7 @@
                                         <div class="col">
                                             <label>Название</label>
                                             <input type="text" class="form-control" name="title"
-                                                   value="{{ old('name') }}" placeholder="Название">
+                                                   value="" placeholder="Название">
                                         </div>
                                     </div>
 
@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="col col-md-2">
                                             <input type="number" class="form-control" name="materialCount[]"
-                                                   value="{{ old('materialCount') }}" placeholder="Кол-во" required min="1">
+                                                   value="" placeholder="Кол-во" required min="1">
                                         </div>
 
                                         <div class="col-md-1">

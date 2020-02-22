@@ -55,7 +55,7 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value=" {{ $item->title }}" placeholder="Название" required>
+                                               value=" {{ $item->title }}" placeholder="Название">
                                     </div>
                                 </div>
                             </div>

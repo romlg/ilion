@@ -51,6 +51,10 @@ class PatternController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $data = $request->input();
 
         foreach ($data['nomenclatures'] as $nomenclature) {
@@ -140,6 +144,10 @@ class PatternController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $data = $request->all();
 
         foreach ($data['nomenclatures'] as $nomenclature) {
