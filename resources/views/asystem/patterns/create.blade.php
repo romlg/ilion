@@ -103,7 +103,7 @@
                                     </div>
                                     <div class="col col-md-2">
                                         <input type="number" class="form-control" name="workCount[]"
-                                               value="{{ old('workCount') }}" placeholder="Кол-во" required>
+                                               value="{{ old('workCount') }}" placeholder="Кол-во" required min="1">
                                     </div>
 
                                     <div class="col-md-1">
@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="col col-md-2">
                                         <input type="number" class="form-control" name="materialCount[]"
-                                               value="{{ old('materialCount') }}" placeholder="Кол-во" required>
+                                               value="{{ old('materialCount') }}" placeholder="Кол-во" required min="1">
                                     </div>
 
                                     <div class="col-md-1">

@@ -79,7 +79,7 @@
                                             <div class="col col-md-2">
                                                 <input type="number" class="form-control" name="materialCount[]"
                                                        value="{{ $item->materials->where('material_id', $materialId)->first()->count }}"
-                                                       placeholder="Кол-во" required>
+                                                       placeholder="Кол-во" required min="1">
                                             </div>
 
                                             <div class="col-md-1">
