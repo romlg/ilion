@@ -28,6 +28,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('group', 'ASystem\GroupController')->names('group');
 
+    Route::resource('filter', 'ASystem\FiltersController')->names('filter');
+    Route::post('/filter_copy', ['as' =>'filter.copy', 'uses' => 'ASystem\FiltersController@copy']);
+
+    Route::resource('pattern', 'ASystem\PatternController')->names('pattern');
+    Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);
+
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
     Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);
     Route::post('/nomenclature_upload', ['as' =>'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@uploadSave']);

@@ -45,6 +45,13 @@ class WorkController extends BaseController
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'units' => 'required|min:2|max:255',
+            'wtime' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'wprice' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+        ]);
+
         $data = $request->input();
 
         $item = new Work($data);
@@ -52,7 +59,7 @@ class WorkController extends BaseController
 
         if($item) {
             return redirect()
-                ->route('work.edit', $item->n_id)
+                ->route('work.edit', $item->work_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -95,7 +102,13 @@ class WorkController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'units' => 'required|min:2|max:255',
+            'wtime' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'wprice' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+        ]);
+
         $item = Work::find($id);
 
         $data = $request->all();

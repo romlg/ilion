@@ -43,7 +43,10 @@ class NomenclatureController extends BaseController
     public function store(Request $request)
     {
         //
-        //dd($request->input());
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $data = $request->input();
 
         $item = new Nomenclature($data);
@@ -95,6 +98,10 @@ class NomenclatureController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
         $item = Nomenclature::find($id);
 
         $data = $request->all();
