@@ -71,51 +71,16 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Вход</a>
                             </li>
                         @else
-                        <!-- Authentication Links -->
-                            @if(Auth::user()->isAdmin())
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('users.index') }}">Пользователи</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('contract.index') }}">Документы</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('group.index') }}">Группы</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('work.index') }}">Работа</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('nomenclature.index') }}">Номенклатура</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('specification.index') }}">Спецификации</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('pattern.index') }}">Шаблоны</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('filter.index') }}">Фильтры</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('object.index') }}">Объекты</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('material.index') }}">Материалы</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('aorder.index') }}">Заявки</a>
-                                </li>
+
 {{--                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('factsheet.index') }}">Отчёт объекта</a>
                                 </li>--}}
-                            @endif
+
                             @if(!Auth::user()->isAdmin() && Auth::user()->isActive())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('fact.index') }}">ЛФУ</a>
@@ -124,6 +89,49 @@
                                     <a class="nav-link" href="{{ route('order.index') }}">Заявки</a>
                                 </li>
                             @endif
+
+                            <!-- Authentication Links -->
+                            @if(Auth::user()->isAdmin())
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Справочник <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('nomenclature.index') }}">Номенклатура</a>
+                                    <a class="dropdown-item" href="{{ route('pattern.index') }}">Шаблоны</a>
+                                    <a class="dropdown-item" href="{{ route('work.index') }}">Работа</a>
+                                    <a class="dropdown-item" href="{{ route('filter.index') }}">Фильтры</a>
+                                    <a class="dropdown-item" href="{{ route('object.index') }}">Объекты</a>
+                                    <a class="dropdown-item" href="{{ route('material.index') }}">Материалы</a>
+                                    <a class="dropdown-item" href="{{ route('group.index') }}">Группы</a>
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">Пользователи</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Документ <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('specification.index') }}">Спецификации</a>
+                                    <a class="dropdown-item" href="{{ route('contract.index') }}">Документы</a>
+                                    <a class="dropdown-item" href="{{ route('aorder.index') }}">Заявки</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Иное <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('home') }}" />
+                                    Кабинет
+                                    </a>
+                                </div>
+                            </li>
+                            @endif
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
