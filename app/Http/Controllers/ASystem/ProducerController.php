@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ASystem;
 
+use App\Http\Controllers\ASystem\BaseController;
+use App\Models\Producer;
 use Illuminate\Http\Request;
 
-class ProducerController extends Controller
+class ProducerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,6 +16,8 @@ class ProducerController extends Controller
     public function index()
     {
         //
+        $paginator =  Producer::paginate(4);
+        return view('asystem.producer.index' , compact('paginator'));
     }
 
     /**

@@ -103,6 +103,7 @@
                                     <a class="dropdown-item" href="{{ route('work.index') }}">Работа</a>
                                     <a class="dropdown-item" href="{{ route('filter.index') }}">Фильтры</a>
                                     <a class="dropdown-item" href="{{ route('object.index') }}">Объекты</a>
+                                    <a class="dropdown-item" href="{{ route('producer.index') }}">Производитель</a>
                                     <a class="dropdown-item" href="{{ route('material.index') }}">Материалы</a>
                                     <a class="dropdown-item" href="{{ route('group.index') }}">Группы</a>
                                     <a class="dropdown-item" href="{{ route('users.index') }}">Пользователи</a>

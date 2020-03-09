@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Filters extends Migration
+class Producers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,11 @@ class Filters extends Migration
     public function up()
     {
         //
-        if(!Schema::hasTable('filters')) {
-            Schema::create('filters', function (Blueprint $table) {
-                $table->increments('filter_id');
+        if(!Schema::hasTable('producers')) {
+            Schema::create('producers', function (Blueprint $table) {
+                $table->increments('producer_id');
                 $table->text('title');
+                $table->tinyInteger('status')->default(0);
                 $table->timestamps();
             });
         }
@@ -31,6 +32,6 @@ class Filters extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('filters');
+        Schema::dropIfExists('producers');
     }
 }

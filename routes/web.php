@@ -28,6 +28,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('group', 'ASystem\GroupController')->names('group');
 
+    Route::resource('producer', 'ASystem\ProducerController')->names('producer');
+
     Route::resource('filter', 'ASystem\FiltersController')->names('filter');
     Route::post('/filter_copy', ['as' =>'filter.copy', 'uses' => 'ASystem\FiltersController@copy']);
 

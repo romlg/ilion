@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class FilterUnit extends Migration
+class PatternMaterials extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,12 @@ class FilterUnit extends Migration
     public function up()
     {
         //
-        if(!Schema::hasTable('filter_unit')) {
-            Schema::create('filter_unit', function (Blueprint $table) {
-                $table->increments('funit_id');
-                $table->integer('filter_id');
-                $table->integer('material_id');
-                $table->integer('count');
+        if(!Schema::hasTable('pattern_materials')) {
+            Schema::create('pattern_materials', function (Blueprint $table) {
+                $table->increments('pattern_materials_id');
+                $table->text('title');
+                $table->integer('unit');
+                $table->timestamps();
             });
         }
     }
@@ -32,6 +32,6 @@ class FilterUnit extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('filter_unit');
+        Schema::dropIfExists('pattern_materials');
     }
 }
