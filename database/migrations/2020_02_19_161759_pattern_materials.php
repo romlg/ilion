@@ -16,7 +16,7 @@ class PatternMaterials extends Migration
         //
         if(!Schema::hasTable('pattern_materials')) {
             Schema::create('pattern_materials', function (Blueprint $table) {
-                $table->increments('pattern_materials_id');
+                $table->increments('pattern_material_id');
                 $table->text('title');
                 $table->integer('unit');
                 $table->timestamps();

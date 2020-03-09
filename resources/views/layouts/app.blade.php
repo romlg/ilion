@@ -101,7 +101,8 @@
                                     <a class="dropdown-item" href="{{ route('nomenclature.index') }}">Номенклатура</a>
                                     <a class="dropdown-item" href="{{ route('pattern.index') }}">Шаблоны</a>
                                     <a class="dropdown-item" href="{{ route('work.index') }}">Работа</a>
-                                    <a class="dropdown-item" href="{{ route('filter.index') }}">Фильтры</a>
+{{--                                    <a class="dropdown-item" href="{{ route('filter.index') }}">Фильтры</a>--}}
+                                    <a class="dropdown-item" href="{{ route('patternMaterials.index') }}">Шаблон материалов</a>
                                     <a class="dropdown-item" href="{{ route('object.index') }}">Объекты</a>
                                     <a class="dropdown-item" href="{{ route('producer.index') }}">Производитель</a>
                                     <a class="dropdown-item" href="{{ route('material.index') }}">Материалы</a>
