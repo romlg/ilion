@@ -31,8 +31,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
     Route::resource('producer', 'ASystem\ProducerController')->names('producer');
 
     Route::resource('patternMaterials', 'ASystem\PatternMaterials')->names('patternMaterials');
-    //Route::resource('filter', 'ASystem\FiltersController')->names('filter');
-    //Route::post('/filter_copy', ['as' =>'filter.copy', 'uses' => 'ASystem\FiltersController@copy']);
 
     Route::resource('pattern', 'ASystem\PatternController')->names('pattern');
     Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);

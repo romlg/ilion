@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers\ASystem;
 
-use App\Helpers\Func\Func;
 use App\Http\Controllers\ASystem\BaseController;
-//use App\Models\Filter;
-//use App\Models\FilterUnit;
-
 use App\Models\PatternMaterials as PM;
-//use App\Models\Material;
 use Illuminate\Http\Request;
 
 class PatternMaterials extends BaseController
@@ -135,33 +130,4 @@ class PatternMaterials extends BaseController
         //
     }
 
-//    public function copy(Request $request)
-//    {
-//        $data = $request->all();
-//
-//        if(!isset($data['filter'])) {
-//            return back()
-//                ->withErrors(['msg' => "Фильтр не выбран"])
-//                ->withInput();
-//        }
-//
-//        foreach ($data['filter'] as $filterId) {
-//
-//            $filterCopy = Filter::find($filterId);
-//
-//            $filter = new Filter();
-//            $filter->title = $filterCopy->title . ' copy';
-//            $filter->save();
-//
-//            $filterMaterials = FilterUnit::where('filter_id', $filterId)->get();
-//            foreach ( $filterMaterials as $filterMaterial) {
-//                FilterUnit::insert(['filter_id' => $filter->filter_id, 'material_id' => $filterMaterial->material_id, 'count' => $filterMaterial->count]);
-//            }
-//        }
-//
-//        return redirect()
-//            ->route('filter.index')
-//            ->with(['success' => "Фильтры успешно скопированы"]);
-//
-//    }
 }
