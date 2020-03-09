@@ -33,7 +33,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('group.update', $item->group_id) }}">
+                        <form method="POST" action="{{ route('producer.update', $item->producer_id) }}">
 
                             @method('PATCH')
                             @csrf
@@ -44,13 +44,20 @@
                                         <input type="text" class="form-control" name="title"
                                                value=" {{ $item->title }}" placeholder="Название">
                                     </div>
+                                    <div class="col">
+                                        <label>Статус</label>
+                                        <select name="is_active" class="form-control">
+                                            <option value="1" @if($item->is_active == 1) selected @endif>Активированный</option>
+                                            <option value="0" @if($item->is_active == 0) selected @endif>Деактивированный</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
                                     <button type="submit" class="btn btn-primary">Сохранить</button>
 
-                                    <a class="btn btn-primary" href="{{ route('group.index') }}">Закрыть</a>
+                                    <a class="btn btn-primary" href="{{ route('producer.index') }}">Закрыть</a>
 
                                 </div>
                             </div>

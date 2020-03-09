@@ -33,25 +33,29 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('group.store') }}">
-
+                        <form method="POST" action="{{ route('producer.store') }}">
                             @csrf
                             <div class="form-group">
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="{{ old('name') }}" placeholder="Название">
+                                               value="{{ old('title') }}" placeholder="Название">
+                                    </div>
+
+                                    <div class="col">
+                                        <label>Статус</label>
+                                        <select name="is_active" class="form-control">
+                                            <option value="1" selected >Активированный</option>
+                                            <option value="0" >Деактивированный</option>
+                                        </select>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
                                     <button type="submit" class="btn btn-primary">Создать</button>
-
-                                    <a class="btn btn-primary" href="{{ route('group.index') }}">Закрыть</a>
-
+                                    <a class="btn btn-primary" href="{{ route('producer.index') }}">Закрыть</a>
                                 </div>
                             </div>
                         </form>

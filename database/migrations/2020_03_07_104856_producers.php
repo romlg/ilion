@@ -18,7 +18,7 @@ class Producers extends Migration
             Schema::create('producers', function (Blueprint $table) {
                 $table->increments('producer_id');
                 $table->text('title');
-                $table->tinyInteger('status')->default(0);
+                $table->tinyInteger('is_active')->default(0);
                 $table->timestamps();
             });
         }
