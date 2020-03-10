@@ -52,7 +52,7 @@ class ProducerController extends BaseController
 
         if($item) {
             return redirect()
-                ->route('producers.edit', $item->producer_id)
+                ->route('producer.edit', $item->producer_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()

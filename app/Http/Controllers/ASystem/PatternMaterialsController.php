@@ -6,7 +6,7 @@ use App\Http\Controllers\ASystem\BaseController;
 use App\Models\PatternMaterials as PM;
 use Illuminate\Http\Request;
 
-class PatternMaterials extends BaseController
+class PatternMaterialsController extends BaseController
 {
     /**
      * Display a listing of the resource.

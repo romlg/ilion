@@ -40,7 +40,7 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="" placeholder="Название">
+                                               value="{{ old('title') }}" placeholder="Название">
                                     </div>
 
                                     <div class="col">

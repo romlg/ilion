@@ -12,23 +12,23 @@
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
-                                <th>#</th>
-                                <th>Название</th>
-                                <th>Категория</th>
+                            <th>#</th>
+                            <th>Название</th>
                             </thead>
                             <tbody>
                             @if($paginator->total())
-                            @foreach($paginator as $item)
-                            <tr>
-                                <td>{{ $item->material_id }}</td>
-                                <td><a href="{{ route('material.edit', $item->material_id) }}">{{ $item->title }}</a></td>
-                                <td> - </td>
-                            </tr>
-                            @endforeach
+                                @foreach($paginator as $item)
+                                    <tr>
+                                        <td>{{ $item->material_id }}</td>
+                                        <td>
+                                            <a href="{{ route('material.edit', $item->material_id) }}">{{ $item->title }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @else
-                            <tr>
-                                <td colspan="3">Пока ещё ничего нет</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="3">Пока ещё ничего нет</td>
+                                </tr>
                             @endif
                             </tbody>
                         </table>
