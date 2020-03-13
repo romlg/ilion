@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Patterns extends Migration
+class PatternPrices extends Migration
 {
-    /**c
+    /*
      * Run the migrations.
      *
      * @return void
@@ -14,9 +14,9 @@ class Patterns extends Migration
     public function up()
     {
         //
-        if(!Schema::hasTable('patterns')) {
-            Schema::create('patterns', function (Blueprint $table) {
-                $table->increments('pattern_id');
+        if(!Schema::hasTable('pattern_prices')) {
+            Schema::create('pattern_prices', function (Blueprint $table) {
+                $table->increments('pattern_price_id');
                 $table->text('title');
                 $table->timestamps();
             });
@@ -31,6 +31,6 @@ class Patterns extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('patterns');
+        Schema::dropIfExists('pattern_prices');
     }
 }

@@ -39,7 +39,7 @@ class PatternController extends BaseController
         $works = Work::active()->get();
         $materials = Material::all();
 
-        return view('asystem.patterns.create', compact('item', 'nomenclatures', 'works', 'materials'));
+        return view('asystem.patterns.create', compact('nomenclatures', 'works', 'materials'));
     }
 
     /**

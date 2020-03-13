@@ -32,8 +32,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('pattern_materials', 'ASystem\PatternMaterialsController')->names('patternMaterials');
 
-    Route::resource('pattern', 'ASystem\PatternController')->names('pattern');
-    Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);
+/*    Route::resource('pattern', 'ASystem\PatternController')->names('pattern');
+    Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);*/
+
+    Route::resource('pattern_prices', 'ASystem\PatternPricesController')->names('patternPrices');
 
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
     Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);

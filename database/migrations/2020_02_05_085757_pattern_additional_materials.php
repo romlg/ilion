@@ -19,8 +19,6 @@ class PatternAdditionalMaterials extends Migration
                 $table->increments('pam_id');
                 $table->integer('pattern_id');
                 $table->integer('material_id');
-                $table->integer('count');
-
             });
         }
     }
