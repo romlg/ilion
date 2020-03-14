@@ -123,13 +123,13 @@ class PatternPricesController extends BaseController
     public function edit($id)
     {
         //
-        $item = Pattern::findOrFail($id);
+        $item = PatternPrices::findOrFail($id);
 
-        $works = Work::all();
-        $materials = Material::all();
         $nomenclatures = Nomenclature::all();
+        $works = Work::all();
+        $patternMaterials = PatternMaterials::all();
 
-        return view('asystem.patterns.edit', compact('item', 'nomenclatures', 'works', 'materials'));
+        return view('asystem.pattern_prices.edit', compact('item', 'nomenclatures', 'works', 'patternMaterials'));
     }
 
     /**

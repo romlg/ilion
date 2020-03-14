@@ -12,14 +12,14 @@ class PatternPrices extends Model
         'title'
     ];
 
-    public function patternMaterials()
+    public function materials()
     {
-        return $this->hasMany('App\Models\PatternMaterials', 'pattern_material_id', 'pattern_price_id');
+        return $this->hasMany('App\Models\PatternAdditionalMaterials', 'pattern_id', 'pattern_price_id');
     }
 
     public function nomenclatures()
     {
-        return $this->hasMany('App\Models\PatternNomenclatures', 'pattern_id', 'pattern_price_id');
+        return $this->hasOne('App\Models\PatternNomenclatures', 'pattern_id', 'pattern_price_id');
     }
 
     public function works()

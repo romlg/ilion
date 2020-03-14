@@ -46,7 +46,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('pattern.update', $item->pattern_id) }}">
+                        <form method="POST" action="{{ route('patternPrices.update', $item->pattern_price_id) }}">
 
                             @method('PATCH')
                             @csrf
@@ -55,7 +55,7 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value=" {{ $item->title }}" placeholder="Название">
+                                               value="{{ $item->title }}" placeholder="Название" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -63,35 +63,19 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Наменклатура</label>
-                                @foreach ($item->nomenclatures as $key => $patternNomenclature)
-                                    <div class="row form-group" id="selectNomenclatures{{ $key }}">
+                                <div class="row form-group" id="selectNomenclatures">
 
-                                        <div class="col-11">
-                                            <select name="nomenclatures[]" class="form-control"
-                                                    id="selectNomenclatures">
-                                                <option value="">не выбрано</option>
-                                                @foreach($nomenclatures As $nomenclature)
-                                                    <option value="{{ $nomenclature->n_id }}"
-                                                            @if($patternNomenclature->n_id == $nomenclature->n_id) selected @endif>
-                                                        {{ $nomenclature->title }}
-                                                    </option>
-                                                @endforeach>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-1">
-                                            <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                                <div id="new_element_nomenclatures"></div>
-                                <div class="row form-group">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="addElementNomenclature();">Добавить наменклатуру
-                                            </button>
-                                        </div>
+                                    <div class="col-12">
+                                        <select name="nomenclatures" class="form-control"
+                                                id="dropdownListNomenclatures">
+                                            <option value="">не выбрано</option>
+                                            @foreach($nomenclatures As $nomenclature)
+                                                <option value="{{ $nomenclature->n_id }}"
+                                                        @if($item->nomenclatures->n_id == $nomenclature->n_id) selected @endif>
+                                                    {{ $nomenclature->title }}
+                                                </option>
+                                            @endforeach>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -138,24 +122,18 @@
 
                             <div class="form-group">
                                 <hr>
-                                <label>Доп-материалы</label>
-                                @foreach ($item->materials as $key => $patternMaterial)
+                                <label>Шаблон материалов</label>
+                                @foreach ( $item->materials as $key => $patternAdditionalMaterial )
                                     <div class="row form-group" id="selectMaterials{{ $key }}">
-                                        <div class="col col-md-9">
+                                        <div class="col col-md-11">
                                             <select name="material[]" class="form-control">
-                                                @foreach($materials As $material)
-                                                    <option value="{{ $material->material_id }}"
-                                                            data-content="({{ $material->units }})"
-                                                            @if($patternMaterial->material_id == $material->material_id) {{ $materialId = $material->material_id }} selected @endif>
-                                                        {{ $material->title }}
+                                                @foreach($patternMaterials As $patternMaterial)
+                                                    <option value="{{ $patternMaterial->pattern_material_id }}"
+                                                        @if( $patternAdditionalMaterial->material_id == $patternMaterial->pattern_material_id ) selected @endif>
+                                                        {{ $patternMaterial->title }}
                                                     </option>
                                                 @endforeach>
                                             </select>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <input type="number" class="form-control" name="materialCount[]"
-                                                   value="{{ $item->materials->where('material_id', $materialId)->first()->count }}"
-                                                   placeholder="Кол-во" required min="1">
                                         </div>
 
                                         <div class="col-md-1">
@@ -179,11 +157,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">
                                     <button type="submit" class="btn btn-primary">Сохранить</button>
-                                    <a class="btn btn-primary" href="{{ route('pattern.index') }}">Закрыть</a>
+                                    <a class="btn btn-primary" href="{{ route('patternPrices.index') }}">Закрыть</a>
                                 </div>
                             </div>
                         </form>
-
 
                     </div>
                 </div>
@@ -193,65 +170,48 @@
 
     <script type="text/javascript">
 
-        var idNomenclature=0;
-        var idWork=0;
-        var idMaterial=0;
-
-        function addElementNomenclature() {
-            $("#selectNomenclatures0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-                idNomenclature=idNomenclature+1;
-                this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
-            }).appendTo("#new_element_nomenclatures");
-            initSelect();
-        }
+        var idWork = 0;
+        var idMaterial = 0;
 
         function addElementWork() {
-            $("#selectWorks0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-                idWork=idWork+1;
+            $("#selectWorks0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+                idWork = idWork + 1;
                 this.id = 'selectWork' + idWork; // to keep it unique
             }).appendTo("#new_element_works");
             initSelect();
         }
 
         function addElementMaterial() {
-            $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-                idMaterial=idMaterial+1;
+            $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+                idMaterial = idMaterial + 1;
                 this.id = 'selectMaterial' + idMaterial; // to keep it unique
             }).appendTo("#new_element_material");
             initSelect();
         }
 
-        $("button[name='btnNomenclature']").each(function(index) {
-            $(this).on("click", function() {
-                if($(this).parent().parent().attr('id') != "selectNomenclatures0") {
+        $("button[name='btnWork']").each(function (index) {
+            $(this).on("click", function () {
+                if ($(this).parent().parent().attr('id') != "selectWorks0") {
                     $(this).parent().parent().remove();
                 } else {
                     alert("Хотя бы один пункт должен быть добавлен");
                 }
-
             });
         });
 
-        $("button[name='btnWork']").each(function(index) {
-            $(this).on("click", function() {
-                if($(this).parent().parent().attr('id') != "selectWorks0") {
+        $("button[name='btnMaterial']").each(function (index) {
+            $(this).on("click", function () {
+                if ($(this).parent().parent().attr('id') != "selectMaterials0") {
                     $(this).parent().parent().remove();
                 } else {
                     alert("Хотя бы один пункт должен быть добавлен");
                 }
-
             });
         });
 
-        $("button[name='btnMaterial']").each(function(index) {
-            $(this).on("click", function() {
-                if($(this).parent().parent().attr('id') != "selectMaterials0") {
-                    $(this).parent().parent().remove();
-                } else {
-                    alert("Хотя бы один пункт должен быть добавлен");
-                }
-
-            });
+        $("select[name='nomenclatures']").on('change', function () {
+            var optionText = $("#dropdownListNomenclatures option:selected").text();
+            $("input[name='title']").val(optionText);
         });
 
         $(function () {
