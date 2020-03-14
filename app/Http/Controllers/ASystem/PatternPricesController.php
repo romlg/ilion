@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\Func\Func;
 use App\Http\Controllers\ASystem\BaseController;
-use App\Models\Material;
 use App\Models\Nomenclature;
 use App\Models\PatternAdditionalMaterials;
 use App\Models\PatternMaterials;
@@ -141,63 +140,59 @@ class PatternPricesController extends BaseController
      */
     public function update(Request $request, $id)
     {
-//        $validatedData = $request->validate([
-//            'title' => 'required|min:2|max:255'
-//        ]);
-//
-//        $data = $request->all();
-//
-//        foreach ($data['nomenclatures'] as $nomenclature) {
-//            if( $nomenclature == null) {
-//                return redirect()
-//                    ->route('pattern.edit', $id)
-//                    ->with(['error' => "Ошибка сохранения. Не выбрана номенклатура"]);
-//            }
-//        }
-//
-//        foreach ($data['works'] as $nomenclature) {
-//            if( $nomenclature == null) {
-//                return redirect()
-//                    ->route('pattern.edit', $id)
-//                    ->with(['error' => "Ошибка сохранения. Не выбрана работа"]);
-//            }
-//        }
-//
-//        if(Func::array_has_dupes($data['nomenclatures']) || Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
-//            return redirect()
-//                ->route('pattern.edit', $id)
-//                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
-//        }
-//
-//        $itemPattern = Pattern::find($id);
-//        $result = $itemPattern
-//            ->fill($data)
-//            ->save();
-//
-//        PatternNomenclatures::where('pattern_id', $id)->delete();
-//        foreach ($data['nomenclatures'] as $nomenclature) {
-//            PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_id, 'n_id' => $nomenclature]);
-//        }
-//
-//        PatternWorks::where('pattern_id', $id)->delete();
-//        foreach ($data['works'] as $key => $work) {
-//            PatternWorks::insert(['pattern_id' => $itemPattern->pattern_id, 'work_id' => $work, 'count' => $data['workCount'][$key]]);
-//        }
-//
-//        PatternAdditionalMaterials::where('pattern_id', $id)->delete();
-//        foreach ($data['material'] as $key => $material) {
-//            PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
-//        }
-//
-//        if ($result) {
-//            return redirect()
-//                ->route('pattern.edit', $itemPattern->pattern_id)
-//                ->with(['success' => "Успешно сохранено"]);
-//        } else {
-//            return back()
-//                ->withErrors(['msg' => "Ошибка сохранения"])
-//                ->withInput();
-//        }
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255'
+        ]);
+
+        $data = $request->all();
+
+        if( $data['nomenclatures'] == null) {
+            return redirect()
+                ->route('patternPrices.create')
+                ->with(['error' => "Ошибка сохранения. Не выбрана номенклатура"]);
+        }
+
+        foreach ($data['works'] as $work) {
+            if( $work == null) {
+                return redirect()
+                    ->route('patternPrices.edit', $id)
+                    ->with(['error' => "Ошибка сохранения. Не выбрана работа"]);
+            }
+        }
+
+        if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
+            return redirect()
+                ->route('patternPrices.edit', $id)
+                ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
+        }
+
+        $itemPattern = PatternPrices::find($id);
+        $result = $itemPattern
+            ->fill($data)
+            ->save();
+
+        PatternNomenclatures::where('pattern_id', $id)->delete();
+        PatternNomenclatures::insert(['pattern_id' => $itemPattern->pattern_price_id, 'n_id' => $data['nomenclatures']]);
+
+        PatternWorks::where('pattern_id', $id)->delete();
+        foreach ($data['works'] as $key => $work) {
+            PatternWorks::insert(['pattern_id' => $itemPattern->pattern_price_id, 'work_id' => $work, 'count' => $data['workCount'][$key]]);
+        }
+
+        PatternAdditionalMaterials::where('pattern_id', $id)->delete();
+        foreach ($data['material'] as $key => $material) {
+            PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $material]);
+        }
+
+        if ($result) {
+            return redirect()
+                ->route('patternPrices.edit', $itemPattern->pattern_price_id)
+                ->with(['success' => "Успешно сохранено"]);
+        } else {
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
     /**
