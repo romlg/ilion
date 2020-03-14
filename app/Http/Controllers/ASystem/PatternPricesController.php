@@ -125,8 +125,8 @@ class PatternPricesController extends BaseController
         //
         $item = PatternPrices::findOrFail($id);
 
-        $nomenclatures = Nomenclature::all();
-        $works = Work::all();
+        $nomenclatures = Nomenclature::active()->get();
+        $works = Work::active()->get();
         $patternMaterials = PatternMaterials::all();
 
         return view('asystem.pattern_prices.edit', compact('item', 'nomenclatures', 'works', 'patternMaterials'));
