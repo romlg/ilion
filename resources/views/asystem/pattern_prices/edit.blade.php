@@ -71,9 +71,7 @@
                                             <option value="">не выбрано</option>
                                             @foreach($nomenclatures As $nomenclature)
                                                 <option value="{{ $nomenclature->n_id }}"
-                                                        @if($item->nomenclatures->n_id == $nomenclature->n_id) selected @endif>
-                                                    {{ $nomenclature->title }}
-                                                </option>
+                                                        @if($item->nomenclatures->n_id == $nomenclature->n_id) selected @endif>{{ $nomenclature->title }}</option>
                                             @endforeach>
                                         </select>
                                     </div>
@@ -97,6 +95,7 @@
                                                 @endforeach>
                                             </select>
                                         </div>
+
                                         <div class="col col-md-2">
                                             <input type="number" class="form-control" name="workCount[]"
                                                    value="{{ $item->works->where('work_id', $workId)->first()->count }}"
@@ -141,6 +140,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+
                                 <div id="new_element_material"></div>
                                 <div class="row form-group">
                                     <div class="col">
@@ -161,7 +161,6 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
