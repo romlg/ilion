@@ -66,6 +66,42 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <hr>
+                            <label>Наменклатура для добавления</label>
+                                <div class="row form-group" id="selectNomenclatures0">
+                                    <div class="col col-md-9">
+                                        <select name="nomenclatures[]" class="form-control" id="selectNomenclatures">
+                                            <option value="">-- не выбрано --</option>
+                                            @foreach($nomenclatures As $nomenclature)
+                                                <option value="{{ $nomenclature->n_id }}">
+                                                    {{ $nomenclature->title }}
+                                                </option>
+                                            @endforeach>
+                                        </select>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <input type="number" class="form-control" name="nomenclaturesCount[]"
+                                               value="" placeholder="Кол-во" required min="1">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger" name="btnWork">X</button>
+                                    </div>
+                                </div>
+
+                            <div id="new_element_nomenclatures"></div>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="addElementNomenclature();">Добавить номенклатуру
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
                         @if (!$specUnits->isEmpty())
                             <table class="table table-hover">
                                 <thead>
@@ -92,8 +128,8 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
-                                <button type="submit" class="btn btn-primary">Сохранить</button>
-                                <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>&nbsp;&nbsp;
+                                <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>&nbsp;&nbsp;
                                 <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
                             </div>
                         </div>
@@ -105,5 +141,33 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    var idNomenclature=0;
+
+    function addElementNomenclature() {
+        $("#selectNomenclatures0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+            idNomenclature=idNomenclature+1;
+            this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
+        }).appendTo("#new_element_nomenclatures");
+        initSelect();
+    }
+
+    $("button[name='btnNomenclature']").each(function(index) {
+        $(this).on("click", function() {
+            if($(this).parent().parent().attr('id') != "selectNomenclatures0") {
+                $(this).parent().parent().remove();
+            } else {
+                alert("Хотя бы один пункт должен быть добавлен");
+            }
+
+        });
+    });
+
+    $(function () {
+        initSelect();
+    });
+</script>
 
 @endsection
