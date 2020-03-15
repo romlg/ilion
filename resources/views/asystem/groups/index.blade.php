@@ -4,9 +4,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+                <div class="form-group">
                     <a class="btn btn-primary" href="{{ route('group.create') }}">Добавить</a>
-                </nav>
+                </div>
 
                 <div class="card">
                     <div class="card-body">
