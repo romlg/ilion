@@ -77,10 +77,6 @@
                             </li>
                         @else
 
-{{--                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('factsheet.index') }}">Отчёт объекта</a>
-                                </li>--}}
-
                             @if(!Auth::user()->isAdmin() && Auth::user()->isActive())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('fact.index') }}">ЛФУ</a>
@@ -128,7 +124,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}" />
-                                    Кабинет
+                                        Настройки
                                     </a>
                                 </div>
                             </li>
@@ -140,13 +136,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}" />
-                                        Кабинет
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        Выход
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -22,7 +22,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('order', 'ASystem\Catalog\OrderController')->names('aorder');
 
-    Route::get('/factsheet/index', ['as' => 'factsheet.index', 'uses' => 'ASystem\Report\FactSheetController@index']);
+    //Route::get('/factsheet/index', ['as' => 'factsheet.index', 'uses' => 'ASystem\Report\FactSheetController@index']);
 
     Route::resource('users','ASystem\Report\UsersSheetController');
 
@@ -30,10 +30,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
 
     Route::resource('producer', 'ASystem\ProducerController')->names('producer');
 
-    Route::resource('pattern_materials', 'ASystem\PatternMaterialsController')->names('patternMaterials');
-
 /*    Route::resource('pattern', 'ASystem\PatternController')->names('pattern');
     Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);*/
+
+    Route::resource('pattern_materials', 'ASystem\PatternMaterialsController')->names('patternMaterials');
+    Route::post('/pattern_materials_copy', ['as' =>'patternMaterials.copy', 'uses' => 'ASystem\PatternMaterialsController@copy']);
 
     Route::resource('pattern_prices', 'ASystem\PatternPricesController')->names('patternPrices');
     Route::post('/pattern_prices_copy', ['as' =>'patternPrices.copy', 'uses' => 'ASystem\PatternPricesController@copy']);

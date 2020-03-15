@@ -130,4 +130,9 @@ class PatternMaterialsController extends BaseController
         //
     }
 
+    public function copy(Request $request)
+    {
+
+    }
+
 }

@@ -44,8 +44,13 @@
                     </div>
                 @endif
 
+                <form action="{{ route('patternMaterials.copy') }}" method="post">
+
+                    @csrf
+
                     <div class="form-group">
                         <a class="btn btn-primary" href="{{ route('patternMaterials.create') }}">Добавить</a>
+                        <input type="submit" value="Копировать" class="btn btn-primary">
                     </div>
 
                     <div class="card">
@@ -60,8 +65,15 @@
                                     <div class="form-group">
                                         @foreach($paginator as $item)
                                             <tr>
-                                                <td>{{ $item->pattern_material_id }}</td>
-                                                <td><a href="{{ route('patternMaterials.edit', $item->pattern_material_id) }}">{{ $item->title }}</a></td>
+                                                <td>
+                                                    <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           value="{{ $item->pattern_material_id }}" name="pattern[]">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('patternMaterials.edit', $item->pattern_material_id) }}">{{ $item->title }}</a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </div>
@@ -73,6 +85,8 @@
                             @endif
                         </div>
                     </div>
+                </form>
+
             </div>
         </div>
         @if($paginator->total() > $paginator->count())

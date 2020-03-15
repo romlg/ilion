@@ -34,58 +34,59 @@
                 @endif
 
                 @if(session('error'))c
-                    <div class="row justify-content-center">
-                        <div class="col-md-12">
-                            <div class="alert alert-danger" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">x</span>
-                                </button>
-                                {{ session()->get('error') }}
-                            </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                            {{ session()->get('error') }}
                         </div>
                     </div>
+                </div>
                 @endif
 
                 <form action="{{ route('patternPrices.copy') }}" method="post">
 
-                @csrf
+                    @csrf
 
-                <div class="form-group">
-                    <a class="btn btn-primary" href="{{ route('patternPrices.create') }}">Добавить</a>
-                    <input type="submit" value="Копировать" class="btn btn-primary">
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        @if($paginator->total() > 0)
-                            <table class="table table-hover">
-                                <thead>
-                                <th>#</th>
-                                <th>Название</th>
-                                </thead>
-                                <tbody>
-                                <div class="form-group">
-                                    @foreach($paginator as $key => $item)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" value="{{$item->pattern_price_id}}" name="pattern[]">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('patternPrices.edit', $item->pattern_price_id) }}">{{ $item->title }}</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </div>
-                                </tbody>
-                            </table>
-
-                        @else
-                            нет записей в базе данных
-                        @endif
+                    <div class="form-group">
+                        <a class="btn btn-primary" href="{{ route('patternPrices.create') }}">Добавить</a>
+                        <input type="submit" value="Копировать" class="btn btn-primary">
                     </div>
-                </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            @if($paginator->total() > 0)
+                                <table class="table table-hover">
+                                    <thead>
+                                    <th>#</th>
+                                    <th>Название</th>
+                                    </thead>
+                                    <tbody>
+                                    <div class="form-group">
+                                        @foreach($paginator as $key => $item)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input"
+                                                               value="{{$item->pattern_price_id}}" name="pattern[]">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('patternPrices.edit', $item->pattern_price_id) }}">{{ $item->title }}</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </div>
+                                    </tbody>
+                                </table>
+
+                            @else
+                                нет записей в базе данных
+                            @endif
+                        </div>
+                    </div>
                 </form>
 
             </div>
