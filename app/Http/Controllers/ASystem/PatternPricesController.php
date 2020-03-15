@@ -206,44 +206,42 @@ class PatternPricesController extends BaseController
         //
     }
 
-//    public function copy(Request $request)
-//    {
-//        $data = $request->all();
-//
-//        if(!isset($data['pattern'])) {
-//            return back()
-//                ->withErrors(['msg' => "Шаблон не выбран"])
-//                ->withInput();
-//        }
-//
-//        foreach ($data['pattern'] as $patternId) {
-//
-//            $patternCopy = Pattern::find($patternId);
-//
-//            $pattern = new Pattern();
-//            $pattern->title = $patternCopy->title . ' copy';
-//            $pattern->save();
-//
-//            $patternNomenclatures = PatternNomenclatures::where('pattern_id', $patternId)->get();
-//            foreach ( $patternNomenclatures as $patternNomenclature) {
-//                PatternNomenclatures::insert(['pattern_id' => $pattern->pattern_id, 'n_id' => $patternNomenclature->n_id]);
-//            }
-//
-//            $patternWorks = PatternWorks::where('pattern_id', $patternId)->get();
-//            foreach ( $patternWorks as $patternWork) {
-//                PatternWorks::insert(['pattern_id' => $pattern->pattern_id, 'work_id' => $patternWork->work_id, 'count' => $patternWork->count]);
-//            }
-//
-//            $patternMaterials = PatternAdditionalMaterials::where('pattern_id', $patternId)->get();
-//            foreach ( $patternMaterials as $patternMaterial) {
-//                PatternAdditionalMaterials::insert(['pattern_id' => $pattern->pattern_id, 'material_id' => $patternMaterial->material_id, 'count' => $patternMaterial->count]);
-//            }
-//        }
-//
-//        return redirect()
-//            ->route('pattern.index')
-//            ->with(['success' => "Шаблоны успешно скопированы"]);
-//
-//    }
+    public function copy(Request $request)
+    {
+        $data = $request->all();
+
+        if(!isset($data['pattern'])) {
+            return back()
+                ->withErrors(['msg' => "Шаблон не выбран"])
+                ->withInput();
+        }
+
+        foreach ($data['pattern'] as $patternId) {
+
+            $patternPriceCopy = PatternPrices::find($patternId);
+
+            $patternPrice = new PatternPrices();
+            $patternPrice->title = $patternPriceCopy->title;
+            $patternPrice->save();
+
+            $patternNomenclature = PatternNomenclatures::where('pattern_id', $patternId)->first();
+            PatternNomenclatures::insert(['pattern_id' => $patternPrice->pattern_price_id, 'n_id' => $patternNomenclature->n_id]);
+
+            $patternWorks = PatternWorks::where('pattern_id', $patternId)->get();
+            foreach ( $patternWorks as $patternWork) {
+                PatternWorks::insert(['pattern_id' => $patternPrice->pattern_price_id, 'work_id' => $patternWork->work_id, 'count' => $patternWork->count]);
+            }
+
+            $patternMaterials = PatternAdditionalMaterials::where('pattern_id', $patternId)->get();
+            foreach ( $patternMaterials as $patternMaterial) {
+                PatternAdditionalMaterials::insert(['pattern_id' => $patternPrice->pattern_price_id, 'material_id' => $patternMaterial->material_id]);
+            }
+        }
+
+        return redirect()
+            ->route('patternPrices.index')
+            ->with(['success' => "Шаблоны успешно скопированы"]);
+
+    }
 
 }

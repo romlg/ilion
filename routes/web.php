@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
     Route::post('/pattern_copy', ['as' =>'pattern.copy', 'uses' => 'ASystem\PatternController@copy']);*/
 
     Route::resource('pattern_prices', 'ASystem\PatternPricesController')->names('patternPrices');
+    Route::post('/pattern_prices_copy', ['as' =>'patternPrices.copy', 'uses' => 'ASystem\PatternPricesController@copy']);
 
     Route::resource('nomenclature', 'ASystem\NomenclatureController')->names('nomenclature');
     Route::get('/nomenclature_upload', ['as' => 'nomenclature.upload', 'uses' => 'ASystem\NomenclatureController@upload']);

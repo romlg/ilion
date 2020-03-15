@@ -46,7 +46,7 @@
                     </div>
                 @endif
 
-                {{--<form action="{{ route('pattern.copy') }}" method="post">--}}
+                <form action="{{ route('patternPrices.copy') }}" method="post">
 
                 @csrf
 
