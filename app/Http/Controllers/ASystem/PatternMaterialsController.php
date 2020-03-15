@@ -15,7 +15,7 @@ class PatternMaterialsController extends BaseController
      */
     public function index()
     {
-        $paginator =  PM::paginate(4);
+        $paginator = PM::paginate(4);
         return view('asystem.pattern_materials.index', compact('paginator'));
     }
 
@@ -34,7 +34,7 @@ class PatternMaterialsController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,7 +50,7 @@ class PatternMaterialsController extends BaseController
         $item = new PM($data);
         $item->save();
 
-        if($item) {
+        if ($item) {
             return redirect()
                 ->route('patternMaterials.edit', $item->pattern_material_id)
                 ->with(['success' => "Успешно сохранено"]);
@@ -64,7 +64,7 @@ class PatternMaterialsController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -75,7 +75,7 @@ class PatternMaterialsController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -89,8 +89,8 @@ class PatternMaterialsController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -110,7 +110,7 @@ class PatternMaterialsController extends BaseController
 
         if ($result) {
             return redirect()
-                ->route('patternMaterials.edit', $item->pattern_material_id )
+                ->route('patternMaterials.edit', $item->pattern_material_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -122,7 +122,7 @@ class PatternMaterialsController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -132,7 +132,24 @@ class PatternMaterialsController extends BaseController
 
     public function copy(Request $request)
     {
+        $data = $request->all();
 
+        if (!isset($data['pattern'])) {
+            return back()
+                ->withErrors(['msg' => "Шаблоны не выбраны"])
+                ->withInput();
+        }
+
+        foreach ($data['pattern'] as $patternId) {
+
+            $patternMaterialCopy = PM::find($patternId);
+            $patternMaterial = new PM($patternMaterialCopy->getOriginal());
+            $patternMaterial->save();
+        }
+
+        return redirect()
+            ->route('patternMaterials.index')
+            ->with(['success' => "Шаблоны успешно скопированы"]);
     }
 
 }

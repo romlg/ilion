@@ -212,7 +212,7 @@ class PatternPricesController extends BaseController
 
         if(!isset($data['pattern'])) {
             return back()
-                ->withErrors(['msg' => "Шаблон не выбран"])
+                ->withErrors(['msg' => "Шаблоны не выбраны"])
                 ->withInput();
         }
 
