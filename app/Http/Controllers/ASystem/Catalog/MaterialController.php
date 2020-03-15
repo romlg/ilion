@@ -142,4 +142,27 @@ class MaterialController extends CatalogController
     {
         //
     }
+
+    public function copy(Request $request)
+    {
+        $data = $request->all();
+
+        if (!isset($data['material'])) {
+            return back()
+                ->withErrors(['msg' => "Шаблоны не выбраны"])
+                ->withInput();
+        }
+
+        foreach ($data['material'] as $materialId) {
+
+            $materialCopy = Material::find($materialId);
+            $material = new Material($materialCopy->getOriginal());
+            $material->save();
+        }
+
+        return redirect()
+            ->route('material.index')
+            ->with(['success' => "Шаблоны успешно скопированы"]);
+    }
+
 }

@@ -67,8 +67,9 @@
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           value="{{ $item->pattern_material_id }}" name="pattern[]">
+                                                        <input type="checkbox" class="form-check-input"
+                                                               value="{{ $item->pattern_material_id }}"
+                                                               name="pattern[]">
                                                     </div>
                                                 </td>
                                                 <td>
