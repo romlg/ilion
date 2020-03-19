@@ -77,10 +77,6 @@
                             </li>
                         @else
 
-{{--                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('factsheet.index') }}">Отчёт объекта</a>
-                                </li>--}}
-
                             @if(!Auth::user()->isAdmin() && Auth::user()->isActive())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('fact.index') }}">ЛФУ</a>
@@ -99,10 +95,12 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('nomenclature.index') }}">Номенклатура</a>
-                                    <a class="dropdown-item" href="{{ route('pattern.index') }}">Шаблоны</a>
+                                    {{--<a class="dropdown-item" href="{{ route('pattern.index') }}">Шаблоны</a>--}}
+                                    <a class="dropdown-item" href="{{ route('patternMaterials.index') }}">Шаблон материалов</a>
+                                    <a class="dropdown-item" href="{{ route('patternPrices.index') }}">Шаблон расценки</a>
                                     <a class="dropdown-item" href="{{ route('work.index') }}">Работа</a>
-                                    <a class="dropdown-item" href="{{ route('filter.index') }}">Фильтры</a>
                                     <a class="dropdown-item" href="{{ route('object.index') }}">Объекты</a>
+                                    <a class="dropdown-item" href="{{ route('producer.index') }}">Производитель</a>
                                     <a class="dropdown-item" href="{{ route('material.index') }}">Материалы</a>
                                     <a class="dropdown-item" href="{{ route('group.index') }}">Группы</a>
                                     <a class="dropdown-item" href="{{ route('users.index') }}">Пользователи</a>
@@ -126,7 +124,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}" />
-                                    Кабинет
+                                        Настройки
                                     </a>
                                 </div>
                             </li>
@@ -138,13 +136,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}" />
-                                        Кабинет
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        Выход
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -6,25 +6,28 @@
             <div class="col-md-12">
 
                 <div class="form-group">
-                    <a class="btn btn-primary" href="{{ route('object.create') }}">Добавить</a>
+                    <a class="btn btn-primary" href="{{ route('producer.create') }}">Добавить</a>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
-                                <th>#</th>
-                                <th>Название</th>
+                            <th>#</th>
+                            <th>Название</th>
+                            <th>Статус</th>
                             </thead>
                             <tbody>
                             @foreach($paginator as $item)
-                            <tr>
-                                <td>{{ $item->object_id }}</td>
-                                <td><a href="{{ route('object.edit', $item->object_id) }}">{{ $item->title }}</a></td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $item->producer_id }}</td>
+                                    <td><a href="{{ route('producer.edit', $item->producer_id) }}">{{ $item->title }}</a></td>
+                                    <td>@if($item->is_active) Активирована @else Деактивирована @endif</td>
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>

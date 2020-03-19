@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
+
         <div class="row justify-content-center">
             <div class="col-md-12">
 
@@ -31,24 +33,25 @@
                     </div>
                 @endif
 
-                @if(session('error'))
-                    <div class="row justify-content-center">
-                        <div class="col-md-12">
-                            <div class="alert alert-danger" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">x</span>
-                                </button>
-                                {{ session()->get('error') }}
-                            </div>
+                @if(session('error'))c
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">x</span>
+                            </button>
+                            {{ session()->get('error') }}
                         </div>
                     </div>
+                </div>
                 @endif
 
-                <form action="{{ route('filter.copy') }}" method="post">
+                <form action="{{ route('patternPrices.copy') }}" method="post">
+
                     @csrf
 
                     <div class="form-group">
-                        <a class="btn btn-primary" href="{{ route('filter.create') }}">Добавить</a>
+                        <a class="btn btn-primary" href="{{ route('patternPrices.create') }}">Добавить</a>
                         <input type="submit" value="Копировать" class="btn btn-primary">
                     </div>
 
@@ -66,11 +69,12 @@
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" value="{{$item->filter_id}}" name="filter[]">
+                                                        <input type="checkbox" class="form-check-input"
+                                                               value="{{$item->pattern_price_id}}" name="pattern[]">
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('filter.edit', $item->filter_id) }}">{{ $item->title }}</a>
+                                                    <a href="{{ route('patternPrices.edit', $item->pattern_price_id) }}">{{ $item->title }}</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -84,6 +88,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
         @if($paginator->total() > $paginator->count())
@@ -100,4 +105,5 @@
         @endif
 
     </div>
+
 @endsection

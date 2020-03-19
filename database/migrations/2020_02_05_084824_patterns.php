@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class Patterns extends Migration
 {
-    /**
+    /**c
      * Run the migrations.
      *
      * @return void

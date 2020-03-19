@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Filters extends Migration
+class PatternPrices extends Migration
 {
-    /**
+    /*
      * Run the migrations.
      *
      * @return void
@@ -14,9 +14,9 @@ class Filters extends Migration
     public function up()
     {
         //
-        if(!Schema::hasTable('filters')) {
-            Schema::create('filters', function (Blueprint $table) {
-                $table->increments('filter_id');
+        if(!Schema::hasTable('pattern_prices')) {
+            Schema::create('pattern_prices', function (Blueprint $table) {
+                $table->increments('pattern_price_id');
                 $table->text('title');
                 $table->timestamps();
             });
@@ -31,6 +31,6 @@ class Filters extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('filters');
+        Schema::dropIfExists('pattern_prices');
     }
 }

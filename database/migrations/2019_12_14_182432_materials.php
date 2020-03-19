@@ -16,8 +16,12 @@ class Materials extends Migration
         if(!Schema::hasTable('materials')) {
             Schema::create('materials', function (Blueprint $table) {
                 $table->increments('material_id');
-                $table->string('title', 255);
+                $table->text('title');
+                $table->string('vendor_code', 100);
+                $table->integer('unit');
                 $table->text('notes')->nullable();
+                $table->integer('producer_id')->nullable();
+                $table->integer('pattern_material_id')->nullable();
                 $table->tinyInteger('category_id')->nullable();
                 $table->timestamps();
             });

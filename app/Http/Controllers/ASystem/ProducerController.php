@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\ASystem\Catalog;
+namespace App\Http\Controllers\ASystem;
 
-use App\Http\Controllers\ASystem\PatternMaterialsController;
-use App\Models\Material;
+use App\Http\Controllers\ASystem\BaseController;
 use App\Models\Producer;
-use App\Models\PatternMaterials;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class MaterialController extends CatalogController
+class ProducerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,9 @@ class MaterialController extends CatalogController
      */
     public function index()
     {
-        $paginator = Material::paginate(4);
-        return view('asystem.materials.index', compact('paginator'));
+        //
+        $paginator =  Producer::paginate(4);
+        return view('asystem.producers.index' , compact('paginator'));
     }
 
     /**
@@ -29,12 +27,8 @@ class MaterialController extends CatalogController
      */
     public function create()
     {
-        $units = config('units');
-        $producers = Producer::all();
-        $patternMaterials = PatternMaterials::all();
-
-        return view('asystem.materials.create', compact('units', 'producers', 'patternMaterials'));
-        //return view('asystem.materials.edit', compact('item', 'units'));
+        //
+        return view('asystem.producers.create');
     }
 
     /**
@@ -48,20 +42,17 @@ class MaterialController extends CatalogController
         //
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:255',
-            'vendor_code' => 'required|min:2|max:255',
-            'unit' => 'required',
-            'producer_id' => 'required',
-            'pattern_material_id' => 'required'
+            'is_active' => 'required'
         ]);
 
         $data = $request->input();
 
-        $item = new Material($data);
+        $item = new Producer($data);
         $item->save();
 
         if($item) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('producer.edit', $item->producer_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -89,12 +80,9 @@ class MaterialController extends CatalogController
      */
     public function edit($id)
     {
-        $item = Material::findOrFail($id);
-        $units = config('units');
-        $producers = Producer::all();
-        $patternMaterials = PatternMaterials::all();
-
-        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials'));
+        //
+        $item = Producer::findOrFail($id);
+        return view('asystem.producers.edit', compact('item'));
     }
 
     /**
@@ -106,15 +94,13 @@ class MaterialController extends CatalogController
      */
     public function update(Request $request, $id)
     {
+        //
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:255',
-            'vendor_code' => 'required|min:2|max:255',
-            'unit' => 'required',
-            'producer_id' => 'required',
-            'pattern_material_id' => 'required'
+            'is_active' => 'required'
         ]);
 
-        $item = Material::find($id);
+        $item = Producer::find($id);
 
         $data = $request->all();
         $result = $item
@@ -123,7 +109,7 @@ class MaterialController extends CatalogController
 
         if ($result) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('producer.edit', $item->producer_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -142,27 +128,4 @@ class MaterialController extends CatalogController
     {
         //
     }
-
-    public function copy(Request $request)
-    {
-        $data = $request->all();
-
-        if (!isset($data['material'])) {
-            return back()
-                ->withErrors(['msg' => "Шаблоны не выбраны"])
-                ->withInput();
-        }
-
-        foreach ($data['material'] as $materialId) {
-
-            $materialCopy = Material::find($materialId);
-            $material = new Material($materialCopy->getOriginal());
-            $material->save();
-        }
-
-        return redirect()
-            ->route('material.index')
-            ->with(['success' => "Шаблоны успешно скопированы"]);
-    }
-
 }
