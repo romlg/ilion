@@ -68,6 +68,7 @@
                                 <div class="col">
                                     <label>Производитель</label>
                                     <select name="producer_id" class="form-control">
+                                        <option value="">не выбрано</option>
                                         @foreach($producers as $producer)
                                             <option value="{{$producer->producer_id}}" @if($producer->producer_id == $item->producer_id) selected @endif>
                                                 {{$producer->title}}
@@ -78,6 +79,7 @@
                                 <div class="col">
                                     <label>Шаблон материалов</label>
                                     <select name="pattern_material_id" class="form-control">
+                                        <option value="">не выбрано</option>
                                         @foreach($patternMaterials as $patternMaterial)
                                             <option value="{{ $patternMaterial->pattern_material_id }}" @if($patternMaterial->pattern_material_id == $item->pattern_material_id) selected @endif>
                                                 {{ $patternMaterial->title }}
