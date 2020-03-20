@@ -72,6 +72,14 @@ class PatternPricesController extends BaseController
             }
         }
 
+        foreach ($data['material'] as $material) {
+            if( $material == null) {
+                return redirect()
+                    ->route('patternPrices.create')
+                    ->with(['error' => "Ошибка сохранения. Не выбран шаблон материалов"]);
+            }
+        }
+
         if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['material'])) {
             return redirect()
                 ->route('patternPrices.create')
@@ -157,6 +165,14 @@ class PatternPricesController extends BaseController
                 return redirect()
                     ->route('patternPrices.edit', $id)
                     ->with(['error' => "Ошибка сохранения. Не выбрана работа"]);
+            }
+        }
+
+        foreach ($data['material'] as $material) {
+            if( $material == null) {
+                return redirect()
+                    ->route('patternPrices.create')
+                    ->with(['error' => "Ошибка сохранения. Не выбран шаблон материалов"]);
             }
         }
 

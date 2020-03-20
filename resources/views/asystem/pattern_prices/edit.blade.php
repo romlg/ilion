@@ -126,6 +126,7 @@
                                     <div class="row form-group" id="selectMaterials{{ $key }}">
                                         <div class="col col-md-11">
                                             <select name="material[]" class="form-control">
+                                                <option value="">не выбрано</option>
                                                 @foreach($patternMaterials As $patternMaterial)
                                                     <option value="{{ $patternMaterial->pattern_material_id }}"
                                                         @if( $patternAdditionalMaterial->material_id == $patternMaterial->pattern_material_id ) selected @endif>

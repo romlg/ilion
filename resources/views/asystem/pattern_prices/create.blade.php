@@ -116,6 +116,7 @@
                                 <div class="row form-group" id="selectMaterials">
                                     <div class="col col-md-11">
                                         <select name="material[]" class="form-control">
+                                            <option value="">не выбрано</option>
                                             @foreach($materials As $material)
                                                 <option value="{{ $material->pattern_material_id }}">{{ $material->title }}</option>
                                             @endforeach
