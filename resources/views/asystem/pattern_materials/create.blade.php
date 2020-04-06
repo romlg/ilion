@@ -40,16 +40,14 @@
                                     <div class="col">
                                         <label>Название</label>
                                         <input type="text" class="form-control" name="title"
-                                               value="{{ old('title') }}" placeholder="Название">
+                                               value="{{old('title')}}" placeholder="Название">
                                     </div>
 
                                     <div class="col">
                                         <label>Единица</label>
                                         <select name="unit" class="form-control">
                                             @foreach($units as $key => $value)
-                                                <tr>
-                                                    <option value="{{$key}}">{{$value}}</option>
-                                                </tr>
+                                                <option value="{{$key}}">{{$value}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\ASystem;
+namespace App\Http\Controllers\ASystem\Catalog;
 
-use App\Http\Controllers\ASystem\BaseController;
 use App\Models\Producer;
 use Illuminate\Http\Request;
 
-class ProducerController extends BaseController
+class ProducerController extends CatalogController
 {
     /**
      * Display a listing of the resource.

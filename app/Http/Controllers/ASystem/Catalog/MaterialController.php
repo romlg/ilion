@@ -18,7 +18,7 @@ class MaterialController extends CatalogController
      */
     public function index()
     {
-        $paginator = Material::paginate(4);
+        $paginator = Material::paginate(10);
         return view('asystem.materials.index', compact('paginator'));
     }
 

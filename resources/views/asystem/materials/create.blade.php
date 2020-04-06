@@ -54,10 +54,9 @@
                                     <div class="col">
                                         <label>Единица</label>
                                         <select name="unit" class="form-control">
+                                            <option value="">--не выбрано--</option>
                                             @foreach($units as $key => $value)
-                                                <tr>
-                                                    <option value="{{$key}}">{{$value}}</option>
-                                                </tr>
+                                            <option value="{{$key}}">{{$value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -66,20 +65,22 @@
                                     <div class="col">
                                         <label>Производитель</label>
                                         <select name="producer_id" class="form-control">
+                                            <option value="">--не выбрано--</option>
                                             @foreach($producers as $producer)
-                                                <option value="{{$producer->producer_id}}" >
-                                                    {{$producer->title}}
-                                                </option>
+                                            <option value="{{$producer->producer_id}}" >
+                                                {{$producer->title}}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Шаблон материалов</label>
                                         <select name="pattern_material_id" class="form-control">
+                                            <option value="">--не выбрано--</option>
                                             @foreach($patternMaterials as $patternMaterial)
-                                                <option value="{{ $patternMaterial->pattern_material_id }}" >
-                                                    {{ $patternMaterial->title }}
-                                                </option>
+                                            <option value="{{ $patternMaterial->pattern_material_id }}" >
+                                                {{ $patternMaterial->title }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>

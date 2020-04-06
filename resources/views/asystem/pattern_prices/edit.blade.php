@@ -68,7 +68,7 @@
                                     <div class="col-12">
                                         <select name="nomenclatures" class="form-control"
                                                 id="dropdownListNomenclatures">
-                                            <option value="">не выбрано</option>
+                                            <option value="">--не выбрано--</option>
                                             @foreach($nomenclatures As $nomenclature)
                                                 <option value="{{ $nomenclature->n_id }}"
                                                         @if($item->nomenclatures->n_id == $nomenclature->n_id) selected @endif>{{ $nomenclature->title }}</option>
@@ -86,7 +86,7 @@
                                     <div class="row form-group" id="selectWorks{{ $key }}">
                                         <div class="col col-md-9">
                                             <select name="works[]" class="form-control">
-                                                <option value="">не выбрано</option>
+                                                <option value="">--не выбрано--</option>
                                                 @foreach($works As $work)
                                                     <option value="{{ $work->work_id }}"
                                                             @if($patternWork->work_id == $work->work_id) {{ $workId = $work->work_id }} selected @endif>
@@ -125,7 +125,8 @@
                                 @foreach ( $item->materials as $key => $patternAdditionalMaterial )
                                     <div class="row form-group" id="selectMaterials{{ $key }}">
                                         <div class="col col-md-11">
-                                            <select name="material[]" class="form-control">
+                                            <select name="pmaterial[]" class="form-control">
+                                                <option value="">--не выбрано--</option>
                                                 @foreach($patternMaterials As $patternMaterial)
                                                     <option value="{{ $patternMaterial->pattern_material_id }}"
                                                         @if( $patternAdditionalMaterial->material_id == $patternMaterial->pattern_material_id ) selected @endif>
@@ -136,17 +137,17 @@
                                         </div>
 
                                         <div class="col-md-1">
-                                            <button type="button" class="btn btn-danger" name="btnMaterial">X</button>
+                                            <button type="button" class="btn btn-danger" name="btnPMaterial">X</button>
                                         </div>
                                     </div>
                                 @endforeach
 
-                                <div id="new_element_material"></div>
+                                <div id="new_element_pmaterial"></div>
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="addElementMaterial();">Добавить материал
+                                                    onclick="addElementPMaterial();">Добавить шаблон материалов
                                             </button>
                                         </div>
                                     </div>
@@ -180,11 +181,11 @@
             initSelect();
         }
 
-        function addElementMaterial() {
+        function addElementPMaterial() {
             $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
                 idMaterial = idMaterial + 1;
                 this.id = 'selectMaterial' + idMaterial; // to keep it unique
-            }).appendTo("#new_element_material");
+            }).appendTo("#new_element_pmaterial");
             initSelect();
         }
 
@@ -198,7 +199,7 @@
             });
         });
 
-        $("button[name='btnMaterial']").each(function (index) {
+        $("button[name='btnPMaterial']").each(function (index) {
             $(this).on("click", function () {
                 if ($(this).parent().parent().attr('id') != "selectMaterials0") {
                     $(this).parent().parent().remove();

@@ -66,7 +66,7 @@
 
                                     <div class="col-md-12">
                                         <select name="nomenclatures" class="form-control" id="dropdownListNomenclatures">
-                                            <option value="">не выбрано</option>
+                                            <option value="">--не выбрано--</option>
                                             @foreach($nomenclatures As $nomenclature)
                                                 <option value="{{ $nomenclature->n_id }}">{{ $nomenclature->title }}</option>
                                             @endforeach
@@ -82,7 +82,7 @@
                                 <div class="row form-group" id="selectWorks">
                                     <div class="col col-md-9">
                                         <select name="works[]" class="form-control">
-                                            <option value="">не выбрано</option>
+                                            <option value="">--не выбрано--</option>
                                             @foreach($works As $work)
                                                 <option value="{{ $work->work_id }}">{{ $work->title }}</option>
                                             @endforeach
@@ -113,13 +113,48 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Шаблон материалов</label>
-                                <div class="row form-group" id="selectMaterials">
+                                <div class="row form-group" id="selectPMaterials">
                                     <div class="col col-md-11">
-                                        <select name="material[]" class="form-control">
-                                            @foreach($materials As $material)
-                                                <option value="{{ $material->pattern_material_id }}">{{ $material->title }}</option>
+                                        <select name="pmaterial[]" class="form-control">
+                                            <option value="">--не выбрано--</option>
+                                            @foreach($patternMaterials As $pmaterial)
+                                                <option value="{{ $pmaterial->pattern_material_id }}">{{ $pmaterial->title }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger" name="btnPMaterial">X</button>
+                                    </div>
+                                </div>
+                                <div id="new_element_pmaterial"></div>
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="addElementPMaterial();">Добавить шаблон материалов
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <hr>
+                                <label>Расходные материалы</label>
+                                <div class="row form-group" id="selectPMaterials">
+                                    <div class="col col-md-9">
+                                        <select name="material[]" class="form-control">
+                                            <option value="">--не выбрано--</option>
+                                            @foreach($materials As $material)
+                                                <option value="{{ $material->material_id }}">{{ $material->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <input type="number" class="form-control" name="materialCount[]"
+                                               value="" placeholder="Кол-во" required min="1">
                                     </div>
 
                                     <div class="col-md-1">
@@ -131,7 +166,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="addElementMaterial();">Добавить материал
+                                                    onclick="addElementMaterial();">Добавить расходный материалов
                                             </button>
                                         </div>
                                     </div>
@@ -165,8 +200,16 @@
             initSelect();
         }
 
+        function addElementPMaterial() {
+            $("#selectPMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idMaterial=idMaterial+1;
+                this.id = 'selectPMaterial' + idMaterial; // to keep it unique
+            }).appendTo("#new_element_pmaterial");
+            initSelect();
+        }
+
         function addElementMaterial() {
-            $("#selectMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+            $("#selectPMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
                 idMaterial=idMaterial+1;
                 this.id = 'selectMaterial' + idMaterial; // to keep it unique
             }).appendTo("#new_element_material");
@@ -176,6 +219,16 @@
         $("button[name='btnWork']").each(function(index) {
             $(this).on("click", function() {
                 if($(this).parent().parent().attr('id') != "selectWorks") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+            });
+        });
+
+        $("button[name='btnPMaterial']").each(function(index) {
+            $(this).on("click", function() {
+                if($(this).parent().parent().attr('id') != "selectPMaterials") {
                     $(this).parent().parent().remove();
                 } else {
                     alert("Хотя бы один пункт должен быть добавлен");

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Объекты')
 
 @section('content')
     <div class="container">

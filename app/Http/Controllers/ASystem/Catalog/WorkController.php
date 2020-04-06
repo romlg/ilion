@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ASystem;
+namespace App\Http\Controllers\ASystem\Catalog;
 
 use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Controllers\ASystem\BaseController;
@@ -9,7 +9,7 @@ use App\Models\Group;
 use App\Models\Work;
 use Illuminate\Http\Request;
 
-class WorkController extends BaseController
+class WorkController extends CatalogController
 {
     /**
      * Display a listing of the resource.
