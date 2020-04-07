@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\ASystem\Catalog;
 
+use App\Http\Controllers\ASystem\PatternMaterialsController;
 use App\Models\Material;
+use App\Models\Producer;
+use App\Models\PatternMaterials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,8 +18,7 @@ class MaterialController extends CatalogController
      */
     public function index()
     {
-        $paginator = Material::paginate(4);
-
+        $paginator = Material::paginate(10);
         return view('asystem.materials.index', compact('paginator'));
     }
 
@@ -27,9 +29,12 @@ class MaterialController extends CatalogController
      */
     public function create()
     {
-        $item = new Material();
+        $units = config('units');
+        $producers = Producer::all();
+        $patternMaterials = PatternMaterials::all();
 
-        return view('asystem.materials.edit', compact('item'));
+        return view('asystem.materials.create', compact('units', 'producers', 'patternMaterials'));
+        //return view('asystem.materials.edit', compact('item', 'units'));
     }
 
     /**
@@ -40,6 +45,15 @@ class MaterialController extends CatalogController
      */
     public function store(Request $request)
     {
+        //
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'vendor_code' => 'required|min:2|max:255',
+            'unit' => 'required',
+            'producer_id' => 'required',
+            'pattern_material_id' => 'required'
+        ]);
+
         $data = $request->input();
 
         $item = new Material($data);
@@ -76,8 +90,11 @@ class MaterialController extends CatalogController
     public function edit($id)
     {
         $item = Material::findOrFail($id);
+        $units = config('units');
+        $producers = Producer::all();
+        $patternMaterials = PatternMaterials::all();
 
-        return view('asystem.materials.edit', compact('item'));
+        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials'));
     }
 
     /**
@@ -89,12 +106,15 @@ class MaterialController extends CatalogController
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required|min:2|max:255',
+            'vendor_code' => 'required|min:2|max:255',
+            'unit' => 'required',
+            'producer_id' => 'required',
+            'pattern_material_id' => 'required'
+        ]);
+
         $item = Material::find($id);
-        if(empty($item)) {
-            return back()
-                ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
-                ->withInput();
-        }
 
         $data = $request->all();
         $result = $item
@@ -122,4 +142,27 @@ class MaterialController extends CatalogController
     {
         //
     }
+
+    public function copy(Request $request)
+    {
+        $data = $request->all();
+
+        if (!isset($data['material'])) {
+            return back()
+                ->withErrors(['msg' => "Шаблоны не выбраны"])
+                ->withInput();
+        }
+
+        foreach ($data['material'] as $materialId) {
+
+            $materialCopy = Material::find($materialId);
+            $material = new Material($materialCopy->getOriginal());
+            $material->save();
+        }
+
+        return redirect()
+            ->route('material.index')
+            ->with(['success' => "Шаблоны успешно скопированы"]);
+    }
+
 }

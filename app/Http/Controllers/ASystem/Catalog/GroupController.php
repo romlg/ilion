@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\ASystem;
+namespace App\Http\Controllers\ASystem\Catalog;
 
-use App\Helpers\ExcelParser\ExcelParser;
-use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Group;
-use App\Models\Nomenclature;
 use Illuminate\Http\Request;
 
-class NomenclatureController extends BaseController
+class GroupController extends CatalogController
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,8 @@ class NomenclatureController extends BaseController
     public function index()
     {
         //
-        $paginator =  Nomenclature::paginate(4);
-        return view('asystem.nomenclatures.index', compact('paginator'));
+        $paginator =  Group::paginate(4);
+        return view('asystem.groups.index' , compact('paginator'));
     }
 
     /**
@@ -30,8 +27,7 @@ class NomenclatureController extends BaseController
     public function create()
     {
         //
-        $groups =  Group::all();
-        return view('asystem.nomenclatures.create', compact('groups'));
+        return view('asystem.groups.create');
     }
 
     /**
@@ -49,12 +45,12 @@ class NomenclatureController extends BaseController
 
         $data = $request->input();
 
-        $item = new Nomenclature($data);
+        $item = new Group($data);
         $item->save();
 
         if($item) {
             return redirect()
-                ->route('nomenclature.edit', $item->n_id)
+                ->route('group.edit', $item->group_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -83,9 +79,8 @@ class NomenclatureController extends BaseController
     public function edit($id)
     {
         //
-        $item = Nomenclature::findOrFail($id);
-        $groups =  Group::all();
-        return view('asystem.nomenclatures.edit', compact('item', 'groups'));
+        $item = Group::findOrFail($id);
+        return view('asystem.groups.edit' , compact('item'));
     }
 
     /**
@@ -102,7 +97,7 @@ class NomenclatureController extends BaseController
             'title' => 'required|min:2|max:255'
         ]);
 
-        $item = Nomenclature::find($id);
+        $item = Group::find($id);
 
         $data = $request->all();
         $result = $item
@@ -111,43 +106,13 @@ class NomenclatureController extends BaseController
 
         if ($result) {
             return redirect()
-                ->route('nomenclature.edit', $item->n_id)
+                ->route('group.edit', $item->group_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
         }
-    }
-
-    public function upload()
-    {
-        return view('asystem.nomenclatures.upload');
-    }
-
-    public function uploadSave(UploadImportModelRequest $request)
-    {
-        $originalFile = $request->file('import_file');
-        $ext = $originalFile->getClientOriginalExtension();
-
-        $sheetData = [];
-        if ($ext == 'xlsx') {
-            $sheetData = ExcelParser::get_array_xlsx($request->file('import_file'));
-        }  elseif ($ext == 'xls') {
-            $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
-        }
-
-        foreach ($sheetData as  $data) {
-            $title = $data[7];
-            if(!is_null($title)) {
-                Nomenclature::updateOrCreate(['title' => $title, 'is_active' => 1]);
-            }
-        }
-
-        return redirect()
-            ->route('nomenclature.index')
-            ->with(['success' => "Файл успешно загружен"]);
-
     }
 
     /**

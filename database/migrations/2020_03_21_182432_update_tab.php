@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Materials extends Migration
+class UpdateTab extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,30 @@ class Materials extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('materials')) {
-            Schema::create('materials', function (Blueprint $table) {
-                $table->increments('material_id');
-                $table->text('title');
+        if (Schema::hasColumn('materials', 'vendor_code')) {
+            Schema::table('materials', function (Blueprint $table) {
                 $table->string('vendor_code', 100);
-                $table->integer('unit');
-                $table->text('notes')->nullable();
-                $table->integer('producer_id')->nullable();
-                $table->integer('pattern_material_id')->nullable();
-                $table->tinyInteger('category_id')->nullable();
-                $table->timestamps();
             });
         }
+        if (Schema::hasColumn('materials', 'unit')) {
+            Schema::table('materials', function (Blueprint $table) {
+                $table->integer('unit');
+            });
+        }
+        if (Schema::hasColumn('materials', 'producer_id')) {
+            Schema::table('materials', function (Blueprint $table) {
+                $table->integer('producer_id')->nullable();
+            });
+        }
+        if (Schema::hasColumn('materials', 'pattern_material_id')) {
+            Schema::table('materials', function (Blueprint $table) {
+                $table->integer('pattern_material_id')->nullable();
+            });
+        }
+
+
+
+
     }
 
     /**

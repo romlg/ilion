@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\ASystem;
+namespace App\Http\Controllers\ASystem\Catalog;
 
-use App\Helpers\ExcelParser\ExcelParser;
-use App\Http\Controllers\ASystem\BaseController;
-use App\Http\Requests\UploadImportModelRequest;
-use App\Models\Group;
-use App\Models\Work;
+use App\Models\Producer;
 use Illuminate\Http\Request;
 
-class WorkController extends BaseController
+class ProducerController extends CatalogController
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +15,8 @@ class WorkController extends BaseController
     public function index()
     {
         //
-        $paginator =  Work::paginate(4);
-
-        return view('asystem.works.index', compact('paginator'));
+        $paginator =  Producer::paginate(4);
+        return view('asystem.producers.index' , compact('paginator'));
     }
 
     /**
@@ -32,8 +27,7 @@ class WorkController extends BaseController
     public function create()
     {
         //
-        $groups =  Group::all();
-        return view('asystem.works.create', compact('groups'));
+        return view('asystem.producers.create');
     }
 
     /**
@@ -47,19 +41,17 @@ class WorkController extends BaseController
         //
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:255',
-            'units' => 'required|min:2|max:255',
-            'wtime' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'wprice' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            'is_active' => 'required'
         ]);
 
         $data = $request->input();
 
-        $item = new Work($data);
+        $item = new Producer($data);
         $item->save();
 
         if($item) {
             return redirect()
-                ->route('work.edit', $item->work_id)
+                ->route('producer.edit', $item->producer_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -88,9 +80,8 @@ class WorkController extends BaseController
     public function edit($id)
     {
         //
-        $item = Work::findOrFail($id);
-        $groups =  Group::all();
-        return view('asystem.works.edit', compact('item', 'groups'));
+        $item = Producer::findOrFail($id);
+        return view('asystem.producers.edit', compact('item'));
     }
 
     /**
@@ -102,14 +93,13 @@ class WorkController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        //
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:255',
-            'units' => 'required|min:2|max:255',
-            'wtime' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'wprice' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            'is_active' => 'required'
         ]);
 
-        $item = Work::find($id);
+        $item = Producer::find($id);
 
         $data = $request->all();
         $result = $item
@@ -118,48 +108,13 @@ class WorkController extends BaseController
 
         if ($result) {
             return redirect()
-                ->route('work.edit', $item->work_id)
+                ->route('producer.edit', $item->producer_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
         }
-    }
-
-    public function upload()
-    {
-        return view('asystem.works.upload');
-    }
-
-    public function uploadSave(UploadImportModelRequest $request)
-    {
-        $originalFile = $request->file('import_file');
-        $ext = $originalFile->getClientOriginalExtension();
-
-        $sheetData = [];
-        if ($ext == 'xlsx') {
-            $sheetData = ExcelParser::get_array_xlsx($request->file('import_file'));
-        }  elseif ($ext == 'xls') {
-            $sheetData = ExcelParser::get_array_xls($request->file('import_file'));
-        }
-
-        foreach ($sheetData as  $data) {
-
-            $title = $data[1];
-            $units = $data[2];
-            $wtime = $data[3];
-            $wprice =$data[4];
-
-            if(!is_null($title) && !is_null($units) && !is_null($wtime) && !is_null($wprice)) {
-                Work::updateOrCreate(['title' => $title, 'units' => $units, 'wtime' => $wtime, 'wprice' => $wprice, 'is_active' => 1]);
-            }
-        }
-
-        return redirect()
-            ->route('work.index')
-            ->with(['success' => "Файл успешно загружен"]);
-
     }
 
     /**

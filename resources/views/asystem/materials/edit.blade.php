@@ -1,26 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-@php
-    /** @var \App\Models\Material $item  */
-@endphp
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
 
                 <div class="card-body">
-                    @if($item->exists)
-                    <form method="POST" action="{{ route('material.update', $item->material_id) }}">
-                        @method('PATCH')
-                    @else
-                    <form method="POST" action="{{ route('material.store') }}">
-                    @endif
 
+                    <form method="POST" action="{{ route('material.update', $item->material_id) }}">
                         @csrf
-                        @php
-                        /** @var \Illuminate\Support\ViewErrorBag $errors  */
-                        @endphp
+                        @method('PATCH')
+
                         @if($errors->any())
                             <div class="row justify-content-center">
                                 <div class="col-md-12">
@@ -48,42 +40,58 @@
                         @endif
 
                         <div class="form-group">
-                            <label for="title">Название</label>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <label>Название</label>
+                                    <input type="text" class="form-control" name="title"
+                                           value="{{ $item->title }}" placeholder="Название">
+                                </div>
 
-                            <input id="title" type="text"
-                                   class="form-control @error('title') is-invalid @enderror"
-                                   name="title"
-                                   value="{{ $item->title }}"
-                                   required >
+                                <div class="col">
+                                    <label>Артикул</label>
+                                    <input type="text" class="form-control" name="vendor_code"
+                                           value="{{ $item->vendor_code }}" placeholder="Артикул">
+                                </div>
 
-                            @error('title')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="date">Категория</label>
-{{--
-                            <input id="date" type="text"
-                                   class="form-control @error('contract_date') is-invalid @enderror"
-                                   name="contract_date"
-                                   value="{{ $item->contract_date }}"
-                                   required >
-
-                            @error('date')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
---}}
+                                <div class="col">
+                                    <label>Единица</label>
+                                    <select name="unit" class="form-control">
+                                        <option value="">--не выбрано--</option>
+                                        @foreach($units as $key => $value)
+                                        <option value="{{$key}}" @if($key == $item->unit) selected @endif>{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <label>Производитель</label>
+                                    <select name="producer_id" class="form-control">
+                                        <option value="">--не выбрано--</option>
+                                        @foreach($producers as $producer)
+                                        <option value="{{$producer->producer_id}}" @if($producer->producer_id == $item->producer_id) selected @endif>
+                                            {{$producer->title}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label>Шаблон материалов</label>
+                                    <select name="pattern_material_id" class="form-control">
+                                        <option value="">--не выбрано--</option>
+                                        @foreach($patternMaterials as $patternMaterial)
+                                            <option value="{{ $patternMaterial->pattern_material_id }}" @if($patternMaterial->pattern_material_id == $item->pattern_material_id) selected @endif>
+                                                {{ $patternMaterial->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
-
                                 <a class="btn btn-primary" href="{{ route('material.index') }}">Закрыть</a>
                             </div>
                         </div>

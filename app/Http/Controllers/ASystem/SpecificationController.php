@@ -88,9 +88,12 @@ class SpecificationController extends BaseController
         //
         $item = Specification::find($id);
         $specUnits = SpecUnit::where('spec_id', $id)->active()->get();
+        $nomenclatures = Nomenclature::all();
 
         $objects =  Objct::all();
-        return view('asystem.specifications.edit', compact('item', 'objects', 'specUnits'));
+        return view('asystem.specifications.edit',
+            compact('item', 'objects', 'specUnits', 'nomenclatures')
+        );
     }
 
     /**
@@ -110,6 +113,17 @@ class SpecificationController extends BaseController
         $item = Specification::find($id);
 
         $data = $request->all();
+
+        $nomenclatures = $data['nomenclatures'];
+        $nomenclaturesCount = $data['nomenclaturesCount'];
+        unset($data['nomenclatures']);
+        unset($data['nomenclaturesCount']);
+//dd($nomenclatures, $nomenclaturesCount);
+
+        foreach ($nomenclatures AS $key => $nomenclature) {
+            SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+        }
+
         $result = $item
             ->fill($data)
             ->save();

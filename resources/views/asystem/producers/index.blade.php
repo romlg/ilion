@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Группы')
+@section('title', 'Производители')
 
 @section('content')
     <div class="container">
@@ -7,7 +7,7 @@
             <div class="col-md-12">
 
                 <div class="form-group">
-                    <a class="btn btn-primary" href="{{ route('group.create') }}">Добавить</a>
+                    <a class="btn btn-primary" href="{{ route('producer.create') }}">Добавить</a>
                 </div>
 
                 <div class="card">
@@ -16,12 +16,14 @@
                             <thead>
                             <th>#</th>
                             <th>Название</th>
+                            <th>Статус</th>
                             </thead>
                             <tbody>
                             @foreach($paginator as $item)
                                 <tr>
-                                    <td>{{ $item->group_id }}</td>
-                                    <td><a href="{{ route('group.edit', $item->group_id) }}">{{ $item->title }}</a></td>
+                                    <td>{{ $item->producer_id }}</td>
+                                    <td><a href="{{ route('producer.edit', $item->producer_id) }}">{{ $item->title }}</a></td>
+                                    <td>@if($item->is_active) Активирована @else Деактивирована @endif</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Шаблоны материалов')
 
 @section('content')
     <div class="container">
@@ -44,11 +45,12 @@
                     </div>
                 @endif
 
-                <form action="{{ route('filter.copy') }}" method="post">
+                <form action="{{ route('patternMaterials.copy') }}" method="post">
+
                     @csrf
 
                     <div class="form-group">
-                        <a class="btn btn-primary" href="{{ route('filter.create') }}">Добавить</a>
+                        <a class="btn btn-primary" href="{{ route('patternMaterials.create') }}">Добавить</a>
                         <input type="submit" value="Копировать" class="btn btn-primary">
                     </div>
 
@@ -62,15 +64,17 @@
                                     </thead>
                                     <tbody>
                                     <div class="form-group">
-                                        @foreach($paginator as $key => $item)
+                                        @foreach($paginator as $item)
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" value="{{$item->filter_id}}" name="filter[]">
+                                                        <input type="checkbox" class="form-check-input"
+                                                               value="{{ $item->pattern_material_id }}"
+                                                               name="pattern[]">
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('filter.edit', $item->filter_id) }}">{{ $item->title }}</a>
+                                                    <a href="{{ route('patternMaterials.edit', $item->pattern_material_id) }}">{{ $item->title }}</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -84,6 +88,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
         @if($paginator->total() > $paginator->count())

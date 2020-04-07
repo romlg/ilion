@@ -10,6 +10,11 @@ class Material extends Model
     protected $primaryKey = 'material_id';
     protected $fillable =[
         'title',
-        'notes'
+        'vendor_code',
+        'unit',
+        'notes',
+        'producer_id',
+        'pattern_material_id',
+        'category_id'
     ];
 }
