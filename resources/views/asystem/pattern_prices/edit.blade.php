@@ -154,6 +154,43 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <hr>
+                                <label>Расходные материалы</label>
+                                @foreach ( $item->materials as $key => $patternAdditionalMaterial )
+                                    <div class="row form-group" id="selectMaterials{{ $key }}">
+                                        <div class="col col-md-11">
+                                            <select name="pmaterial[]" class="form-control">
+                                                <option value="">--не выбрано--</option>
+                                                @foreach($patternMaterials As $patternMaterial)
+                                                    <option value="{{ $patternMaterial->pattern_material_id }}"
+                                                            @if( $patternAdditionalMaterial->material_id == $patternMaterial->pattern_material_id ) selected @endif>
+                                                        {{ $patternMaterial->title }}
+                                                    </option>
+                                                @endforeach>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger" name="btnPMaterial">X</button>
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                                <div id="new_element_pmaterial"></div>
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="addElementPMaterial();">Добавить шаблон материалов
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <hr>
                             <div class="form-group row mb-0">
                                 <div class="col-md-8">

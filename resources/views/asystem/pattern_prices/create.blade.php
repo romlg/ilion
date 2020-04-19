@@ -142,7 +142,7 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Расходные материалы</label>
-                                <div class="row form-group" id="selectPMaterials">
+                                <div class="row form-group" id="selectMaterials">
                                     <div class="col col-md-9">
                                         <select name="material[]" class="form-control">
                                             <option value="">--не выбрано--</option>
@@ -191,6 +191,7 @@
 
         var idWork=0;
         var idMaterial=0;
+        var idPMaterial=0;
 
         function addElementWork() {
             $("#selectWorks").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
@@ -203,13 +204,13 @@
         function addElementPMaterial() {
             $("#selectPMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
                 idMaterial=idMaterial+1;
-                this.id = 'selectPMaterial' + idMaterial; // to keep it unique
+                this.id = 'selectPMaterial' + idPMaterial; // to keep it unique
             }).appendTo("#new_element_pmaterial");
             initSelect();
         }
 
         function addElementMaterial() {
-            $("#selectPMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+            $("#selectMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
                 idMaterial=idMaterial+1;
                 this.id = 'selectMaterial' + idMaterial; // to keep it unique
             }).appendTo("#new_element_material");

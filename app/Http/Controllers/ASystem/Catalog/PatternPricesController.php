@@ -7,6 +7,7 @@ use App\Http\Controllers\ASystem\BaseController;
 use App\Models\Material;
 use App\Models\Nomenclature;
 use App\Models\PatternAdditionalMaterials;
+use App\Models\PatternExpendableMaterials;
 use App\Models\PatternMaterials;
 use App\Models\PatternNomenclatures;
 use App\Models\PatternWorks;
@@ -76,7 +77,7 @@ class PatternPricesController extends CatalogController
             }
         }
 
-        if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['pmaterial'])) {
+        if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['pmaterial']) || Func::array_has_dupes($data['material'])) {
             return redirect()
                 ->route('patternPrices.create')
                 ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
@@ -93,6 +94,11 @@ class PatternPricesController extends CatalogController
 
         foreach ($data['pmaterial'] as $key => $pmaterial) {
             PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $pmaterial]);
+        }
+
+        //dd($data['material']);
+        foreach ($data['material'] as $key => $material) {
+            PatternExpendableMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
         }
 
         if($itemPattern) {
