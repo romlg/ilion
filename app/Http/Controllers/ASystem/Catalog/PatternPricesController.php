@@ -138,10 +138,6 @@ class PatternPricesController extends CatalogController
         $patternMaterials = PatternMaterials::all();
         $materials = Material::all();
 
-        //dd($item->expendableMaterials);
-
-        //dd($item->expendableMaterials->where('pem_id', 3)->first()->count);
-
         return view('asystem.pattern_prices.edit',
             compact('item', 'nomenclatures', 'works', 'patternMaterials', 'materials')
         );
@@ -176,7 +172,7 @@ class PatternPricesController extends CatalogController
             }
         }
 
-        if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['pmaterial'])) {
+        if(Func::array_has_dupes($data['works']) || Func::array_has_dupes($data['pmaterial']) || Func::array_has_dupes($data['pematerial'])) {
             return redirect()
                 ->route('patternPrices.edit', $id)
                 ->with(['error' => "Ошибка сохранения. Присутствуют дубликаты"]);
@@ -198,6 +194,11 @@ class PatternPricesController extends CatalogController
         PatternAdditionalMaterials::where('pattern_id', $id)->delete();
         foreach ($data['pmaterial'] as $key => $pmaterial) {
             PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $pmaterial]);
+        }
+
+        PatternExpendableMaterials::where('pattern_id', $id)->delete();
+        foreach ($data['pematerial'] as $key => $material) {
+            PatternExpendableMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $material, 'count' => $data['expendableMaterialCount'][$key]]);
         }
 
         if ($result) {
