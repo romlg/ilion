@@ -142,9 +142,9 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Расходные материалы</label>
-                                <div class="row form-group" id="selectMaterials">
+                                <div class="row form-group" id="selectPEMaterials">
                                     <div class="col col-md-9">
-                                        <select name="material[]" class="form-control">
+                                        <select name="pematerial[]" class="form-control">
                                             <option value="">--не выбрано--</option>
                                             @foreach($materials As $material)
                                                 <option value="{{ $material->material_id }}">{{ $material->title }}</option>
@@ -153,20 +153,20 @@
                                     </div>
 
                                     <div class="col col-md-2">
-                                        <input type="number" class="form-control" name="materialCount[]"
+                                        <input type="number" class="form-control" name="expendableMaterialCount[]"
                                                value="" placeholder="Кол-во" required min="1">
                                     </div>
 
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger" name="btnMaterial">X</button>
+                                        <button type="button" class="btn btn-danger" name="btnPEMaterials">X</button>
                                     </div>
                                 </div>
-                                <div id="new_element_material"></div>
+                                <div id="new_element_pematerial"></div>
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="addElementMaterial();">Добавить расходный материалов
+                                                    onclick="addElementPEMaterial();">Добавить расходный материалов
                                             </button>
                                         </div>
                                     </div>
@@ -190,8 +190,8 @@
     <script type="text/javascript">
 
         var idWork=0;
-        var idMaterial=0;
         var idPMaterial=0;
+        var idPEMaterials=0;
 
         function addElementWork() {
             $("#selectWorks").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
@@ -203,17 +203,17 @@
 
         function addElementPMaterial() {
             $("#selectPMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-                idMaterial=idMaterial+1;
+                idPMaterial=idPMaterial+1;
                 this.id = 'selectPMaterial' + idPMaterial; // to keep it unique
             }).appendTo("#new_element_pmaterial");
             initSelect();
         }
 
-        function addElementMaterial() {
-            $("#selectMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-                idMaterial=idMaterial+1;
-                this.id = 'selectMaterial' + idMaterial; // to keep it unique
-            }).appendTo("#new_element_material");
+        function addElementPEMaterial() {
+            $("#selectPEMaterials").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
+                idPEMaterials=idPEMaterials+1;
+                this.id = 'selectPEMaterial' + idPEMaterials; // to keep it unique
+            }).appendTo("#new_element_pematerial");
             initSelect();
         }
 
@@ -237,9 +237,9 @@
             });
         });
 
-        $("button[name='btnMaterial']").each(function(index) {
+        $("button[name='btnPEMaterials']").each(function(index) {
             $(this).on("click", function() {
-                if($(this).parent().parent().attr('id') != "selectMaterials") {
+                if($(this).parent().parent().attr('id') != "selectPEMaterials") {
                     $(this).parent().parent().remove();
                 } else {
                     alert("Хотя бы один пункт должен быть добавлен");
