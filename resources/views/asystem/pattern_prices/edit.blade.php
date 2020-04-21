@@ -122,7 +122,7 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Шаблон материалов</label>
-                                @foreach ( $item->materials as $key => $patternAdditionalMaterial )
+                                @foreach ( $item->patternMaterials as $key => $patternAdditionalMaterial )
                                     <div class="row form-group" id="selectMaterials{{ $key }}">
                                         <div class="col col-md-11">
                                             <select name="pmaterial[]" class="form-control">
@@ -157,39 +157,42 @@
                             <div class="form-group">
                                 <hr>
                                 <label>Расходные материалы</label>
-                                @foreach ( $item->materials as $key => $patternAdditionalMaterial )
-                                    <div class="row form-group" id="selectMaterials{{ $key }}">
-                                        <div class="col col-md-11">
-                                            <select name="pmaterial[]" class="form-control">
+                                @foreach ( $item->expendableMaterials as $key => $patternExpendableMaterial )
+                                    <div class="row form-group" id="selectPEMaterials{{ $key }}">
+                                        <div class="col col-md-9">
+                                            <select name="pematerial[]" class="form-control">
                                                 <option value="">--не выбрано--</option>
-                                                @foreach($patternMaterials As $patternMaterial)
-                                                    <option value="{{ $patternMaterial->pattern_material_id }}"
-                                                            @if( $patternAdditionalMaterial->material_id == $patternMaterial->pattern_material_id ) selected @endif>
-                                                        {{ $patternMaterial->title }}
+                                                @foreach($materials As $material)
+                                                    <option value="{{ $material->material_id }}"
+                                                            @if( $patternExpendableMaterial->material_id == $material->material_id ) {{ $materialId = $patternExpendableMaterial->pem_id }}  selected @endif>
+                                                        {{ $material->title }}
                                                     </option>
                                                 @endforeach>
                                             </select>
                                         </div>
 
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control" name="expendableMaterialCount[]"
+                                                   value="{{ $item->expendableMaterials->where('pem_id', $materialId)->first()->count }}"
+                                                   placeholder="Кол-во" required min="1">
+                                        </div>
                                         <div class="col-md-1">
-                                            <button type="button" class="btn btn-danger" name="btnPMaterial">X</button>
+                                            <button type="button" class="btn btn-danger" name="btnPEMaterial">X</button>
                                         </div>
                                     </div>
                                 @endforeach
 
-                                <div id="new_element_pmaterial"></div>
+                                <div id="new_element_pematerial"></div>
                                 <div class="row form-group">
                                     <div class="col">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-primary"
-                                                    onclick="addElementPMaterial();">Добавить шаблон материалов
+                                                    onclick="addElementPEMaterial();">Добавить расходный материал
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
 
                             <hr>
                             <div class="form-group row mb-0">
@@ -208,7 +211,8 @@
     <script type="text/javascript">
 
         var idWork = 0;
-        var idMaterial = 0;
+        var idPMaterial = 0;
+        var idPEMaterial = 0;
 
         function addElementWork() {
             $("#selectWorks0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
@@ -220,9 +224,17 @@
 
         function addElementPMaterial() {
             $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
-                idMaterial = idMaterial + 1;
-                this.id = 'selectMaterial' + idMaterial; // to keep it unique
+                idPMaterial = idPMaterial + 1;
+                this.id = 'selectMaterial' + idPMaterial; // to keep it unique
             }).appendTo("#new_element_pmaterial");
+            initSelect();
+        }
+
+        function addElementPEMaterial() {
+            $("#selectPEMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+                idPEMaterial = idPEMaterial + 1;
+                this.id = 'selectPEMaterial' + idPEMaterial; // to keep it unique
+            }).appendTo("#new_element_pematerial");
             initSelect();
         }
 
@@ -239,6 +251,16 @@
         $("button[name='btnPMaterial']").each(function (index) {
             $(this).on("click", function () {
                 if ($(this).parent().parent().attr('id') != "selectMaterials0") {
+                    $(this).parent().parent().remove();
+                } else {
+                    alert("Хотя бы один пункт должен быть добавлен");
+                }
+            });
+        });
+
+        $("button[name='btnPEMaterial']").each(function (index) {
+            $(this).on("click", function () {
+                if ($(this).parent().parent().attr('id') != "selectPEMaterials0") {
                     $(this).parent().parent().remove();
                 } else {
                     alert("Хотя бы один пункт должен быть добавлен");

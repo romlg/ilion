@@ -96,7 +96,6 @@ class PatternPricesController extends CatalogController
             PatternAdditionalMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $pmaterial]);
         }
 
-        //dd($data['material']);
         foreach ($data['material'] as $key => $material) {
             PatternExpendableMaterials::insert(['pattern_id' => $itemPattern->pattern_price_id, 'material_id' => $material, 'count' => $data['materialCount'][$key]]);
         }
@@ -138,6 +137,10 @@ class PatternPricesController extends CatalogController
         $works = Work::active()->get();
         $patternMaterials = PatternMaterials::all();
         $materials = Material::all();
+
+        //dd($item->expendableMaterials);
+
+        //dd($item->expendableMaterials->where('pem_id', 3)->first()->count);
 
         return view('asystem.pattern_prices.edit',
             compact('item', 'nomenclatures', 'works', 'patternMaterials', 'materials')

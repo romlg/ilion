@@ -12,9 +12,14 @@ class PatternPrices extends Model
         'title'
     ];
 
-    public function materials()
+    public function patternMaterials()
     {
         return $this->hasMany('App\Models\PatternAdditionalMaterials', 'pattern_id', 'pattern_price_id');
+    }
+
+    public function expendableMaterials()
+    {
+        return $this->hasMany('App\Models\PatternExpendableMaterials', 'pattern_id', 'pattern_price_id');
     }
 
     public function nomenclatures()
