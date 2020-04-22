@@ -21,7 +21,7 @@ class SpecificationController extends BaseController
     public function index()
     {
         //
-        $paginator = Specification::paginate(4);
+        $paginator = Specification::paginate(10);
         return view('asystem.specifications.index', compact('paginator'));
     }
 
@@ -114,14 +114,35 @@ class SpecificationController extends BaseController
 
         $data = $request->all();
 
-        $nomenclatures = $data['nomenclatures'];
-        $nomenclaturesCount = $data['nomenclaturesCount'];
-        unset($data['nomenclatures']);
-        unset($data['nomenclaturesCount']);
-//dd($nomenclatures, $nomenclaturesCount);
+        if (array_key_exists("save",$data)) {
 
-        foreach ($nomenclatures AS $key => $nomenclature) {
-            SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+            $nomenclatures = $data['nomenclatures'];
+            $nomenclaturesCount = $data['nomenclaturesCount'];
+
+            foreach ($nomenclatures AS $key => $nomenclature) {
+                if(in_array(null, $nomenclatures) || in_array(null, $nomenclaturesCount)) {
+                    return back()
+                        ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
+                        ->withInput();
+                }
+                SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+            }
+            unset($data['nomenclaturesSave']);
+            unset($data['nomenclaturesSaveCount']);
+        }
+
+        if (array_key_exists("update",$data)) {
+
+            $nomenclatures = $data['nomenclaturesUpdate'];
+            $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
+
+            foreach ($nomenclatures AS $key => $nomenclature) {
+                $SpecUnit = SpecUnit::find($nomenclature);
+                $SpecUnit->count = $nomenclaturesCount[$key];
+                $SpecUnit->save();
+            }
+            unset($data['nomenclaturesUpdate']);
+            unset($data['nomenclaturesUpdateCount']);
         }
 
         $result = $item

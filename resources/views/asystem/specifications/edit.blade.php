@@ -56,7 +56,7 @@
                             <div class="col">
                                 <label>Объекты</label>
                                 <select name="object_id" class="form-control">
-                                    <option value="" >Не выбран</option>
+                                    <option value="" >-- не выбрано --</option>
                                     @foreach($objects as $object)
                                         <option value="{{ $object->object_id }}" @if($object->object_id == $item->object_id) selected @endif>
                                             {{ $object->title }}
@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="col col-md-2">
                                         <input type="number" class="form-control" name="nomenclaturesCount[]"
-                                               value="" placeholder="Кол-во" required min="1">
+                                               value="" placeholder="Кол-во" min="1">
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-danger" name="btnWork">X</button>
@@ -90,17 +90,6 @@
                                 </div>
 
                             <div id="new_element_nomenclatures"></div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="addElementNomenclature();">Добавить номенклатуру
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
 
                         @if (!$specUnits->isEmpty())
                             <table class="table table-hover">
@@ -115,7 +104,12 @@
                                     <tr>
                                         <td>{{ $specUnit->nomenclature['n_id'] }}</td>
                                         <td>{{ $specUnit->nomenclature['title'] }}</td>
-                                        <td>{{ $specUnit->count }}</td>
+                                        <td>
+                                            <input type="hidden" class="form-control" name="nomenclaturesUpdate[]"
+                                                   value="{{ $specUnit->sunit_id }}">
+                                            <input type="number" class="form-control" name="nomenclaturesUpdateCount[]"
+                                                   value="{{ $specUnit->count }}" placeholder="Кол-во" required min="1">
+                                        </td>
                                         <td>{{ $specUnit->ver }}</td>
                                     </tr>
                                 @endforeach
@@ -125,16 +119,22 @@
                             <label>Номенклатура не добавлена</label>
                         @endif
 
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8">
-                                <button type="submit" class="btn btn-primary">Сохранить</button>&nbsp;&nbsp;
-                                <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>&nbsp;&nbsp;
-                                <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" name="save">Сохранить</button>&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-primary" name="update">Обновить</button>&nbsp;&nbsp;
+                                        <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>&nbsp;&nbsp;
+                                        <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="addElementNomenclature();">Добавить номенклатуру
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
 
+                    </form>
 
                 </div>
             </div>
