@@ -215,7 +215,7 @@
         var idPEMaterial = 0;
 
         function addElementWork() {
-            $("#selectWorks0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+            $("#selectWorks0").clone(true).removeClass('d-none').find('select').val("").end().find("input").val("").end().each(function () {
                 idWork = idWork + 1;
                 this.id = 'selectWork' + idWork; // to keep it unique
             }).appendTo("#new_element_works");
@@ -223,7 +223,7 @@
         }
 
         function addElementPMaterial() {
-            $("#selectMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+            $("#selectMaterials0").clone(true).removeClass('d-none').find('select').val("").end().find("input").val("").end().each(function () {
                 idPMaterial = idPMaterial + 1;
                 this.id = 'selectMaterial' + idPMaterial; // to keep it unique
             }).appendTo("#new_element_pmaterial");
@@ -231,7 +231,7 @@
         }
 
         function addElementPEMaterial() {
-            $("#selectPEMaterials0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function () {
+            $("#selectPEMaterials0").clone(true).removeClass('d-none').find('select').val("").end().find("input").val("").end().each(function () {
                 idPEMaterial = idPEMaterial + 1;
                 this.id = 'selectPEMaterial' + idPEMaterial; // to keep it unique
             }).appendTo("#new_element_pematerial");
