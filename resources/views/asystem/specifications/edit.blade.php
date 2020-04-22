@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <hr>
                             <label>Наменклатура для добавления</label>
-                                <div class="row form-group" id="selectNomenclatures0">
+                                <div class="row form-group" id="selectNomenclatures">
                                     <div class="col col-md-9">
                                         <select name="nomenclatures[]" class="form-control" id="selectNomenclatures">
                                             <option value="">-- не выбрано --</option>
@@ -85,7 +85,7 @@
                                                value="" placeholder="Кол-во" min="1">
                                     </div>
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger" name="btnWork">X</button>
+                                        <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
                                     </div>
                                 </div>
 
@@ -147,16 +147,17 @@
     var idNomenclature=0;
 
     function addElementNomenclature() {
-        $("#selectNomenclatures0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-            idNomenclature=idNomenclature+1;
+        $("#selectNomenclatures").clone(true).removeClass('d-none').find("input").val("").end().each(function() {
+            idNomenclature = idNomenclature + 1;
             this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
-        }).appendTo("#new_element_nomenclatures");
+
+        }).appendTo("#new_element_nomenclatures").find("input:text").val("");
         initSelect();
     }
 
     $("button[name='btnNomenclature']").each(function(index) {
         $(this).on("click", function() {
-            if($(this).parent().parent().attr('id') != "selectNomenclatures0") {
+            if($(this).parent().parent().attr('id') != "selectNomenclatures") {
                 $(this).parent().parent().remove();
             } else {
                 alert("Хотя бы один пункт должен быть добавлен");
