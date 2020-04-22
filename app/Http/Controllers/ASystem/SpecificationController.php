@@ -115,7 +115,7 @@ class SpecificationController extends BaseController
         $data = $request->all();
 
         if (array_key_exists("save",$data)) {
-
+            $modeMsg = 'сохранено';
             $nomenclatures = $data['nomenclatures'];
             $nomenclaturesCount = $data['nomenclaturesCount'];
 
@@ -132,7 +132,7 @@ class SpecificationController extends BaseController
         }
 
         if (array_key_exists("update",$data)) {
-
+            $modeMsg = 'обновленно';
             $nomenclatures = $data['nomenclaturesUpdate'];
             $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
 
@@ -152,10 +152,10 @@ class SpecificationController extends BaseController
         if ($result) {
             return redirect()
                 ->route('specification.edit', $item->spec_id)
-                ->with(['success' => "Успешно сохранено"]);
+                ->with(['success' => "Успешно {$modeMsg}"]);
         } else {
             return back()
-                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withErrors(['msg' => "Ошибка"])
                 ->withInput();
         }
     }
