@@ -7,6 +7,7 @@ use App\Http\Controllers\ASystem\BaseController;
 use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Nomenclature;
 use App\Models\Objct;
+use App\Models\PatternPrices;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
@@ -114,7 +115,7 @@ class SpecificationController extends BaseController
 
         $data = $request->all();
 
-        if (array_key_exists("save",$data)) {
+        if (array_key_exists("save", $data)) {
             $modeMsg = 'сохранено';
             $nomenclatures = $data['nomenclatures'];
             $nomenclaturesCount = $data['nomenclaturesCount'];
@@ -131,7 +132,7 @@ class SpecificationController extends BaseController
             unset($data['nomenclaturesSaveCount']);
         }
 
-        if (array_key_exists("update",$data)) {
+        if (array_key_exists("update", $data)) {
             $modeMsg = 'обновленно';
             $nomenclatures = $data['nomenclaturesUpdate'];
             $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
@@ -226,5 +227,23 @@ class SpecificationController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generate($id)
+    {
+        $specification = Specification::find($id);
+
+        foreach ($specification->nomenclatures as $nomenclature) {
+
+            $PP = PatternPrices::where('title', $nomenclature->title)->first();
+        }
+        dd($PP);
+
     }
 }

@@ -129,7 +129,7 @@
                                         <button type="button" class="btn btn-primary"
                                                 onclick="addElementNomenclature();">Добавить номенклатуру
                                         </button>
-                                        <a class="btn btn-primary" href="">Генерация КП</a>
+                                        <a class="btn btn-primary" href="{{ route('specification.generate', $item->spec_id) }}">Генерация КП</a>
                                     </div>
                                 </div>
                             </div>

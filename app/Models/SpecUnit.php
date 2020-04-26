@@ -27,4 +27,5 @@ class SpecUnit extends Model
     {
         return $query->where('is_active', 1);
     }
+
 }
