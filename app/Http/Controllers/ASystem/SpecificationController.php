@@ -11,6 +11,7 @@ use App\Models\PatternPrices;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class SpecificationController extends BaseController
 {
@@ -240,10 +241,13 @@ class SpecificationController extends BaseController
         $specification = Specification::find($id);
 
         foreach ($specification->nomenclatures as $nomenclature) {
-
             $PP = PatternPrices::where('title', $nomenclature->title)->first();
+            $generateCO[$nomenclature->title]['works'] = $PP->worksForCommercialOffer->all();
+            $generateCO[$nomenclature->title]['patternMaterials'] = $PP->patternMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->title]['expendableMaterials'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
-        dd($PP);
 
+        //dd($generateCO);
+        return $generateCO;
     }
 }
