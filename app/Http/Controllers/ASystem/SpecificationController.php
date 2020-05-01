@@ -241,13 +241,13 @@ class SpecificationController extends BaseController
         $specification = Specification::find($id);
 
         foreach ($specification->nomenclatures as $nomenclature) {
-            $PP = PatternPrices::where('title', $nomenclature->title)->first();
+            $PP = PatternPrices::where('title', $nomenclature->title)->firstOrFail();
+
             $generateCO[$nomenclature->title]['works'] = $PP->worksForCommercialOffer->all();
             $generateCO[$nomenclature->title]['patternMaterials'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->title]['expendableMaterials'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
 
-        //dd($generateCO);
         return $generateCO;
     }
 }
