@@ -4,12 +4,14 @@ namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Requests\UploadImportModelRequest;
+use App\Models\Layout;
 use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\PatternPrices;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class SpecificationController extends BaseController
 {
@@ -249,6 +251,14 @@ class SpecificationController extends BaseController
             $generateCO[$nomenclature->title]['patternMaterials'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->title]['expendableMaterials'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
+
+        $date = Carbon::now()->format('d.m.Y H:i:s');
+        $title = "раскладка {$specification->title} {$date}";
+        $itemLayout = new Layout(['title' => $title]);
+        $itemLayout->save();
+
+
+
         return $generateCO;
     }
 }
