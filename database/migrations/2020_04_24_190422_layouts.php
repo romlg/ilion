@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Layout extends Migration
+class Layouts extends Migration
 {
     /**
      * Run the migrations.
@@ -17,6 +17,7 @@ class Layout extends Migration
         if(!Schema::hasTable('layouts')) {
             Schema::create('layouts', function (Blueprint $table) {
                 $table->increments('layout_id');
+                $table->text('title');
                 $table->timestamps();
             });
         }

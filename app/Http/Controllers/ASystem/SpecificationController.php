@@ -241,7 +241,6 @@ class SpecificationController extends BaseController
         foreach ($specification->nomenclatures as $nomenclature) {
             $PP = PatternPrices::where('title', $nomenclature->title)->first();
 
-
             if (is_null($PP)) {
                 return "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
             }
