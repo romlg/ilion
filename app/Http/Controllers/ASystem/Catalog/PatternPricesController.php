@@ -58,7 +58,7 @@ class PatternPricesController extends CatalogController
     {
         //
         $validatedData = $request->validate([
-            'title' => 'required|min:2|max:255'
+            'title' => 'required|min:2|max:255|unique:nomenclatures'
         ]);
 
         $data = $request->input();

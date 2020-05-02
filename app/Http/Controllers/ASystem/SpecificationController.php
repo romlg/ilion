@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\ExcelParser\ExcelParser;
-use App\Http\Controllers\ASystem\BaseController;
 use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Nomenclature;
 use App\Models\Objct;
@@ -11,7 +10,6 @@ use App\Models\PatternPrices;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class SpecificationController extends BaseController
 {
@@ -49,7 +47,7 @@ class SpecificationController extends BaseController
     {
         //
         $validatedData = $request->validate([
-            'title' => 'required|min:2|max:255'
+            'title' => 'required|min:2|max:255|unique:specifications'
         ]);
 
         $data = $request->input();
@@ -241,13 +239,17 @@ class SpecificationController extends BaseController
         $specification = Specification::find($id);
 
         foreach ($specification->nomenclatures as $nomenclature) {
-            $PP = PatternPrices::where('title', $nomenclature->title)->firstOrFail();
+            $PP = PatternPrices::where('title', $nomenclature->title)->first();
+
+
+            if (is_null($PP)) {
+                return "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
+            }
 
             $generateCO[$nomenclature->title]['works'] = $PP->worksForCommercialOffer->all();
             $generateCO[$nomenclature->title]['patternMaterials'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->title]['expendableMaterials'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
-
         return $generateCO;
     }
 }
