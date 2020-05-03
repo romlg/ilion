@@ -249,8 +249,8 @@ class SpecificationController extends BaseController
             }
 
             $generateCO[$nomenclature->n_id]['work'] = $PP->worksForCommercialOffer->all();
-            $generateCO[$nomenclature->n_id]['material'] = $PP->patternMaterialsForCommercialOffer->all();
-            $generateCO[$nomenclature->n_id]['pattern'] = $PP->expendableMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->n_id]['pattern_material'] = $PP->patternMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->n_id]['material'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
 
         $date = Carbon::now()->format('d.m.Y H:i:s');
@@ -264,7 +264,11 @@ class SpecificationController extends BaseController
             $nomenclatureCount = $specification->units->where('n_id', $nomenclature)->first()->count;
             foreach ($CO as $type => $values) {
                 foreach ($values as $value) {
-                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $itemLayout->layout_id, 'position_id' => 1, 'count' => $nomenclatureCount, 'type' => $type]);
+
+                    $typeId = $value->getOriginal("{$type}_id");
+
+                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $itemLayout->layout_id, 'position_id' => $typeId,
+                        'count' => $nomenclatureCount, 'type' => $type]);
                     $itemLayoutMaterial->save();
                 }
             }

@@ -20,7 +20,7 @@ class LayoutMaterials extends Migration
                 $table->integer('layout_id');
                 $table->integer('position_id');
                 $table->integer('count');
-                $table->enum('type', ['work', 'material', 'pattern']);
+                $table->enum('type', ['work', 'material', 'pattern_material']);  //значения не менять
             });
         }
     }
