@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ASystem;
 use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Requests\UploadImportModelRequest;
 use App\Models\Layout;
+use App\Models\LayoutMaterial;
 use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\PatternPrices;
@@ -247,9 +248,9 @@ class SpecificationController extends BaseController
                 return "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
             }
 
-            $generateCO[$nomenclature->title]['works'] = $PP->worksForCommercialOffer->all();
-            $generateCO[$nomenclature->title]['patternMaterials'] = $PP->patternMaterialsForCommercialOffer->all();
-            $generateCO[$nomenclature->title]['expendableMaterials'] = $PP->expendableMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->title]['work'] = $PP->worksForCommercialOffer->all();
+            $generateCO[$nomenclature->title]['material'] = $PP->patternMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->title]['pattern'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
 
         $date = Carbon::now()->format('d.m.Y H:i:s');
@@ -257,7 +258,16 @@ class SpecificationController extends BaseController
         $itemLayout = new Layout(['title' => $title]);
         $itemLayout->save();
 
+        //--------------------------------------------------------------
 
+        foreach ($generateCO as $nomenclature => $CO) {
+            foreach ($CO as $type => $values) {
+                foreach ($values as $value) {
+                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $itemLayout->layout_id, 'position_id' => 1, 'count' => 1, 'type' => $type]);
+                    $itemLayoutMaterial->save();
+                }
+            }
+        }
 
         return $generateCO;
     }
