@@ -241,25 +241,40 @@ class SpecificationController extends BaseController
     {
         $specification = Specification::find($id);
 
+        $generateCO = $this->generateCommercialOffers($specification);
+        $layout = $this->layoutSave($specification);
+        $this->layoutSaveMaterial($specification, $layout, $generateCO);
+
+        return $generateCO;
+    }
+
+    protected function generateCommercialOffers(Specification $specification): array
+    {
         foreach ($specification->nomenclatures as $nomenclature) {
             $PP = PatternPrices::where('title', $nomenclature->title)->first();
 
             if (is_null($PP)) {
                 return "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
             }
-
             $generateCO[$nomenclature->n_id]['work'] = $PP->worksForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['pattern_material'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['material'] = $PP->expendableMaterialsForCommercialOffer->all();
         }
+        return $generateCO;
+    }
 
+    protected function layoutSave(Specification $specification): Layout
+    {
         $date = Carbon::now()->format('d.m.Y H:i:s');
         $title = "раскладка {$specification->title} {$date}";
         $itemLayout = new Layout(['title' => $title]);
         $itemLayout->save();
 
-        //--------------------------------------------------------------
+        return $itemLayout;
+    }
 
+    protected function layoutSaveMaterial(Specification $specification, Layout $layout, Array $generateCO)
+    {
         foreach ($generateCO as $nomenclature => $CO) {
             $nomenclatureCount = $specification->units->where('n_id', $nomenclature)->first()->count;
             foreach ($CO as $type => $values) {
@@ -267,13 +282,11 @@ class SpecificationController extends BaseController
 
                     $typeId = $value->getOriginal("{$type}_id");
 
-                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $itemLayout->layout_id, 'position_id' => $typeId,
+                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
                         'count' => $nomenclatureCount, 'type' => $type]);
                     $itemLayoutMaterial->save();
                 }
             }
         }
-
-        return $generateCO;
     }
 }
