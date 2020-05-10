@@ -254,8 +254,10 @@ class SpecificationController extends BaseController
             $PP = PatternPrices::where('title', $nomenclature->title)->first();
 
             if (is_null($PP)) {
-                return "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
+                echo "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
+                die();
             }
+
             $generateCO[$nomenclature->n_id]['work'] = $PP->worksForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['pattern_material'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['material'] = $PP->expendableMaterialsForCommercialOffer->all();
