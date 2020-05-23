@@ -136,14 +136,29 @@ class SpecificationController extends BaseController
 
         if (array_key_exists("update", $data)) {
             $modeMsg = 'обновленно';
+
+            if(!isset($data['nomenclaturesUpdate'])) {
+                return back()
+                    ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
+                    ->withInput();
+            }
+
             $nomenclatures = $data['nomenclaturesUpdate'];
             $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
 
-            foreach ($nomenclatures AS $key => $nomenclature) {
+            foreach ($nomenclatures as $key => $nomenclature) {  //updata count
                 $SpecUnit = SpecUnit::find($nomenclature);
                 $SpecUnit->count = $nomenclaturesCount[$key];
                 $SpecUnit->save();
             }
+
+            $SpecUnitsId = SpecUnit::where('spec_id', $id)->get('sunit_id')->toArray();  //updata count
+            foreach ($SpecUnitsId as $unit) {
+                $units[] = $unit['sunit_id'];
+            }
+            $SpecUnitsDelete = array_diff($units, $nomenclatures);
+            SpecUnit::destroy($SpecUnitsDelete);
+
             unset($data['nomenclaturesUpdate']);
             unset($data['nomenclaturesUpdateCount']);
         }

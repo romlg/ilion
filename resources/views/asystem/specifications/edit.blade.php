@@ -98,6 +98,7 @@
                                 <th>Название</th>
                                 <th>Количество</th>
                                 <th>Версия</th>
+                                <th></th>
                                 </thead>
                                 <tbody>
                                 @foreach($specUnits as $specUnit)
@@ -111,6 +112,9 @@
                                                    value="{{ $specUnit->count }}" placeholder="Кол-во" required min="1">
                                         </td>
                                         <td>{{ $specUnit->ver }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
