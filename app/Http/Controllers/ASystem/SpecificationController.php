@@ -114,28 +114,27 @@ class SpecificationController extends BaseController
         ]);
 
         $item = Specification::find($id);
-
         $data = $request->all();
 
         if (array_key_exists("save", $data)) {
+
             $modeMsg = 'сохранено';
             $nomenclatures = $data['nomenclatures'];
             $nomenclaturesCount = $data['nomenclaturesCount'];
-
-            foreach ($nomenclatures AS $key => $nomenclature) {
-                if(in_array(null, $nomenclatures) || in_array(null, $nomenclaturesCount)) {
-                    return back()
-                        ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
-                        ->withInput();
-                }
-                SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
-            }
             unset($data['nomenclaturesSave']);
             unset($data['nomenclaturesSaveCount']);
+
+            if(in_array(null, $nomenclatures) || in_array(null, $nomenclaturesCount)) {
+                return back()
+                    ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
+                    ->withInput();
+            }
+            foreach ($nomenclatures AS $key => $nomenclature) {
+                SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+            }
         }
 
         if (array_key_exists("update", $data)) {
-            $modeMsg = 'обновленно';
 
             if(!isset($data['nomenclaturesUpdate'])) {
                 return back()
@@ -143,8 +142,11 @@ class SpecificationController extends BaseController
                     ->withInput();
             }
 
+            $modeMsg = 'обновленно';
             $nomenclatures = $data['nomenclaturesUpdate'];
             $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
+            unset($data['nomenclaturesUpdate']);
+            unset($data['nomenclaturesUpdateCount']);
 
             foreach ($nomenclatures as $key => $nomenclature) {  //updata count
                 $SpecUnit = SpecUnit::find($nomenclature);
@@ -152,15 +154,12 @@ class SpecificationController extends BaseController
                 $SpecUnit->save();
             }
 
-            $SpecUnitsId = SpecUnit::where('spec_id', $id)->get('sunit_id')->toArray();  //updata count
+            $SpecUnitsId = SpecUnit::where('spec_id', $id)->get('sunit_id')->toArray();  //delete count
             foreach ($SpecUnitsId as $unit) {
                 $units[] = $unit['sunit_id'];
             }
             $SpecUnitsDelete = array_diff($units, $nomenclatures);
             SpecUnit::destroy($SpecUnitsDelete);
-
-            unset($data['nomenclaturesUpdate']);
-            unset($data['nomenclaturesUpdateCount']);
         }
 
         $result = $item
@@ -299,9 +298,14 @@ class SpecificationController extends BaseController
 
                     $typeId = $value->getOriginal("{$type}_id");
 
-                    $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
-                        'count' => $nomenclatureCount, 'type' => $type]);
-                    $itemLayoutMaterial->save();
+                    if(LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->exists()) {
+                        $count = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $nomenclatureCount;
+                        LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $count));
+                    } else {
+                        $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
+                            'count' => $nomenclatureCount, 'type' => $type]);
+                        $itemLayoutMaterial->save();
+                    }
                 }
             }
         }
