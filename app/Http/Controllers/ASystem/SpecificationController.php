@@ -8,6 +8,7 @@ use App\Models\Layout;
 use App\Models\LayoutMaterial;
 use App\Models\Nomenclature;
 use App\Models\Objct;
+use App\Models\PatternExpendableMaterials;
 use App\Models\PatternPrices;
 use App\Models\PatternWorks;
 use App\Models\Specification;
@@ -273,6 +274,7 @@ class SpecificationController extends BaseController
                 die();
             }
 
+            $generateCO[$nomenclature->n_id]['pattern_prices'] = $PP->pattern_price_id;
             $generateCO[$nomenclature->n_id]['work'] = $PP->worksForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['pattern_material'] = $PP->patternMaterialsForCommercialOffer->all();
             $generateCO[$nomenclature->n_id]['material'] = $PP->expendableMaterialsForCommercialOffer->all();
@@ -295,20 +297,32 @@ class SpecificationController extends BaseController
         foreach ($generateCO as $nomenclature => $CO) {
             $specificationCount = $specification->units->where('n_id', $nomenclature)->first()->count;
             foreach ($CO as $type => $values) {
-                foreach ($values as $value) {
 
-                    $typeId = $value->getOriginal("{$type}_id");
+                if($type == 'pattern_prices') {
+                    $patternId = $values;
+                } else {
+                    foreach ($values as $value) {
 
-                    $typeCount = PatternWorks::find($value['work_id']);
-                    $commonCount = $typeCount * $specificationCount;
+                        $typeId = $value->getOriginal("{$type}_id");
 
-                    if(LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->exists()) {
-                        $sumCount = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $commonCount;
-                        LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $sumCount));
-                    } else {
-                        $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
-                            'count' => $commonCount, 'type' => $type]);
-                        $itemLayoutMaterial->save();
+                        if($type == 'work') {  //Работы
+                            $typeCount = PatternWorks::where('pattern_id', $patternId)->where('work_id', $typeId)->first()->count;
+                        } elseif($type == 'material') {  //Расходные материалы
+                            $typeCount = PatternExpendableMaterials::where('pattern_id', $patternId)->where('material_id', $typeId)->first()->count;
+                        } else { //Шаблон материалов
+                            $typeCount = 1;
+                        }
+
+                        $commonCount = $typeCount * $specificationCount;
+
+                        if(LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->exists()) {
+                            $sumCount = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $commonCount;
+                            LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $sumCount));
+                        } else {
+                            $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
+                                'count' => $commonCount, 'type' => $type]);
+                            $itemLayoutMaterial->save();
+                        }
                     }
                 }
             }
