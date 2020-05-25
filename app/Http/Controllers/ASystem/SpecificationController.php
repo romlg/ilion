@@ -305,19 +305,32 @@ class SpecificationController extends BaseController
 
                         $typeId = $value->getOriginal("{$type}_id");
 
-                        if($type == 'work') {  //Работы
-                            $typeCount = PatternWorks::where('pattern_id', $patternId)->where('work_id', $typeId)->first()->count;
-                        } elseif($type == 'material') {  //Расходные материалы
-                            $typeCount = PatternExpendableMaterials::where('pattern_id', $patternId)->where('material_id', $typeId)->first()->count;
-                        } else { //Шаблон материалов
+                        if($type == 'work') {
+                            $typeCount = PatternWorks::where('pattern_id', $patternId)
+                                ->where('work_id', $typeId)
+                                ->first()
+                                ->count;
+                        } elseif($type == 'material') {
+                            $typeCount = PatternExpendableMaterials::where('pattern_id', $patternId)
+                                ->where('material_id', $typeId)
+                                ->first()
+                                ->count;
+                        } else {
                             $typeCount = 1;
                         }
 
                         $commonCount = $typeCount * $specificationCount;
 
-                        if(LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->exists()) {
-                            $sumCount = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $commonCount;
-                            LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $sumCount));
+                        $record = LayoutMaterial::where('layout_id', $layout->layout_id)
+                            ->where('position_id', $typeId)
+                            ->where('type', $type)
+                            ->first();
+                        if($record) {
+                            $sumCount = $record->count + $commonCount;
+                            LayoutMaterial::where('layout_id', $layout->layout_id)
+                                ->where('position_id', $typeId)
+                                ->where('type', $type)
+                                ->update(array('count' => $sumCount));
                         } else {
                             $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
                                 'count' => $commonCount, 'type' => $type]);
