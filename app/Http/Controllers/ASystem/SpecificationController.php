@@ -9,6 +9,7 @@ use App\Models\LayoutMaterial;
 use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\PatternPrices;
+use App\Models\PatternWorks;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
@@ -292,18 +293,21 @@ class SpecificationController extends BaseController
     protected function layoutSaveMaterial(Specification $specification, Layout $layout, Array $generateCO)
     {
         foreach ($generateCO as $nomenclature => $CO) {
-            $nomenclatureCount = $specification->units->where('n_id', $nomenclature)->first()->count;
+            $specificationCount = $specification->units->where('n_id', $nomenclature)->first()->count;
             foreach ($CO as $type => $values) {
                 foreach ($values as $value) {
 
                     $typeId = $value->getOriginal("{$type}_id");
 
+                    $typeCount = PatternWorks::find($value['work_id']);
+                    $commonCount = $typeCount * $specificationCount;
+
                     if(LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->exists()) {
-                        $count = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $nomenclatureCount;
-                        LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $count));
+                        $sumCount = LayoutMaterial::where('layout_id', $layout->layout_id)->where('position_id', $typeId)->first()->count + $commonCount;
+                        LayoutMaterial::where('layout_id', $nomenclature)->where('position_id', $nomenclature)->update(array('count' => $sumCount));
                     } else {
                         $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
-                            'count' => $nomenclatureCount, 'type' => $type]);
+                            'count' => $commonCount, 'type' => $type]);
                         $itemLayoutMaterial->save();
                     }
                 }
