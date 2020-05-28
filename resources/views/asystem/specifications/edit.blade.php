@@ -56,7 +56,7 @@
                             <div class="col">
                                 <label>Объекты</label>
                                 <select name="object_id" class="form-control">
-                                    <option value="" >Не выбран</option>
+                                    <option value="" >-- не выбрано --</option>
                                     @foreach($objects as $object)
                                         <option value="{{ $object->object_id }}" @if($object->object_id == $item->object_id) selected @endif>
                                             {{ $object->title }}
@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <hr>
                             <label>Наменклатура для добавления</label>
-                                <div class="row form-group" id="selectNomenclatures0">
+                                <div class="row form-group" id="selectNomenclatures">
                                     <div class="col col-md-9">
                                         <select name="nomenclatures[]" class="form-control" id="selectNomenclatures">
                                             <option value="">-- не выбрано --</option>
@@ -82,25 +82,14 @@
                                     </div>
                                     <div class="col col-md-2">
                                         <input type="number" class="form-control" name="nomenclaturesCount[]"
-                                               value="" placeholder="Кол-во" required min="1">
+                                               value="" placeholder="Кол-во" min="1">
                                     </div>
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger" name="btnWork">X</button>
+                                        <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
                                     </div>
                                 </div>
 
                             <div id="new_element_nomenclatures"></div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="addElementNomenclature();">Добавить номенклатуру
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
 
                         @if (!$specUnits->isEmpty())
                             <table class="table table-hover">
@@ -109,14 +98,23 @@
                                 <th>Название</th>
                                 <th>Количество</th>
                                 <th>Версия</th>
+                                <th></th>
                                 </thead>
                                 <tbody>
                                 @foreach($specUnits as $specUnit)
                                     <tr>
                                         <td>{{ $specUnit->nomenclature['n_id'] }}</td>
                                         <td>{{ $specUnit->nomenclature['title'] }}</td>
-                                        <td>{{ $specUnit->count }}</td>
+                                        <td>
+                                            <input type="hidden" class="form-control" name="nomenclaturesUpdate[]"
+                                                   value="{{ $specUnit->sunit_id }}">
+                                            <input type="number" class="form-control" name="nomenclaturesUpdateCount[]"
+                                                   value="{{ $specUnit->count }}" placeholder="Кол-во" required min="1">
+                                        </td>
                                         <td>{{ $specUnit->ver }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" name="btnNomenclature">X</button>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -125,16 +123,23 @@
                             <label>Номенклатура не добавлена</label>
                         @endif
 
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8">
-                                <button type="submit" class="btn btn-primary">Сохранить</button>&nbsp;&nbsp;
-                                <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>&nbsp;&nbsp;
-                                <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" name="save">Сохранить</button>&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-primary" name="update">Обновить</button>&nbsp;&nbsp;
+                                        <a class="btn btn-primary" href="{{ route('specification.index') }}">Закрыть</a>&nbsp;&nbsp;
+                                        <a class="btn btn-primary" href="{{ route('specification.upload', $item->spec_id) }}">Загрузить</a>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="addElementNomenclature();">Добавить номенклатуру
+                                        </button>
+                                        <a class="btn btn-primary" href="{{ route('specification.generate', $item->spec_id) }}">Генерация КП</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
 
+                    </form>
 
                 </div>
             </div>
@@ -147,16 +152,17 @@
     var idNomenclature=0;
 
     function addElementNomenclature() {
-        $("#selectNomenclatures0").clone(true).removeClass('d-none').find("input:text").val("").end().each(function(){
-            idNomenclature=idNomenclature+1;
+        $("#selectNomenclatures").clone(true).removeClass('d-none').find("input").val("").end().each(function() {
+            idNomenclature = idNomenclature + 1;
             this.id = 'selectNomenclatures' + idNomenclature; // to keep it unique
-        }).appendTo("#new_element_nomenclatures");
+
+        }).appendTo("#new_element_nomenclatures").find("input:text").val("");
         initSelect();
     }
 
     $("button[name='btnNomenclature']").each(function(index) {
         $(this).on("click", function() {
-            if($(this).parent().parent().attr('id') != "selectNomenclatures0") {
+            if($(this).parent().parent().attr('id') != "selectNomenclatures") {
                 $(this).parent().parent().remove();
             } else {
                 alert("Хотя бы один пункт должен быть добавлен");

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class SpecUnit extends Model
 {
     //
+    public $timestamps = false;
+
     protected $table = 'spec_units';
     protected $primaryKey = 'sunit_id';
     protected $fillable =[
@@ -27,4 +29,5 @@ class SpecUnit extends Model
     {
         return $query->where('is_active', 1);
     }
+
 }

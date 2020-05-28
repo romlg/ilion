@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\ExcelParser\ExcelParser;
-use App\Http\Controllers\ASystem\BaseController;
 use App\Http\Requests\UploadImportModelRequest;
+use App\Models\Layout;
+use App\Models\LayoutMaterial;
 use App\Models\Nomenclature;
 use App\Models\Objct;
+use App\Models\PatternExpendableMaterials;
+use App\Models\PatternPrices;
+use App\Models\PatternWorks;
 use App\Models\Specification;
 use App\Models\SpecUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class SpecificationController extends BaseController
 {
@@ -21,7 +26,7 @@ class SpecificationController extends BaseController
     public function index()
     {
         //
-        $paginator = Specification::paginate(4);
+        $paginator = Specification::paginate(10);
         return view('asystem.specifications.index', compact('paginator'));
     }
 
@@ -47,7 +52,7 @@ class SpecificationController extends BaseController
     {
         //
         $validatedData = $request->validate([
-            'title' => 'required|min:2|max:255'
+            'title' => 'required|min:2|max:255|unique:specifications'
         ]);
 
         $data = $request->input();
@@ -111,17 +116,52 @@ class SpecificationController extends BaseController
         ]);
 
         $item = Specification::find($id);
-
         $data = $request->all();
 
-        $nomenclatures = $data['nomenclatures'];
-        $nomenclaturesCount = $data['nomenclaturesCount'];
-        unset($data['nomenclatures']);
-        unset($data['nomenclaturesCount']);
-//dd($nomenclatures, $nomenclaturesCount);
+        if (array_key_exists("save", $data)) {
 
-        foreach ($nomenclatures AS $key => $nomenclature) {
-            SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+            $modeMsg = 'сохранено';
+            $nomenclatures = $data['nomenclatures'];
+            $nomenclaturesCount = $data['nomenclaturesCount'];
+            unset($data['nomenclaturesSave']);
+            unset($data['nomenclaturesSaveCount']);
+
+            if(in_array(null, $nomenclatures) || in_array(null, $nomenclaturesCount)) {
+                return back()
+                    ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
+                    ->withInput();
+            }
+            foreach ($nomenclatures AS $key => $nomenclature) {
+                SpecUnit::updateOrInsert(['spec_id' => $id, 'n_id' => $nomenclature, 'count' => $nomenclaturesCount[$key], 'ver' => 0, 'is_active' => 1]);
+            }
+        }
+
+        if (array_key_exists("update", $data)) {
+
+            if(!isset($data['nomenclaturesUpdate'])) {
+                return back()
+                    ->withErrors(['msg' => "Ошибка сохранения. Номенклатура не заполнена"])
+                    ->withInput();
+            }
+
+            $modeMsg = 'обновленно';
+            $nomenclatures = $data['nomenclaturesUpdate'];
+            $nomenclaturesCount = $data['nomenclaturesUpdateCount'];
+            unset($data['nomenclaturesUpdate']);
+            unset($data['nomenclaturesUpdateCount']);
+
+            foreach ($nomenclatures as $key => $nomenclature) {  //updata count
+                $SpecUnit = SpecUnit::find($nomenclature);
+                $SpecUnit->count = $nomenclaturesCount[$key];
+                $SpecUnit->save();
+            }
+
+            $SpecUnitsId = SpecUnit::where('spec_id', $id)->get('sunit_id')->toArray();  //delete count
+            foreach ($SpecUnitsId as $unit) {
+                $units[] = $unit['sunit_id'];
+            }
+            $SpecUnitsDelete = array_diff($units, $nomenclatures);
+            SpecUnit::destroy($SpecUnitsDelete);
         }
 
         $result = $item
@@ -131,10 +171,10 @@ class SpecificationController extends BaseController
         if ($result) {
             return redirect()
                 ->route('specification.edit', $item->spec_id)
-                ->with(['success' => "Успешно сохранено"]);
+                ->with(['success' => "Успешно {$modeMsg}"]);
         } else {
             return back()
-                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withErrors(['msg' => "Ошибка"])
                 ->withInput();
         }
     }
@@ -205,5 +245,100 @@ class SpecificationController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generate($id)
+    {
+        $specification = Specification::find($id);
+
+        $generateCO = $this->generateCommercialOffers($specification);
+        $layout = $this->layoutSave($specification);
+        $this->layoutSaveMaterial($specification, $layout, $generateCO);
+
+        return $generateCO;
+    }
+
+    protected function generateCommercialOffers(Specification $specification): array
+    {
+        foreach ($specification->nomenclatures as $nomenclature) {
+            $PP = PatternPrices::where('title', $nomenclature->title)->first();
+
+            if (is_null($PP)) {
+                echo "Шаблон расценки для наменклатуры {$nomenclature->title} не добавлен";
+                die();
+            }
+
+            $generateCO[$nomenclature->n_id]['pattern_prices'] = $PP->pattern_price_id;
+            $generateCO[$nomenclature->n_id]['work'] = $PP->worksForCommercialOffer->all();
+            $generateCO[$nomenclature->n_id]['pattern_material'] = $PP->patternMaterialsForCommercialOffer->all();
+            $generateCO[$nomenclature->n_id]['material'] = $PP->expendableMaterialsForCommercialOffer->all();
+        }
+        return $generateCO;
+    }
+
+    protected function layoutSave(Specification $specification): Layout
+    {
+        $date = Carbon::now()->format('d.m.Y H:i:s');
+        $title = "раскладка {$specification->title} {$date}";
+        $itemLayout = new Layout(['title' => $title]);
+        $itemLayout->save();
+
+        return $itemLayout;
+    }
+
+    protected function layoutSaveMaterial(Specification $specification, Layout $layout, Array $generateCO)
+    {
+        foreach ($generateCO as $nomenclature => $CO) {
+            $specificationCount = $specification->units->where('n_id', $nomenclature)->first()->count;
+            foreach ($CO as $type => $values) {
+
+                if($type == 'pattern_prices') {
+                    $patternId = $values;
+                } else {
+                    foreach ($values as $value) {
+
+                        $typeId = $value->getOriginal("{$type}_id");
+
+                        if($type == 'work') {
+                            $typeCount = PatternWorks::where('pattern_id', $patternId)
+                                ->where('work_id', $typeId)
+                                ->first()
+                                ->count;
+                        } elseif($type == 'material') {
+                            $typeCount = PatternExpendableMaterials::where('pattern_id', $patternId)
+                                ->where('material_id', $typeId)
+                                ->first()
+                                ->count;
+                        } else {
+                            $typeCount = 1;
+                        }
+
+                        $commonCount = $typeCount * $specificationCount;
+
+                        $record = LayoutMaterial::where('layout_id', $layout->layout_id)
+                            ->where('position_id', $typeId)
+                            ->where('type', $type)
+                            ->first();
+                        if($record) {
+                            $sumCount = $record->count + $commonCount;
+                            LayoutMaterial::where('layout_id', $layout->layout_id)
+                                ->where('position_id', $typeId)
+                                ->where('type', $type)
+                                ->update(array('count' => $sumCount));
+                        } else {
+                            $itemLayoutMaterial = new LayoutMaterial(['layout_id' => $layout->layout_id, 'position_id' => $typeId,
+                                'count' => $commonCount, 'type' => $type]);
+                            $itemLayoutMaterial->save();
+                        }
+                    }
+                }
+            }
+        }
     }
 }
