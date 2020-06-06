@@ -145,8 +145,18 @@ class MaterialController extends CatalogController
                 'pattern_material_id' => $data['pattern_material_id']
             ]);
 
-        $price = Price::where('material_id', $id)->latest('price_id')->first();
-        if($price->sprice != $data['sprice'] || $price->oprice != $data['oprice'] || $price->price != $data['price']) {
+        $record = Price::where('material_id', $id)->latest('price_id')->first();
+        if($record) {
+            if($record->sprice != $data['sprice'] || $record->oprice != $data['oprice'] || $record->price != $data['price']) {
+                Price::create([
+                    'material_id' => $id,
+                    'sprice'  => $data['sprice'],
+                    'oprice'  => $data['oprice'],
+                    'price'   => $data['price'],
+                    'user_id' => Auth::id()
+                ]);
+            }
+        } elseif (!is_null($data['sprice']) || !is_null($data['oprice']) || !is_null($data['price'])) {
             Price::create([
                 'material_id' => $id,
                 'sprice'  => $data['sprice'],
