@@ -110,8 +110,11 @@ class MaterialController extends CatalogController
         $units = config('units');
         $producers = Producer::all();
         $patternMaterials = PatternMaterials::all();
+        $price = Price::where('material_id', $id)->latest('price_id')->first();
 
-        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials'));
+        //dd($price);
+
+        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials', 'price'));
     }
 
     /**
