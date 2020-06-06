@@ -134,12 +134,16 @@ class MaterialController extends CatalogController
             'pattern_material_id' => 'required'
         ]);
 
-        $item = Material::find($id);
-
         $data = $request->all();
-        $result = $item
-            ->fill($data)
-            ->save();
+
+        $itemMaterial = Material::where('material_id', $id)
+            ->update([
+                'title'       => $data['title'],
+                'vendor_code' => $data['vendor_code'],
+                'unit'        => $data['unit'],
+                'producer_id' => $data['producer_id'],
+                'pattern_material_id' => $data['pattern_material_id']
+            ]);
 
 //        $price = Price::where('material_id', $itemMaterial->material_id)->latest('price_id')->first();
 //
@@ -153,9 +157,9 @@ class MaterialController extends CatalogController
 //            ]);
 //        }
 
-        if ($result) {
+        if ($itemMaterial) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('material.edit', $id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
