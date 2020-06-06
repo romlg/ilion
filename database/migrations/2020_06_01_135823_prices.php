@@ -18,9 +18,9 @@ class Prices extends Migration
             Schema::create('prices', function (Blueprint $table) {
                 $table->increments('price_id');
                 $table->integer('material_id');
-                $table->double('sprice');
-                $table->double('oprice');
-                $table->double('price');
+                $table->double('sprice')->nullable();
+                $table->double('oprice')->nullable();
+                $table->double('price')->nullable();
                 $table->integer('user_id');
                 $table->timestamps();
             });

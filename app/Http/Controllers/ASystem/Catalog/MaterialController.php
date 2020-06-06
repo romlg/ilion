@@ -59,22 +59,24 @@ class MaterialController extends CatalogController
         $data = $request->input();
 
         $itemMaterial = Material::create([
-            'title' => $data['title'],
+            'title'       => $data['title'],
             'vendor_code' => $data['vendor_code'],
-            'unit' => $data['unit'],
+            'unit'        => $data['unit'],
             'producer_id' => $data['producer_id'],
             'pattern_material_id' => $data['pattern_material_id']
         ]);
 
         $result = $itemMaterial->save();
 
-        $itemPrice = Price::create([
-            'material_id' => $itemMaterial->material_id,
-            'sprice'  => $data['sprice'],
-            'oprice'  => $data['oprice'],
-            'price'   => $data['price'],
-            'user_id' => Auth::id()
-        ]);
+        if(!is_null($data['sprice']) || !is_null($data['oprice']) || !is_null($data['price'])) {
+            Price::create([
+                'material_id' => $itemMaterial->material_id,
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
+                'user_id' => Auth::id()
+            ]);
+        }
 
         if($result) {
             return redirect()
@@ -112,8 +114,6 @@ class MaterialController extends CatalogController
         $patternMaterials = PatternMaterials::all();
         $price = Price::where('material_id', $id)->latest('price_id')->first();
 
-        //dd($price);
-
         return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials', 'price'));
     }
 
@@ -140,6 +140,18 @@ class MaterialController extends CatalogController
         $result = $item
             ->fill($data)
             ->save();
+
+//        $price = Price::where('material_id', $itemMaterial->material_id)->latest('price_id')->first();
+//
+//        if($price->sprice != $data['sprice'] || ) {
+//            $itemPrice = Price::create([
+//                'material_id' => $itemMaterial->material_id,
+//                'sprice'  => $data['sprice'],
+//                'oprice'  => $data['oprice'],
+//                'price'   => $data['price'],
+//                'user_id' => Auth::id()
+//            ]);
+//        }
 
         if ($result) {
             return redirect()
