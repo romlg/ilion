@@ -145,17 +145,16 @@ class MaterialController extends CatalogController
                 'pattern_material_id' => $data['pattern_material_id']
             ]);
 
-//        $price = Price::where('material_id', $itemMaterial->material_id)->latest('price_id')->first();
-//
-//        if($price->sprice != $data['sprice'] || ) {
-//            $itemPrice = Price::create([
-//                'material_id' => $itemMaterial->material_id,
-//                'sprice'  => $data['sprice'],
-//                'oprice'  => $data['oprice'],
-//                'price'   => $data['price'],
-//                'user_id' => Auth::id()
-//            ]);
-//        }
+        $price = Price::where('material_id', $id)->latest('price_id')->first();
+        if($price->sprice != $data['sprice'] || $price->oprice != $data['oprice'] || $price->price != $data['price']) {
+            Price::create([
+                'material_id' => $id,
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
+                'user_id' => Auth::id()
+            ]);
+        }
 
         if ($itemMaterial) {
             return redirect()
