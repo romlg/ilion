@@ -4,10 +4,12 @@ namespace App\Http\Controllers\ASystem\Catalog;
 
 use App\Http\Controllers\ASystem\PatternMaterialsController;
 use App\Models\Material;
+use App\Models\Price;
 use App\Models\Producer;
 use App\Models\PatternMaterials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends CatalogController
 {
@@ -56,12 +58,27 @@ class MaterialController extends CatalogController
 
         $data = $request->input();
 
-        $item = new Material($data);
-        $item->save();
+        $itemMaterial = Material::create([
+            'title' => $data['title'],
+            'vendor_code' => $data['vendor_code'],
+            'unit' => $data['unit'],
+            'producer_id' => $data['producer_id'],
+            'pattern_material_id' => $data['pattern_material_id']
+        ]);
 
-        if($item) {
+        $result = $itemMaterial->save();
+
+        $itemPrice = Price::create([
+            'material_id' => $itemMaterial->material_id,
+            'sprice'  => $data['sprice'],
+            'oprice'  => $data['oprice'],
+            'price'   => $data['price'],
+            'user_id' => Auth::id()
+        ]);
+
+        if($result) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('material.edit', $itemMaterial->material_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
