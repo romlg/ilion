@@ -62,6 +62,9 @@ class MaterialController extends CatalogController
             'title'       => $data['title'],
             'vendor_code' => $data['vendor_code'],
             'unit'        => $data['unit'],
+            'sprice'  => $data['sprice'],
+            'oprice'  => $data['oprice'],
+            'price'   => $data['price'],
             'producer_id' => $data['producer_id'],
             'pattern_material_id' => $data['pattern_material_id']
         ]);
@@ -141,6 +144,9 @@ class MaterialController extends CatalogController
                 'title'       => $data['title'],
                 'vendor_code' => $data['vendor_code'],
                 'unit'        => $data['unit'],
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
                 'producer_id' => $data['producer_id'],
                 'pattern_material_id' => $data['pattern_material_id']
             ]);
