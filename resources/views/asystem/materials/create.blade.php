@@ -61,6 +61,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="row form-group">
                                     <div class="col">
                                         <label>Производитель</label>
@@ -84,6 +85,26 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col">
+                                    <label>Стандартная цена</label>
+                                    <input type="text" class="form-control" name="sprice"
+                                           value="{{ old('sprice') }}" placeholder="стандартная цена">
+                                </div>
+
+                                <div class="col">
+                                    <label>Оптовая цена</label>
+                                    <input type="text" class="form-control" name="oprice"
+                                           value="{{ old('oprice') }}" placeholder="оптовая цена">
+                                </div>
+
+                                <div class="col">
+                                    <label>Наша цена</label>
+                                    <input type="text" class="form-control" name="price"
+                                           value="{{ old('price') }}" placeholder="наша цена">
                                 </div>
                             </div>
 

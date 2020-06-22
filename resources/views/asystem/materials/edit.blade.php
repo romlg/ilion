@@ -89,6 +89,26 @@
                             </div>
                         </div>
 
+                        <div class="row form-group">
+                            <div class="col">
+                                <label>Стандартная цена</label>
+                                <input type="text" class="form-control" name="sprice"
+                                       value="{{ $price->sprice ?? '' }}" placeholder="стандартная цена">
+                            </div>
+
+                            <div class="col">
+                                <label>Оптовая цена</label>
+                                <input type="text" class="form-control" name="oprice"
+                                       value="{{ $price->oprice ?? '' }}" placeholder="оптовая цена">
+                            </div>
+
+                            <div class="col">
+                                <label>Наша цена</label>
+                                <input type="text" class="form-control" name="price"
+                                       value="{{ $price->price ?? '' }}" placeholder="наша цена">
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-8">
                                 <button type="submit" class="btn btn-primary">Сохранить</button>

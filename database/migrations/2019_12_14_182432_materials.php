@@ -19,6 +19,9 @@ class Materials extends Migration
                 $table->text('title');
                 $table->string('vendor_code', 100);
                 $table->integer('unit');
+                $table->double('sprice')->nullable();
+                $table->double('oprice')->nullable();
+                $table->double('price')->nullable();
                 $table->text('notes')->nullable();
                 $table->integer('producer_id')->nullable();
                 $table->integer('pattern_material_id')->nullable();

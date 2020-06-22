@@ -13,6 +13,9 @@ class Material extends Model
         'vendor_code',
         'unit',
         'notes',
+        'sprice',
+        'oprice',
+        'price',
         'producer_id',
         'pattern_material_id',
         'category_id'

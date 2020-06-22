@@ -4,10 +4,12 @@ namespace App\Http\Controllers\ASystem\Catalog;
 
 use App\Http\Controllers\ASystem\PatternMaterialsController;
 use App\Models\Material;
+use App\Models\Price;
 use App\Models\Producer;
 use App\Models\PatternMaterials;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends CatalogController
 {
@@ -56,12 +58,32 @@ class MaterialController extends CatalogController
 
         $data = $request->input();
 
-        $item = new Material($data);
-        $item->save();
+        $itemMaterial = Material::create([
+            'title'       => $data['title'],
+            'vendor_code' => $data['vendor_code'],
+            'unit'        => $data['unit'],
+            'sprice'  => $data['sprice'],
+            'oprice'  => $data['oprice'],
+            'price'   => $data['price'],
+            'producer_id' => $data['producer_id'],
+            'pattern_material_id' => $data['pattern_material_id']
+        ]);
 
-        if($item) {
+        $result = $itemMaterial->save();
+
+        if(!is_null($data['sprice']) || !is_null($data['oprice']) || !is_null($data['price'])) {
+            Price::create([
+                'material_id' => $itemMaterial->material_id,
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
+                'user_id' => Auth::id()
+            ]);
+        }
+
+        if($result) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('material.edit', $itemMaterial->material_id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
@@ -93,8 +115,9 @@ class MaterialController extends CatalogController
         $units = config('units');
         $producers = Producer::all();
         $patternMaterials = PatternMaterials::all();
+        $price = Price::where('material_id', $id)->latest('price_id')->first();
 
-        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials'));
+        return view('asystem.materials.edit', compact('item', 'units', 'producers', 'patternMaterials', 'price'));
     }
 
     /**
@@ -114,16 +137,44 @@ class MaterialController extends CatalogController
             'pattern_material_id' => 'required'
         ]);
 
-        $item = Material::find($id);
-
         $data = $request->all();
-        $result = $item
-            ->fill($data)
-            ->save();
 
-        if ($result) {
+        $itemMaterial = Material::where('material_id', $id)
+            ->update([
+                'title'       => $data['title'],
+                'vendor_code' => $data['vendor_code'],
+                'unit'        => $data['unit'],
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
+                'producer_id' => $data['producer_id'],
+                'pattern_material_id' => $data['pattern_material_id']
+            ]);
+
+        $record = Price::where('material_id', $id)->latest('price_id')->first();
+        if($record) {
+            if($record->sprice != $data['sprice'] || $record->oprice != $data['oprice'] || $record->price != $data['price']) {
+                Price::create([
+                    'material_id' => $id,
+                    'sprice'  => $data['sprice'],
+                    'oprice'  => $data['oprice'],
+                    'price'   => $data['price'],
+                    'user_id' => Auth::id()
+                ]);
+            }
+        } elseif (!is_null($data['sprice']) || !is_null($data['oprice']) || !is_null($data['price'])) {
+            Price::create([
+                'material_id' => $id,
+                'sprice'  => $data['sprice'],
+                'oprice'  => $data['oprice'],
+                'price'   => $data['price'],
+                'user_id' => Auth::id()
+            ]);
+        }
+
+        if ($itemMaterial) {
             return redirect()
-                ->route('material.edit', $item->material_id)
+                ->route('material.edit', $id)
                 ->with(['success' => "Успешно сохранено"]);
         } else {
             return back()
