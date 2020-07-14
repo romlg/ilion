@@ -4,8 +4,8 @@ namespace App\Http\Controllers\ASystem;
 
 use App\Helpers\ExcelParser\ExcelParser;
 use App\Http\Requests\UploadImportModelRequest;
-use App\Models\Layout;
-use App\Models\LayoutMaterial;
+use App\Models\Layout\Layout;
+use App\Models\Layout\LayoutMaterial;
 use App\Models\Nomenclature;
 use App\Models\Objct;
 use App\Models\PatternExpendableMaterials;
@@ -261,7 +261,7 @@ class SpecificationController extends BaseController
         $layout = $this->layoutSave($specification);
         $this->layoutSaveMaterial($specification, $layout, $generateCO);
 
-        return $generateCO;
+        return redirect()->route('layout.edit', $layout->layout_id);
     }
 
     protected function generateCommercialOffers(Specification $specification): array

@@ -53,6 +53,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', CheckAdmin::class]],
     Route::get('/specification/{specification}/upload',   ['as' => 'specification.upload', 'uses' => 'ASystem\SpecificationController@upload']);
     Route::get('/specification/{specification}/generate', ['as' => 'specification.generate', 'uses' => 'ASystem\SpecificationController@generate']);
     Route::post('/specification/upload', ['as' =>'specification.uploadSave', 'uses' => 'ASystem\SpecificationController@uploadSave']);
+    
+    Route::resource('layout', 'ASystem\Document\LayoutController')->names('layout');
+    
 });
 
 Route::group(['prefix' => 'cabinet',  'middleware' => ['auth', CheckActive::class]], function () {

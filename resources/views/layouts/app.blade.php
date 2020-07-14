@@ -115,6 +115,7 @@
                                     <a class="dropdown-item" href="{{ route('specification.index') }}">Спецификации</a>
                                     <a class="dropdown-item" href="{{ route('contract.index') }}">Документы</a>
                                     <a class="dropdown-item" href="{{ route('aorder.index') }}">Заявки</a>
+                                    <a class="dropdown-item" href="{{ route('layout.index') }}">Раскладки</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
