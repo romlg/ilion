@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +231,8 @@ return [
 
         'ExcelParser' => App\Helpers\ExcelParser\ExcelParser::class,
         'Func' => App\Helpers\Func\Func::class,
+        
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
